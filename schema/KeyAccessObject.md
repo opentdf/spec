@@ -1,0 +1,38 @@
+# Key Access Object
+
+## Summary
+A Key Access Object stores not only a wrapped (encrypted) key used to encrypt the file's payload,  but also additional metadata about _how_ it is stored.
+
+## Example"
+
+```javascript
+{
+  "type": "wrapped",
+  "url": "https:\/\/kas.example.com:5000",
+  "protocol": "kas",
+  "wrappedKey": "OqnOETpwyGE3PVpUpwwWZoJTNW24UMhnXIif0mSnqLVCUPKAAhrjeue11uAXWpb9sD7ZDsmrc9ylmnSKP9vWel8ST68tv6PeVO+CPYUND7cqG2NhUHCLv5Ouys3Klurykvy8\/O3cCLDYl6RDISosxFKqnd7LYD7VnxsYqUns4AW5\/odXJrwIhNO3szZV0JgoBXs+U9bul4tSGNxmYuPOj0RE0HEX5yF5lWlt2vHNCqPlmSBV6+jePf7tOBBsqDq35GxCSHhFZhqCgA3MvnBLmKzVPArtJ1lqg3WUdnWV+o6BUzhDpOIyXzeKn4cK2mCxOXGMP2ck2C1a0sECyB82uw==",
+  "policyBinding": {
+    "alg": "HS256",
+    "hash": "BzmgoIxZzMmIF42qzbdD4Rw30GtdaRSQL2Xlfms1OPs="
+  },
+  "encryptedMetadata": "ZoJTNW24UMhnXIif0mSnqLVCU="
+}
+```
+
+
+## keyAccess
+
+|Parameter|Type|Description|
+|---|---|---|
+|`keyAccess`|Object|KeyAccess object stores all information about how an object key OR key split is stored, and if / how it has been encrypted (e.g., with KEK or pub wrapping key).|
+|`type`|String|Specifies how the key is stored. \n\nPossible Values: \n`remote`: The wrapped key (see below) is stored using Virtru infrastructure and is thus not part of the final TDF manifest.\n`wrapped`: Default for TDF3, the wrapped key is stored as part of the manifest.\n`remoteWrapped`: Allows management of customer hosted keys, such as with a [Customer Key Server](https://www.virtru.com/faq/virtru-customer-key-server/). This feature is available as an upgrade path.|
+|`url`|String|A url pointing to the desired KAS deployment|
+|`protocol`|String|Protocol being used. Currently only `kas` is supported|
+|`wrappedKey`|String|The symmetric key used to encrypt the payload. It has been encrypted using the public key of the KAS, then base64 encoded.|
+|`policyBinding`|Object|Object describing the policyBinding. Contains a hash, and an algorithm used.|
+|`policyBinding.alg`|String|The policy binding algorithm used to generate the hash.|
+|`policyBinding.hash`|String|This contains a keyed hash that will provide cryptographic integrity on the policy object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy. \n\nThis is Base64 encoding of HMAC(POLICY,KEY), where: \n\n**POLICY**: base64(policyjson) that is in the “encryptionInformation/policy” \n**HMAC**: HMAC SHA256 (default, but can be specified in the alg field described above) \n**KEY**: Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey.|
+|`encryptedMetadata`|String|Metadata associated with the TDF, and the request. The contents of the metadata are freeform, and are used to pass information from the client, and any plugins that may be in use by the KAS. For example, in Virtru's scenario, we could include information about things like, watermarking, expiration, and also data about the request. \n\n`encryptedMetadata` is a base64-encoded string. One example of plaintext metadata could be, depending on specific needs:\n\n```\n{\nauthHeader: ''sd9f8dfkjhwkej8sdfj\",\nconnectOptions: {\n    url: ''http://localhost:4010\"\n }\n}\n```|
+
+
+[comment]: <> (FIXME: description formatting)
