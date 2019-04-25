@@ -10,6 +10,10 @@ From the top level, the TDF manifest contains only two properties: `payload` and
 
 If you'd like to see a real manifest created using the TDF3 client, check it out [here](#authentic-manifest).
 
+## Version
+
+The current schema version is `3.0.0`.
+
 ## payload
 The payload contains metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
 
@@ -18,16 +22,18 @@ The payload contains metadata required to decrypt the TDF's payload, including _
     "type": "reference",
     "url": "0.payload",
     "protocol": "zip",
-    "isEncrypted": true
+    "isEncrypted": true,
+    "schemaVersion:": "x.y.z"
 }
 ```
 
-|Parameter|Type|Description|
-|---|---|---|
-|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server?\n\nCurrently a type of `reference` is the only possible type.|
-|`url`|String|A url pointing to the location of the payload. For example, `0.payload`, as a file local to the TDF.|
-|`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|
-|`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|
+|Parameter|Type|Description|Required?|
+|---|---|---|---|
+|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server?\n\nCurrently a type of `reference` is the only possible type.|Yes|
+|`url`|String|A url pointing to the location of the payload. For example, `0.payload`, as a file local to the TDF.|Yes|
+|`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
+|`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
+|`schemaVersion`|String|Version number of the manifest schema.|No|
 
 ## encryptionInformation
 Contains information describing the method of encryption. As well as information about one or more KASes which own the TDF.

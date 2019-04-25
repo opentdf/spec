@@ -6,6 +6,10 @@ The Policy Object is defined by the client at the time of the payload's encrypti
 
 The KAS uses the Policy Object to make its decision to grant access to the TDF payload.  The entity or user requesting access must be in the `dissem` (dissemination) list _AND_ must possess  entity attributes (as returned by the EAS) that satisfy all the data [Attributes](AttributeObject.md).
 
+## Version
+
+The current schema version is `1.0.0`.
+
 ## Example
 
 ```javascript
@@ -13,7 +17,8 @@ The KAS uses the Policy Object to make its decision to grant access to the TDF p
 "uuid": "1111-2222-33333-44444-abddef-timestamp",
 "body": {
     "dataAttributes": [<Attribute Object>],
-    "dissem": ["user-id@domain.com"]
+    "dissem": ["user-id@domain.com"],
+    "schemaVersion:": "x.y.z"
   }
 }
 ```
@@ -27,8 +32,9 @@ The KAS uses the Policy Object to make its decision to grant access to the TDF p
 
 ## body
 
-|Parameter|Type|Description|
-|---|---|---|
-|`body`|Object|Object which contains information about the policy required for the KAS to make an access decision.|
-|`body.dataAttributes`|Array|An array of attributes a user would need to request access to key. In other words, attributes a user must possess to be able to decrypt the content. An Attribute Object is defined in defined in its own section: [Attribute Object](AttributeObject.md).|
-|`body.dissem`|Array|An array of unique userIds. It's used to explicitly list users/entities that should be given access to the payload, and should be given as an id used to authenticate the user against the EAS.|
+|Parameter|Type|Description|Required?|
+|---|---|---|---|
+|`body`|Object|Object which contains information about the policy required for the KAS to make an access decision.|Yes|
+|`body.dataAttributes`|Array|An array of attributes a user would need to request access to key. In other words, attributes a user must possess to be able to decrypt the content. An Attribute Object is defined in defined in its own section: [Attribute Object](AttributeObject.md).|Yes|
+|`body.dissem`|Array|An array of unique userIds. It's used to explicitly list users/entities that should be given access to the payload, and should be given as an id used to authenticate the user against the EAS.|Yes|
+|`schemaVersion`|String|Version number of the PolicyObject schema.|No|
