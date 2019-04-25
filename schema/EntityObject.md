@@ -1,0 +1,35 @@
+# Entity Object
+
+## Summary
+The Entity Object, along with its validation on the KAS, provides a means to ensure that the requestor of a decrypt operation on an encrypted payload has current and correct permissions (via attributes) to do so. Before a decrypt action can be taken, an Entity Object is fetched from an EAS (Entity Attribute Service) and is sent to the KAS. The KAS then grants access to the payload (by way of a decrypted key) if and only if the requestor's Entity Object details coincide with those given in the [Policy Object](PolicyObject.md). 
+
+## Example
+
+```javascript
+{
+  "userId": "user@virtru.com",
+  "aliases": [],
+  "attributes": [
+    {
+      "jwt": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJodHR..."
+    },
+    {
+      "jwt": "eyJhbGciOiJSUzI1NiIsInR5cCI6IPuQedtw5mNsJ0uDK4UdCChw..."
+    }
+  ],
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy18Efi6+3vSELpbK58gC\nA9vJxZtoRHR604yi707h6nzTsTSNUg5mNzt/nWswWzloIWCgA7EPNpJy9lYn4h1Z\n6LhxEgf0wFcaux0/C19dC6WRPd6 ... XzNO4J38CoFz/\nwwIDAQAB\n-----END PUBLIC KEY-----",
+  "cert": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2..."
+}
+```
+
+|Parameter|Type|Description|
+|---|---|---|
+|`userId`|String|A user id used to identify the user, such as email, that will be used to authenticate against the EAS.|
+|`aliases`|Array|`aliases` are not yet implemented, but will provide further flexibility by assigning additional aliases to a user. This can remain empty for the time being.|
+|`attributes`|Array|An array of signed [Attribute Object](AttributeObject.md)s|
+|`attributes.jwt`|String|An [Attribute Object](AttributeObject.md) that has been signed with the EAS private key as a [JWT](https://jwt.io/).|
+|`publicKey`|String|The entity's public key, in a PEM-encoded format.|
+|`cert`|String|The [Entity Object](EntityObject.md) contents (without `cert`) that has been signed with the EAS private key, as a [JWT](https://jwt.io/).|
+
+[comment]: <> (should publicKey be of type PEM?)
+[comment]: <> (what about required col?)
