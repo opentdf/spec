@@ -5,6 +5,8 @@
 
 ## Changes
 * 3.0.0 (2019-04-25)
+  * _none_: ([#3](https://github.com/virtru/tdf3-spec/pull/3))
+    NOREF: Reformat CONTRIBUTING doc a bit.
   * _none_: ([#2](https://github.com/virtru/tdf3-spec/pull/2))
     NOREF: Make the project README a little slicker.
   * _major_: ([#1](https://github.com/virtru/tdf3-spec/pull/1))
