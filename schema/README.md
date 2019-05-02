@@ -10,4 +10,6 @@ _An overview of how the Policy Object, Entity Object and manifest are related._
 
 ## Schema Version
 
+Each schema contains a `schemaVersion`, which maps back to this spec and defines the format consumers should expect. Currently the `schemaVersion` is *optional* for backwards-compatibility reasons. We intend to make this field *required* on the next major version change.
+
 ## Format Validation
