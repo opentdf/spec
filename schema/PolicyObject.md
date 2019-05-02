@@ -17,9 +17,9 @@ The current schema version is `1.0.0`.
 "uuid": "1111-2222-33333-44444-abddef-timestamp",
 "body": {
     "dataAttributes": [<Attribute Object>],
-    "dissem": ["user-id@domain.com"],
-    "schemaVersion:": "x.y.z"
-  }
+    "dissem": ["user-id@domain.com"]
+  },
+"schemaVersion:": "x.y.z"
 }
 ```
 
@@ -37,4 +37,10 @@ The current schema version is `1.0.0`.
 |`body`|Object|Object which contains information about the policy required for the KAS to make an access decision.|Yes|
 |`body.dataAttributes`|Array|An array of attributes a user would need to request access to key. In other words, attributes a user must possess to be able to decrypt the content. An Attribute Object is defined in defined in its own section: [Attribute Object](AttributeObject.md).|Yes|
 |`body.dissem`|Array|An array of unique userIds. It's used to explicitly list users/entities that should be given access to the payload, and should be given as an id used to authenticate the user against the EAS.|Yes|
+|`schemaVersion`|String|Version number of the PolicyObject schema.|No|
+
+## schemaVersion
+
+|Parameter|Type|Description|Required?|
+|---|---|---|---|
 |`schemaVersion`|String|Version number of the PolicyObject schema.|No|
