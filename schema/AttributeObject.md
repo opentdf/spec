@@ -5,6 +5,9 @@ An Attribute Object contains attribute information the TDF3 system uses to enfor
 
 The object contains a URL which acts as a reference for the attributes (to be implemented), as well as with a collection of attribute values. The attributes defined therein are used in determining access.
 
+## Version
+
+The current schema version is `1.0.0`.
 
 ## Example
 
@@ -13,7 +16,8 @@ The object contains a URL which acts as a reference for the attributes (to be im
   "attribute": "https://example.com/attr/Classification/value/ts",
   "displayName": "classification",
   "pubKey": "pem encoded public key of the attribute",
-  "kasURL": "https://kas.example.com/"
+  "kasURL": "https://kas.example.com/",
+  "schemaVersion:": "x.y.z"
 }
 ```
 
@@ -23,3 +27,4 @@ The object contains a URL which acts as a reference for the attributes (to be im
 |`displayName`|String|Human readable name of the attribute.|Yes|
 |`publicKey`|PEM|PEM encoded public key of the KAS that can make policy decisions for this attribute.|Yes|
 |`kasURL`|URL|Base URL of the KAS that can make access control decisions for this attribute.|Yes|
+|`schemaVersion`|String|Version number of the AtributeObject schema.|No|
