@@ -5,7 +5,7 @@
 
 ## Changes
 * 3.1.0 (2019-04-26)
-  * _minor_: ([#4](https://github.com/virtru/tdf3-spec/pull/4))
+  * _minor_: ([#5](https://github.com/virtru/tdf3-spec/pull/5))
     NOREF: Include version number in data object schemas.
 * 3.0.0 (2019-04-25)
   * _none_: ([#3](https://github.com/virtru/tdf3-spec/pull/3))
