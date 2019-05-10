@@ -5,8 +5,12 @@
 
 ## Changes
 * 1.2.0 (2019-05-10)
-  * _minor_: ([#6](https://github.com/virtru/tdf3-spec/pull/6))
+  * _minor_: ([#11](https://github.com/virtru/tdf3-spec/pull/11))
     WS-8962: Default attribute changes in AttributeObject and EntityObject.
+
+* 1.1.1 (2019-05-10)
+  * _minor_: ([#10](https://github.com/virtru/tdf3-spec/pull/10))
+    NOREF: Remove reference to AES-256-CBC, which is not supported.
 
 * 1.1.0 (2019-04-26)
   * _minor_: ([#5](https://github.com/virtru/tdf3-spec/pull/5))
