@@ -4,6 +4,9 @@
 [Unreleased]: https://github.com/virtru/saas-gateway/compare/master...HEAD
 
 ## Changes
+* 1.1.1 (2019-05-10)
+  * _minor_: ([#10](https://github.com/virtru/tdf3-spec/pull/10))
+    NOREF: Remove reference to AES-256-CBC, which is not supported.
 * 1.1.0 (2019-04-26)
   * _minor_: ([#5](https://github.com/virtru/tdf3-spec/pull/5))
     NOREF: Include version number in data object schemas.

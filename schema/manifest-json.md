@@ -69,7 +69,7 @@ An object which describes the information required to actually decrypt the paylo
 
 |Parameter|Type|Description|
 |---|---|---|
-|`algorithm`|String|The algorithm used for encryption. Currently the two available options are `aes-256-gcm` and `aes-256-cbc`.|
+|`algorithm`|String|The algorithm used for encryption. Currently the two available options are `aes-256-gcm`.|
 |`isStreamable`|Boolean|`isStreamable` designates whether or not a TDF payload is streamable. If it's streamable, the payload is broken into chunks, and individual hashes are generated per chunk to establish integrity of the individual chunks.|
 |`iv`|String|The initialization vector for the encrypted payload.|
 
