@@ -21,7 +21,6 @@ The current schema version is `1.1.0`.
   "isDefault": true,
   "displayName": "classification",
   "pubKey": "pem encoded public key of the attribute",
-  "keyVersion": "3",
   "kasUrl": "https://kas.example.com/",
   "schemaVersion:": "x.y.z"
 }
@@ -32,7 +31,6 @@ The current schema version is `1.1.0`.
 |`attribute`|String|Also known as the "attribute url."  The unique resource name for the attribute represented as a case-insensitive URL string.  |Yes|
 |`isDefault`|Boolean|If "true" this flag identifies the attribute as the default attribute. If missing (preferred) or false then the attribute is not the default attribute.|No|
 |`displayName`|String|A human-readable nickname for the attribute for convenience.|Yes|
-|`pubKey`|PEM|PEM encoded public key of the KAS that can make policy decisions for this attribute. If _publicKey_ changes there should be a corresponding version bump in the _keyVersion_ field.|Yes|
-|`keyVersion`|String|Version number of the attribute's publicKey. If missing then the key is assumed to be the initial key.|No|
+|`pubKey`|PEM|PEM encoded public key for this attribute. Often other attributes will use the same pubKey.|Yes|
 |`kasUrl`|URL|Base URL of a KAS that can make access control decisions for this attribute.|Yes|
 |`schemaVersion`|String|Version number of the AttributeObject schema.|No|
