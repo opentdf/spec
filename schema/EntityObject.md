@@ -5,13 +5,14 @@ The Entity Object, along with its validation on the KAS, provides a means to ens
 
 ## Version
 
-The current schema version is `1.0.0`.
+The current schema version is `1.1.0`.
 
 ## Example
 
 ```javascript
 {
   "userId": "user@virtru.com",
+  "auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "aliases": [],
   "attributes": [
     {
@@ -30,6 +31,7 @@ The current schema version is `1.0.0`.
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
 |`userId`|String|A user id used to identify the user, such as email, that will be used to authenticate against the EAS.|Yes|
+|`auth`|Object|JWT containing arbitrary supplementary identifying information from the EAS's auth scheme. KAS can use this to auth internal and downstream operations.
 |`aliases`|Array|`aliases` are not yet implemented, but will provide further flexibility by assigning additional aliases to a user. This can remain empty for the time being.|Yes|
 |`attributes`|Array|An array of signed [Attribute Object](AttributeObject.md)s. At most one of these may be a _default_ AttributeObject.|Yes|
 |`attributes.jwt`|String|An [Attribute Object](AttributeObject.md) that has been signed with the EAS private key as a [JWT](https://jwt.io/).|Yes|
