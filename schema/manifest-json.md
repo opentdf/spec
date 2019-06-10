@@ -23,7 +23,6 @@ The payload contains metadata required to decrypt the TDF's payload, including _
     "url": "0.payload",
     "protocol": "zip",
     "isEncrypted": true,
-    "mimeType": "application/pdf",
     "schemaVersion:": "x.y.z"
 }
 ```
@@ -34,7 +33,6 @@ The payload contains metadata required to decrypt the TDF's payload, including _
 |`url`|String|A url pointing to the location of the payload. For example, `0.payload`, as a file local to the TDF.|Yes|
 |`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
-|`mimeType`|String|Specifies the type of file that is encrypted. Default is `application/octet-stream`. |No|
 |`schemaVersion`|String|Version number of the manifest schema.|No|
 
 ## encryptionInformation
