@@ -4,6 +4,9 @@
 [Unreleased]: https://github.com/virtru/saas-gateway/compare/master...HEAD
 
 ## Changes
+* 1.3.0 (2019-06-10)
+  * _minor_: ([#13](https://github.com/virtru/tdf3-spec/pull/13))
+    Added mimeType to allow for reading clients to setup preview experiences.
 * 1.2.0 (2019-05-10)
   * _minor_: ([#6](https://github.com/virtru/tdf3-spec/pull/6))
     WS-8962/AttributeObject: Added optional 'isDefault' boolean to AO schema.
