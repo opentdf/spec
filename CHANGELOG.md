@@ -4,6 +4,9 @@
 [Unreleased]: https://github.com/virtru/saas-gateway/compare/master...HEAD
 
 ## Changes
+* 1.3.1 (2019-06-20)
+  * _minor_: ([#14](https://github.com/virtru/tdf3-spec/pull/14))
+    Example HTML wrapped TDF
 * 1.3.0 (2019-06-10)
   * _minor_: ([#13](https://github.com/virtru/tdf3-spec/pull/13))
     Added mimeType to allow for reading clients to setup preview experiences.
