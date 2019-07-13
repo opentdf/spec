@@ -1,9 +1,12 @@
 # Changelog
 
 ## [Unreleased]
-[Unreleased]: https://github.com/virtru/saas-gateway/compare/master...HEAD
+[Unreleased]: https://github.com/virtru/tdf3-spec/compare/master...HEAD
 
 ## Changes
+* 1.3.2 (2019-07-13)
+  * _minor_: ([#15](https://github.com/virtru/tdf3-spec/pull/15))
+    Added MIT license
 * 1.3.1 (2019-06-20)
   * _minor_: ([#14](https://github.com/virtru/tdf3-spec/pull/14))
     Example HTML wrapped TDF
