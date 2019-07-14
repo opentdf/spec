@@ -4,6 +4,9 @@
 [Unreleased]: https://github.com/virtru/tdf3-spec/compare/master...HEAD
 
 ## Changes
+* 1.3.3 (2019-07-14)
+  * _minor_: ([#16](https://github.com/virtru/tdf3-spec/pull/16))
+    Added CODEOWNERS file
 * 1.3.2 (2019-07-13)
   * _minor_: ([#15](https://github.com/virtru/tdf3-spec/pull/15))
     Added MIT license
