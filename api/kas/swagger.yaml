@@ -1,0 +1,142 @@
+swagger: '2.0'
+info:
+  description: This is a basic KAS implementation
+  version: 1.0.0
+  title: KAS Service
+  termsOfService: 'https://www.virtru.com/terms-of-service/'
+  contact:
+    email: biscoe@virtru.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: api.virtru.com
+tags:
+  - name: all
+    description: All KAS operations
+    externalDocs:
+      description: 'Find out more:'
+      url: 'https://tdf3.readme.io/'
+schemes:
+  - https
+paths:
+  /:
+    get:
+      tags:
+        - all
+      summary: Just gets the version number
+      description: Just returns the version of the running KAS
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A public key object
+          schema:
+            type: object
+            properties:
+              version:
+                type: string
+                example: '1.1.0'
+                description: 'Semver version number'
+  /kas_public_key:
+    post:
+      tags:
+        - all
+      summary: Get a kas's public key
+      description: Just returns the public key for the KAS
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A public key object
+          schema:
+            $ref: '#/definitions/publicKeyObject'
+  /rewrap:
+    post:
+      tags:
+        - all
+      summary: Perform rewrap
+      description: Takes entity, policy, key access object, and returns an entity wrapped key
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Rewrap request body
+          required: true
+          description: "A json object containing the following:"
+          schema:
+            $ref: '#/definitions/rewrapRequestObject'
+
+      responses:
+        '200':
+          description: A public key object
+          schema:
+            $ref: '#/definitions/entityWrappedKey'
+  /upsert:
+    post:
+      tags:
+        - all
+      summary: Perform policy upsert
+      description: Takes entity, policy, key access object, and syncs the policy with the backend
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Rewrap request body
+          required: true
+          description: "A json object containing the following:"
+          schema:
+            $ref: '#/definitions/rewrapRequestObject'
+
+      responses:
+        '200':
+          description: Returns an array of status messages from each of the KAS plugins
+definitions:
+  publicKeyObject:
+    type: object
+    required:
+      - publicKey
+    properties:
+      publicKey:
+        type: string
+        example: 'Some public key string'
+    xml:
+      name: publicKeyObject
+  entityWrappedKey:
+    type: object
+    required:
+      - entityWrappedKey
+    properties:
+      entityWrappedKey:
+        type: string
+        example: '... some entity wrapped key ...'
+    xml:
+      name: entityWrappedKey
+  rewrapRequestObject:
+    type: object
+    required:
+      - entity
+      - keyAccess
+      - policy
+      - authToken
+    properties:
+      entity:
+        type: object
+        example: '{ entity object}'
+      keyAccess:
+        type: object
+        example: '{ Key Access object}'
+      policy:
+        type: object
+        example: '{ Policy Object }'
+      authToken:
+        type: string
+        example: 'An auth JWT'
+    xml:
+      name: entityWrappedKey
+externalDocs:
+  description: 'Find out more about EAS, and TDF3.'
+  url: 'https://tdf3.readme.io/'
