@@ -2,7 +2,9 @@
 
 ## [Unreleased]
 [Unreleased]: https://github.com/virtru/tdf3-spec/compare/master...HEAD
-
+## Added
+  * _patch_: ([#17](https://github.com/virtru/tdf3-spec/pull/17))
+    Add KAS swagger 
 ## Changes
 * 1.3.3 (2019-07-14)
   * _minor_: ([#16](https://github.com/virtru/tdf3-spec/pull/16))
