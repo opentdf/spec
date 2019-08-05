@@ -4,6 +4,9 @@
 [Unreleased]: https://github.com/virtru/tdf3-spec/compare/master...HEAD
 
 ## Changes
+* 1.3.4 (2019-08-05)
+  * _patch_: ([#20](https://github.com/virtru/tdf3-spec/pull/20))
+    Update protocol docs and diagrams.
 * 1.3.3 (2019-07-14)
   * _minor_: ([#16](https://github.com/virtru/tdf3-spec/pull/16))
     Added CODEOWNERS file
