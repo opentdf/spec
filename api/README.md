@@ -1,3 +1,3 @@
 # API
 
-This directory will contain the swagger definitions for TDF service APIs.
+This directory contains the swagger definitions for TDF service APIs.
