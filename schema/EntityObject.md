@@ -2,7 +2,7 @@
 
 ## What is this?
 
-The Entity Object is a JSON object used to ensure that individuals (entities) attempting to decrypt an encrypted file under the Trusted Data Format has all permissions required to so.
+The Entity Object is a JSON object used to ensure that individuals (entities) attempting to decrypt an encrypted file under the Trusted Data Format has all permissions required to do so.
 
 ## How does it work?
 
