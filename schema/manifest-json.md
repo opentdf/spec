@@ -94,7 +94,7 @@ An object which allows an application to validate the integrity of the payload, 
 |---|---|---|
 |`rootSignature`|Object|Object containing a signature for the entire payload, and the algorithm used to generate it.|
 |`rootSignature.alg`|String|The algorithm used to generate the root signature. `HS256` is the only available option currently.|
-|`rootSignature.sig`|String|The signature for the entire payload. \n\nExample of signature generation:\n`Base64.encode(HMAC(payload, payloadKey))`|
+|`rootSignature.sig`|String|The signature for the entire payload. \n\nExample of signature generation:\n`Base64.encode(HMAC(BinaryOfAllHashesCombined, payloadKey))`|
 |`segmentHashAlg`|String|The name of the hashing algorithm used to generate the hashes for each segment. Currently only `GMAC` is available.|
 |`segments`|Array|An array of objects containing each segment object. A segment is defined in its own section: [segment](#encryptioninformationintegrityinformationsegment)|
 |`segmentSizeDefault`|Number|The default size of each chunk, or segment in bytes. By setting the default size here, the segments array becomes more space efficient as it will not have to specify the segment size each time.|
