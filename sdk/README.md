@@ -1,3 +1,0 @@
-# SDK
-
-Coming soon.
