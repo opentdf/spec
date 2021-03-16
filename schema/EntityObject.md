@@ -40,10 +40,11 @@ When an entity wishes to decrypt a file, the following steps using the Entity Ob
 |`attributes`|Array|An array of signed [Attribute Object](AttributeObject.md)s. At most one of these may be a _default_ AttributeObject.|Yes|
 |`attributes.jwt`|String|An [Attribute Object](AttributeObject.md) that has been signed with the EAS private key as a [JWT](https://jwt.io/).|Yes|
 |`publicKey`|String|The entity's public key, in a PEM-encoded format.|Yes|
+|`signerPublicKey`|String|A second public key used for signing KAS requests, in a PEM-encoded format. When using TDF3 with elliptic curve cryptography, the public key may use ECDH and the signing key ECDSA.|Optional, depends on choice of algorithm|
 |`cert`|String|The [Entity Object](EntityObject.md) contents (without `cert`) that has been signed with the EAS private key, as a [JWT](https://jwt.io/). The KAS uses this field to validate the authenticity of the Entity Object. |Yes|
 |`schemaVersion`|String|Version number of the Entity Object schema.|No|
 
 
 ## Version
 
-The current schema version is `1.1.0`.
+The current schema version is `1.1.1`.

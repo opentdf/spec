@@ -5,6 +5,15 @@
 ## Added
   * _patch_: ([#17](https://github.com/virtru/tdf3-spec/pull/17))
     Add KAS swagger 
+  * _patch_: ([#24](https://github.com/virtru/tdf3-spec/pull/24)), PLAT-897: `EntityObject.signerPublicKey`
+    - Add a second 'signerPublicKey' field to an EO
+    - This is an ephemeral public key a client may use to sign rewrap and other requests associated with the EO.
+    - This is required as some algorithms and key types are more suited for encryption and others for signatures. Notably, we must support this for the smaller keys and restricted set of algorithms that NanoTDF will likely impose
+    - Implementations:
+      - Client [nanotdf for javascript](https://github.com/virtru/eternia/pull/78)
+      - Client [c++](https://github.com/virtru/tdf3-cpp/pull/193)
+      - Service [OpenStack EAS and KAS (python)](https://github.com/virtru/etheria/pull/295)
+
 ## Changes
 * 1.3.4 (2019-08-05)
   * _patch_: ([#20](https://github.com/virtru/tdf3-spec/pull/20))
