@@ -15,6 +15,10 @@
       - Service [OpenStack EAS and KAS (python)](https://github.com/virtru/etheria/pull/295)
 
 ## Changes
+* 3.3.4 (2021-05-25)
+  * _major_ : ([#25](https://github.com/virtru/tdf-spec/pull/25))
+    Remove version from repo name, and align semver major version with TDF major version.
+    This is purely a nonclamenture+versionspec change
 * 1.3.4 (2019-08-05)
   * _patch_: ([#20](https://github.com/virtru/tdf3-spec/pull/20))
     Update protocol docs and diagrams.
