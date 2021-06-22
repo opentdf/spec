@@ -1,0 +1,34 @@
+sequenceDiagram
+
+    participant Client
+    participant IdP as OIDC IdP
+    participant Attribute Provider
+    participant KAS
+    participant PolicyStore
+    participant OPA as Policy Engine (OPA)
+
+
+    alt Only if not previously authed
+        Client->>+IdP: /auth: AuthN Request bearer JWT
+        IdP-->>-Client: /auth success response: IdP-signed Bearer JWT
+        Note right of Client: The bearer JWT might not need to contain any claims other than a KAS URL, remainder can come from userinfo
+
+        Client->>+IdP: /userinfo AuthZ Request claims (client attributes) JWT
+        IdP->>+Attribute Provider: Request user's Virtru claims (aka attributes) from /userinfo
+        Attribute Provider-->>-IdP: Return Virtru claims (client attributes) from claim store
+        IdP-->>-Client: /userinfo success response: IdP-signed Virtru claims (client attributes) JWT
+    end
+    Client->>+KAS: /rewrap with JWT bearer in Auth header, and claims (attributes) JWT in payload
+    KAS->>+IdP: Get OIDC JWT signing key from IdP that issued bearer token
+    IdP-->>-KAS: validate {bearer|claims} JWTs with IdP's signing key
+    Note left of KAS: An IdP's bearer token and claims token will always be signed by the SAME KEY
+    Note left of KAS: ...but there is no reason why multiple claims tokens from different IdP couldn't be included
+    Note left of KAS: We can always use claims token `iss` to fetch the public signing key via OIDC well-known URLs
+    KAS->>+PolicyStore: Fetch policy ID referred to in /rewrap payload
+    PolicyStore-->>-KAS: Return policy ID
+    KAS->>+OPA: /resolvePolicy with user's claims JWT, stored decrypt claims JWT, and ID of Rego policy to eval
+    Note left of OPA: OPA does not appear to directly validate JWT signature itself
+    Note left of OPA: Decide if KAS validation of claims JWT is enough
+    OPA-->>-KAS: /resolvePolicy response: ALLOWED or DENIED
+
+    KAS-->>-Client: /rewrap response (DENIED or ALLOWED with rewrapped key)
