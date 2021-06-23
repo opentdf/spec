@@ -15,6 +15,8 @@ sequenceDiagram
 
         Client->>+IdP: /userinfo AuthZ Request claims (client attributes) JWT
         IdP->>+Attribute Provider: Request user's Virtru claims (aka attributes) from /userinfo
+        Note right of Attribute Provider: TBD - where does Attribute Provider store/retrieve client attribs from?
+        Note right of Attribute Provider: Probably shouldn't be PolicyStore - or should it?
         Attribute Provider-->>-IdP: Return Virtru claims (client attributes) from claim store
         IdP-->>-Client: /userinfo success response: IdP-signed Virtru claims (client attributes) JWT
     end
