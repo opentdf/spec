@@ -11,9 +11,9 @@ sequenceDiagram
         IdP-->>-Client: /auth success response: IdP-signed Bearer JWT
         Note right of Client: The bearer JWT might not need to contain any claims other than a KAS URL, remainder can come from userinfo
 
-        Client->>+IdP: /userinfo AuthZ Request claims (client attributes) JWT
+        Client->>+IdP: /userinfo AuthZ Request claims (client subj/obj attributes) JWT
         IdP->>+Attribute Provider: Request user's Virtru claims (aka attributes) from /userinfo
-        Attribute Provider-->>-IdP: Return Virtru claims (client attributes) from claim store
+        Attribute Provider-->>-IdP: Return Virtru claims (client subj/obj attributes) from claim store
         IdP-->>-Client: /userinfo success response: IdP-signed Virtru claims (client attributes) JWT
     end
     loop Repeat encrypt offline
