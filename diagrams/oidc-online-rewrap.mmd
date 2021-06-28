@@ -9,20 +9,23 @@ sequenceDiagram
 
 
     alt Only if not previously authed
-        Client->>+IdP: /auth: AuthN Request bearer JWT
-        IdP-->>-Client: /auth success response: IdP-signed Bearer JWT
-        Note right of Client: The bearer JWT might not need to contain any claims other than a KAS URL, remainder can come from userinfo
+        Client->>+IdP: /auth: AuthN Request bearer JWT w/PubKey
+        IdP-->>-Client: /auth success response: IdP-signed Bearer JWT, containing Client PubKey
+        Note right of Client: Auth token should not contain variable content to control size
+        Note right of Client: If desired, we could include baseline config like default KAS URL
 
-        Client->>+IdP: /userinfo AuthZ Request claims (client subj/obj attributes) JWT
-        IdP->>+Attribute Provider: Request user's Virtru claims (aka attributes) from /userinfo
+        Client->>+IdP: /userinfo AuthZ Request claims (client subj/obj attributes) JWT w/PubKey
         Note right of Attribute Provider: TBD - where does Attribute Provider store/retrieve client attribs from?
         Note right of Attribute Provider: Probably shouldn't be PolicyStore - or should it?
-        Attribute Provider-->>-IdP: Return Virtru claims (client subj/obj attributes) from claim store
+        IdP->>+Attribute Provider: Request user's Virtru claims (aka attributes) from /userinfo, passing Client PubKey
+
+        Attribute Provider-->>-IdP: Return Virtru claims (client subj/obj attributes) from claim store, containing Client PubKey
         IdP-->>-Client: /userinfo success response: IdP-signed Virtru claims (client attributes) JWT
     end
-    Client->>+KAS: /rewrap with JWT bearer in Auth header, and claims (attributes) JWT in payload
+    Client->>+KAS: /rewrap with bearer JWT in Auth header, full claims JWT from IdP + client-signed nonce in body
     KAS->>+IdP: Get OIDC JWT signing key from IdP that issued bearer token
     IdP-->>-KAS: validate {bearer|claims} JWTs with IdP's signing key
+    KAS-->>KAS: Validate {bearer|claims} JWTs have same client pubkey embedded, and that that key validates client-signed nonce in request payload
     Note left of KAS: An IdP's bearer token and claims token will always be signed by the SAME KEY
     Note left of KAS: ...but there is no reason why multiple claims tokens from different IdP couldn't be included
     Note left of KAS: We can always use claims token `iss` to fetch the public signing key via OIDC well-known URLs
