@@ -10,10 +10,6 @@ From the top level, the TDF manifest contains only two properties: `payload` and
 
 If you'd like to see a real manifest created using the TDF3 client, check it out [here](#authentic-manifest).
 
-## Version
-
-The current schema version is `3.0.0`.
-
 ## payload
 The payload contains metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
 
@@ -24,7 +20,7 @@ The payload contains metadata required to decrypt the TDF's payload, including _
     "protocol": "zip",
     "isEncrypted": true,
     "mimeType": "application/pdf",
-    "schemaVersion:": "x.y.z"
+    "tdf_spec_version:": "x.y.z"
 }
 ```
 
@@ -35,7 +31,7 @@ The payload contains metadata required to decrypt the TDF's payload, including _
 |`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
 |`mimeType`|String|Specifies the type of file that is encrypted. Default is `application/octet-stream`. |No|
-|`schemaVersion`|String|Version number of the manifest schema.|No|
+|`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
 
 ## encryptionInformation
 Contains information describing the method of encryption. As well as information about one or more KASes which own the TDF.
