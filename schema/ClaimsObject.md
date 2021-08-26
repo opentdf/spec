@@ -43,12 +43,8 @@ If these requirements are met, the KAS will permit a decrypt of the file.
 ```javascript
 {
   "subject_attributes": [
-    {
-      "obj": {"attribute": "https://example.com/attr/Classification/value/S"}}
-    },
-    {
-      "obj": {"attribute": "https://example.com/attr/COI/value/PRX"}}
-    }
+    {"attribute": "https://example.com/attr/Classification/value/S"}},
+    {"attribute": "https://example.com/attr/COI/value/PRX"}}
   ],
   "client_public_signing_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy18Efi6+3vSELpbK58gC\nA9vJxZtoRHR604yi707h6nzTsTSNUg5mNzt/nWswWzloIWCgA7EPNpJy9lYn4h1Z\n6LhxEgf0wFcaux0/C19dC6WRPd6 ... XzNO4J38CoFz/\nwwIDAQAB\n-----END PUBLIC KEY-----",
   "tdf_spec_version:": "x.y.z"
