@@ -1,17 +1,20 @@
 # Attribute Object
 
 ## Summary
-An Attribute Object contains attribute information the TDF3 system uses to enforce access control. Attributes are used in both the [PolicyObject](PolicyObject.md) to define the attributes that a user "needs" to gain access in an ABAC sense, and in the [EntityObject](EntityObject.md) to assert the attributes that a user "has" to satisfy the ABAC needs.
+An Attribute Object contains attribute information the TDF3 system uses to enforce attribute-based access control (ABAC). Attributes are used in both the [PolicyObject](PolicyObject.md) to define the attributes that an actor "needs" to gain access in an ABAC sense, and in the [ClaimsObject](ClaimsObject.md) to assert the attributes that an actor "has".
+Access decisions are made by comparing the attributes an actor has with the attributes a policy requires.
+
+Attributes that an actor "has" are referred to as "subject attributes" or "actor attributes".
+
+Attributes that actors "need" in order to access data are referred to as "object attributes" or "data attributes"
 
 The _attribute_ field must be both unique and immutable as it is the reference id for the attribute. All of the other fields are mutable. The attribute string contains three pieces of information - the authority namespace (https://example.com), the attribute name (classification), and the attribute value (topsecret).
 
-The public key is used to wrap the object key or key splits on TDF3 file creation. On decrypt, the kasUrl defines where this key or key split can be rewrapped. For policies that do not include attributes these values are extracted from a _default_ attribute. Every [EntityObject](EntityObject.md) to a user who may write attribute-free policies should include one and only one _default_ attribute.
+The public key is used to wrap the object key or key splits on TDF3 file creation. On decrypt, the kasUrl defines where this key or key split can be rewrapped.
 
-The AttributeObject does not define how the attribute will be used. The KAS uses attribute policies from the cognizant authority to make its policy decisions. Clients writing policies should use best available information from their organizations to select which AttributeObjects to include to protect the policy.  
-
-## Version
-
-The current schema version is `1.1.0`.
+The AttributeObject alone does not define how the KAS will compare a subject attribute to an object attribute when making an access decision.
+The KAS uses the namespaced object attributes in the [PolicyObject](PolicyObject.md) look up attribute policies from the cognizant authority
+to make its policy decisions. Clients writing policies should use best available information from their organizations to select which AttributeObjects to include to protect the policy.
 
 ## Example
 
@@ -22,7 +25,7 @@ The current schema version is `1.1.0`.
   "displayName": "classification",
   "pubKey": "pem encoded public key of the attribute",
   "kasUrl": "https://kas.example.com/",
-  "schemaVersion:": "x.y.z"
+  "tdf_spec_version:": "x.y.z"
 }
 ```
 
@@ -33,4 +36,4 @@ The current schema version is `1.1.0`.
 |`displayName`|String|A human-readable nickname for the attribute for convenience.|Yes|
 |`pubKey`|PEM|PEM encoded public key for this attribute. Often other attributes will use the same pubKey.|Yes|
 |`kasUrl`|URL|Base URL of a KAS that can make access control decisions for this attribute.|Yes|
-|`schemaVersion`|String|Version number of the AttributeObject schema.|No|
+|`tdf_spec_version`|String|Semver version number of the TDF spec.|No|

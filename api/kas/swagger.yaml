@@ -1,142 +1,397 @@
-swagger: '2.0'
+openapi: 3.0.0
 info:
-  description: This is a basic KAS implementation
   version: 1.0.0
-  title: KAS Service
-  termsOfService: 'https://www.virtru.com/terms-of-service/'
+  title: Key Access Service
+  termsOfService: https://www.virtru.com/terms-of-service/
   contact:
-    email: biscoe@virtru.com
+    email: support@virtru.com
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-host: api.virtru.com
-tags:
-  - name: all
-    description: All KAS operations
-    externalDocs:
-      description: 'Find out more:'
-      url: 'https://tdf3.readme.io/'
-schemes:
-  - https
+
+externalDocs:
+  description: Developer Hub
+  url: https://developer.virtru.com/
+
 paths:
-  /:
+  "/":
+    get:
+      summary: Get the current version
+      description: |
+        This endpoint is for OPS so they have something to ping on to verify
+        that the server hasn't died.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "0.0.0"
+  /healthz:
     get:
       tags:
-        - all
-      summary: Just gets the version number
-      description: Just returns the version of the running KAS
-      produces:
-        - application/json
+        - heartbeat
+      summary: Return current version as semver; useful for liveness checks
+      parameters:
+        - name: probe
+          description: liveness or readiness
+          in: query
+          schema:
+            default: liveness
+            enum:
+              - liveness
+              - readiness
+            type: string
       responses:
-        '200':
-          description: A public key object
+        "200":
+          description: Success with a detail message
+        "204":
+          description: Success with no detail message
+        "500":
+          description: Unhealthy, per the requested probe
+
+  "/kas_public_key":
+    get:
+      summary: "Get the public key for KAS"
+      description: |
+        This endpoint provides a public key for the private key that the
+        kas has internally.
+      parameters:
+        - name: algorithm
+          description: algorithm type rsa:<keysize> or ec:<curvename>
+          in: query
+          schema:
+            default: rsa:2048
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicKey"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KeyNotFoundError"
+
+  "/v2/rewrap":
+    post:
+      summary: Request a rewrap
+      description: |
+        This endpoint performs the primary service of the KAS; to re-wrap
+        data keys as needed to provide access for entities with a TDF that they
+        would like to open.
+      operationId: tdf3_kas_core.web.rewrap.rewrap_v2
+      requestBody:
+        $ref: "#/components/requestBodies/RewrapV2"
+      # security:
+      #   - virtruOIDCBearerToken: []
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    default: {}
+                  kasWrappedKey:
+                    type: string
+                    nullable: true
+                  entityWrappedKey:
+                    type: string
+                    nullable: true
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/AdjudicatorError"
+                  - $ref: "#/components/schemas/AuthorizationError"
+                  - $ref: "#/components/schemas/KeyAccessError"
+                  - $ref: "#/components/schemas/KeyNotFoundError"
+                  - $ref: "#/components/schemas/PluginFailedError"
+                  - $ref: "#/components/schemas/PolicyError"
+
+  "/v2/upsert":
+    post:
+      summary: Request a upsert
+      description: |
+        The upsert service is a proxy to the back-end services that persist
+        policies and keys.
+      requestBody:
+        $ref: "#/components/requestBodies/UpsertV2"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                default: []
+                items: {}
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/AuthorizationError"
+                  - $ref: "#/components/schemas/KeyAccessError"
+                  - $ref: "#/components/schemas/KeyNotFoundError"
+                  - $ref: "#/components/schemas/PluginFailedError"
+                  - $ref: "#/components/schemas/PolicyError"
+
+components:
+  responses:
+    ### Errors
+    BadRequest:
+      description: 400 Bad request
+      content:
+        application/json:
+          schema:
+            properties:
+              detail:
+                type: string
+              status:
+                type: number
+                default: 400
+              title:
+                type: string
+                default: Bad request
+              type:
+                type: string
+                default: about:blank
+    NotFound:
+      description: 404 Not found
+      content:
+        application/json:
+          schema:
+            type: string
+    ServerError:
+      description: Server error
+
+    ### Methods
+    PublicKey:
+      description: Public key response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PublicKey"
+    Version:
+      description: Respond with current version
+      content:
+        application/json:
           schema:
             type: object
             properties:
               version:
                 type: string
-                example: '1.1.0'
-                description: 'Semver version number'
-  /kas_public_key:
-    post:
-      tags:
-        - all
-      summary: Get a kas's public key
-      description: Just returns the public key for the KAS
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: A public key object
-          schema:
-            $ref: '#/definitions/publicKeyObject'
-  /rewrap:
-    post:
-      tags:
-        - all
-      summary: Perform rewrap
-      description: Takes entity, policy, key access object, and returns an entity wrapped key
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: Rewrap request body
-          required: true
-          description: "A json object containing the following:"
-          schema:
-            $ref: '#/definitions/rewrapRequestObject'
+                example: "0.0.0"
 
-      responses:
-        '200':
-          description: A public key object
+  requestBodies:
+    RewrapV2:
+      description: RewrapV2 request body
+      required: true
+      content:
+        application/json:
           schema:
-            $ref: '#/definitions/entityWrappedKey'
-  /upsert:
-    post:
-      tags:
-        - all
-      summary: Perform policy upsert
-      description: Takes entity, policy, key access object, and syncs the policy with the backend
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: Rewrap request body
-          required: true
-          description: "A json object containing the following:"
+            oneOf:
+              - type: object
+                required:
+                  - clientPayloadSignature
+                  - keyAccess
+                maxProperties: 5
+                properties:
+                  clientPayloadSignature:
+                    $ref: "#/components/schemas/AuthToken"
+                  keyAccess:
+                    $ref: "#/components/schemas/KeyAccess"
+                  policy:
+                    $ref: "#/components/schemas/Policy"
+                  algorithm:
+                    $ref: "#/components/schemas/TDF_Algorithm"
+              - type: object
+                required:
+                  - signedRequestToken
+                maxProperties: 1
+                properties:
+                  signedRequestToken:
+                    $ref: "#/components/schemas/JWT"
+    UpsertV2:
+      description: Upsert request body
+      required: true
+      content:
+        application/json:
           schema:
-            $ref: '#/definitions/rewrapRequestObject'
+            oneOf:
+              - type: object
+                required:
+                  - keyAccess
+                  - policy
+                maxProperties: 4
+                properties:
+                  keyAccess:
+                    $ref: "#/components/schemas/KeyAccess"
+                  policy:
+                    $ref: "#/components/schemas/Policy"
+              - type: object
+                required:
+                  - signedRequestToken
 
-      responses:
-        '200':
-          description: Returns an array of status messages from each of the KAS plugins
-definitions:
-  publicKeyObject:
-    type: object
-    required:
-      - publicKey
-    properties:
-      publicKey:
-        type: string
-        example: 'Some public key string'
-    xml:
-      name: publicKeyObject
-  entityWrappedKey:
-    type: object
-    required:
-      - entityWrappedKey
-    properties:
-      entityWrappedKey:
-        type: string
-        example: '... some entity wrapped key ...'
-    xml:
-      name: entityWrappedKey
-  rewrapRequestObject:
-    type: object
-    required:
-      - entity
-      - keyAccess
-      - policy
-      - authToken
-    properties:
-      entity:
-        type: object
-        example: '{ entity object}'
-      keyAccess:
-        type: object
-        example: '{ Key Access object}'
-      policy:
-        type: object
-        example: '{ Policy Object }'
-      authToken:
-        type: string
-        example: 'An auth JWT'
-    xml:
-      name: entityWrappedKey
-externalDocs:
-  description: 'Find out more about EAS, and TDF3.'
-  url: 'https://tdf3.readme.io/'
+  schemas:
+    Algorithm:
+      title: The algorithm used to encrypt the ciphertext
+      type: string
+      enum:
+        - AES-256-GCM
+    Aliases:
+      title: Array of userIds
+      type: array
+      items:
+        $ref: "#/components/schemas/UserId"
+    AuthToken:
+      $ref: "#/components/schemas/JWT"
+    Ciphertext:
+      title: Encrypted object
+      type: string
+    EncryptedMetadata:
+      title: Metadata in encrypted format
+      type: string
+    Exp:
+      title: JWT expiration date
+      type: number
+    IV:
+      title: Initial vector used to encrypt the ciphertext
+      type: string
+    JWT:
+      title: JSON Web token
+      type: string
+      pattern: ^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$
+    KeyAccess:
+      title: Key access object
+      type: object
+      required:
+        - type
+        - url
+        - protocol
+      properties:
+        encryptedMetadata:
+          $ref: "#/components/schemas/EncryptedMetadata"
+        policySyncOptions:
+          $ref: "#/components/schemas/Policy"
+        policyBinding:
+          $ref: "#/components/schemas/PolicyBinding"
+        protocol:
+          type: string
+          enum:
+            - kas
+        type:
+          type: string
+          enum:
+            - remote
+            - remoteWrapped
+            - wrapped
+        url:
+          type: string
+        wrappedKey:
+          $ref: "#/components/schemas/WrappedKey"
+    Policy:
+      title: Policy
+      type: string
+    PolicyBinding:
+      title: Policy binding
+      type: string
+    PolicySyncOptions:
+      title: Policy sync options
+      type: object
+      properties:
+        url:
+          type: string
+    PublicKey:
+      title: Public key
+      type: string
+      pattern: '-----BEGIN PUBLIC KEY-----(.|\s)*-----END PUBLIC KEY-----(\s)*'
+    UserId:
+      title: User id
+      type: string
+    WrappedKey:
+      title: Wrapped key
+      type: string
+    TDF_Algorithm:
+      description: String to define the type of algorithm the client performing the TDF operations.
+      type: string
+      example: "ec:secp256r1"
+
+    ### Custom Errors
+    AttributePolicyConfigError:
+      title: Attribute policy config error (500)
+      type: string
+    AdjudicatorError:
+      title: Adjudicator error (403)
+      type: string
+    AuthorizationError:
+      title: Authorization error (403)
+      type: string
+    CryptoError:
+      title: Crypto error (403)
+      type: string
+    InvalidBindingError:
+      title: Invalid binding error (403)
+      type: string
+    JWTError:
+      title: JWT error (403)
+      type: string
+    KeyAccessError:
+      title: Key access error (403)
+      type: string
+    KeyNotFoundError:
+      title: Key not found error (403)
+      type: string
+    PluginFailedError:
+      title: Plugin failed error (403)
+      type: string
+    PluginIsBadError:
+      title: Plugin is bad error (403)
+      type: string
+    PolicyError:
+      title: Policy error (403)
+      type: string
+    PrivateKeyInvalidError:
+      title: Private key invalid error (403)
+      type: string
+    RequestError:
+      title: Invalid binding error (403)
+      type: string
+    ValidationError:
+      title: Validation error (400)
+      type: string
+    UnknownAttributePolicyError:
+      title: Unknown attribute policy error (403)
+      type: string
+    RequestTimeoutError:
+      title: Request timeout error (503)
+      type: string
+    PolicyNotFoundError:
+      title: Policy not found error (404)
+      type: string
+    ContractNotFoundError:
+      title: Contract not found error (404)
+      type: string
+    PolicyCreateError:
+      title: Policy create error (403)
+      type: string
