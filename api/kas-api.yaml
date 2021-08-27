@@ -31,28 +31,6 @@ paths:
                   version:
                     type: string
                     example: "0.0.0"
-  /healthz:
-    get:
-      tags:
-        - heartbeat
-      summary: Return current version as semver; useful for liveness checks
-      parameters:
-        - name: probe
-          description: liveness or readiness
-          in: query
-          schema:
-            default: liveness
-            enum:
-              - liveness
-              - readiness
-            type: string
-      responses:
-        "200":
-          description: Success with a detail message
-        "204":
-          description: Success with no detail message
-        "500":
-          description: Unhealthy, per the requested probe
 
   "/kas_public_key":
     get:
@@ -76,10 +54,7 @@ paths:
                 $ref: "#/components/schemas/PublicKey"
         "404":
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/KeyNotFoundError"
+
 
   "/v2/rewrap":
     post:
@@ -114,16 +89,7 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "403":
           description: Forbidden
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/AdjudicatorError"
-                  - $ref: "#/components/schemas/AuthorizationError"
-                  - $ref: "#/components/schemas/KeyAccessError"
-                  - $ref: "#/components/schemas/KeyNotFoundError"
-                  - $ref: "#/components/schemas/PluginFailedError"
-                  - $ref: "#/components/schemas/PolicyError"
+
 
   "/v2/upsert":
     post:
@@ -146,15 +112,6 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "403":
           description: Forbidden
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/AuthorizationError"
-                  - $ref: "#/components/schemas/KeyAccessError"
-                  - $ref: "#/components/schemas/KeyNotFoundError"
-                  - $ref: "#/components/schemas/PluginFailedError"
-                  - $ref: "#/components/schemas/PolicyError"
 
 components:
   responses:
@@ -336,62 +293,3 @@ components:
       description: String to define the type of algorithm the client performing the TDF operations.
       type: string
       example: "ec:secp256r1"
-
-    ### Custom Errors
-    AttributePolicyConfigError:
-      title: Attribute policy config error (500)
-      type: string
-    AdjudicatorError:
-      title: Adjudicator error (403)
-      type: string
-    AuthorizationError:
-      title: Authorization error (403)
-      type: string
-    CryptoError:
-      title: Crypto error (403)
-      type: string
-    InvalidBindingError:
-      title: Invalid binding error (403)
-      type: string
-    JWTError:
-      title: JWT error (403)
-      type: string
-    KeyAccessError:
-      title: Key access error (403)
-      type: string
-    KeyNotFoundError:
-      title: Key not found error (403)
-      type: string
-    PluginFailedError:
-      title: Plugin failed error (403)
-      type: string
-    PluginIsBadError:
-      title: Plugin is bad error (403)
-      type: string
-    PolicyError:
-      title: Policy error (403)
-      type: string
-    PrivateKeyInvalidError:
-      title: Private key invalid error (403)
-      type: string
-    RequestError:
-      title: Invalid binding error (403)
-      type: string
-    ValidationError:
-      title: Validation error (400)
-      type: string
-    UnknownAttributePolicyError:
-      title: Unknown attribute policy error (403)
-      type: string
-    RequestTimeoutError:
-      title: Request timeout error (503)
-      type: string
-    PolicyNotFoundError:
-      title: Policy not found error (404)
-      type: string
-    ContractNotFoundError:
-      title: Contract not found error (404)
-      type: string
-    PolicyCreateError:
-      title: Policy create error (403)
-      type: string
