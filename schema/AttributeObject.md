@@ -32,7 +32,7 @@ to make its policy decisions. Clients writing policies should use best available
   "displayName": "classification",
   "pubKey": "pem encoded public key of the attribute",
   "kasUrl": "https://kas.example.com/",
-  "tdf_spec_version:": "x.y.z"
+  "tdfVersion:": "x.y.z"
 }
 ```
 
