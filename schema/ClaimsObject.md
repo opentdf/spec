@@ -54,6 +54,5 @@ If these requirements are met, the KAS will permit a decrypt of the file.
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
 |`subject_attributes`|Array|An array of [Attribute Objects](AttributeObject.md) that entitle the actor(also known as 'the subject').
-|`subject_attributes.obj`|String|An [Attribute Object](AttributeObject.md)).|Yes|
 |`client_public_signing_key`|String|The TDF Client's public signing key, in a PEM-encoded format. |Yes|
 |`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
