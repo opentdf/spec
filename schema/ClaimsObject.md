@@ -2,26 +2,26 @@
 
 ## What is this?
 
-The Claims Object is a JSON object used to ensure that actors
+The Claims Object is a JSON object used to ensure that subjects
 attempting to decrypt an encrypted file under the Trusted Data Format
-has all permissions required to do so.
+have all permissions required to do so.
 
-The term `Actors` is a generic term that refers to both Person Entities (PE)
-and Non-Person Entities (NPE). Actors are also sometimes referred to as "subjects"
+The term `Subject` is a generic term that refers to both Person Entities (PE)
+and Non-Person Entities (NPE). Subjects are also sometimes referred to as "actors"
 in ABAC systems.
 
 ## How does it work?
 
-When an actor wishes to decrypt a file, the following steps using
+When a subject wishes to decrypt a file, the following steps using
 the Claims Object are made:
 
 1. The TDF client requests an OIDC Bearer Token by first authenticating via the
 OpenID Connect (OIDC) Identity Provider (IdP) with Custom Claims
-support (in this case Keycloak), and if actor authentication succeeds, a
+support (in this case Keycloak), and if subject authentication succeeds, a
 [TDF Claims Object](../schema/ClaimsObject.md) is obtained from
 Attribute Provider and signed by the IdP.  The signed OIDC Bearer Token is
 returned to the client with the Claims Object inside. The Claims
-Object contains [AttributeObjects](AttributeObject.md) the actor has 
+Object contains [AttributeObjects](AttributeObject.md) the subject has
 been entitled with.
 
 2. The client requests a decrypt from the Key Access Server (KAS), 
@@ -53,6 +53,6 @@ If these requirements are met, the KAS will permit a decrypt of the file.
 
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
-|`subject_attributes`|Array|An array of [Attribute Objects](AttributeObject.md) that entitle the actor(also known as 'the subject').
+|`subject_attributes`|Array|An array of [Attribute Objects](AttributeObject.md) that entitle the subject.
 |`client_public_signing_key`|String|The TDF Client's public signing key, in a PEM-encoded format. |Yes|
 |`tdf_spec_version`|String|Semver version number of the TDF spec.|No|

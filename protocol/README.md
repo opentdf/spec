@@ -7,20 +7,20 @@ This document describes the canonical system architecture used to encrypt and de
 The canonical architecture contains four major components.
 
 * *TDF Client* - Initiates and drives the TDF encryption and decryption workflows. Only component with access to the content (ciphertext or plaintext).
-* *OpenID Connect (OIDC) Identity Provider (IdP)* - This system could be any OIDC IdP software.  Virtru has chosen Keycloak as our reference implementation IdP.
-  * From Wikipedia:  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat who use it as the upstream project for their RH-SSO product."  Keycloak is open source Apache License 2.0 code.
-  * Any IdP software should work in this scenario provided it can execute some custom code on successful authentication that can:
+* *OpenID Connect (OIDC) Identity Provider (IdP)* - This system could be any OIDC IdP software.  Virtru has chosen Keycloak as its reference implementation IdP.
+  * From Wikipedia:  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat.  Keycloak is licensed under Apache 2.0."
+  * Any OIDC-compliant IdP software may be used, provided it supports custom claims, and can:
     * Read the TDF Client public key from a custom HTTP header sent with the OIDC authentication request.
     * Construct and send an Attribute Provider web service request, including the public key in the payload.
     * Return the resulting Claims Object in the signed IdP JWT.
   * A list of Certified OpenID Connect applications can be found at:  https://openid.net/developers/certified/
-  * *Virtru Protocol Mapper* is our Keycloak-specific reference implementation of the above functionality.
-* *Attribute Provider* (AP) - A web service that will receive requests from our OIDC IdP custom code (ex: Virtru Protocol Mapper) containing information about authenticated subjet and return our custom OIDC/OAuth claims in response.  It is the responsibility of Attribute Provider to transform incoming 3rd party IdP claims/metadata to a set of outgoing [Attribute Objects](../schema/AttributeObject.md).  It returns a TDF [Claims Object](../schema/ClaimsObject.md).
-* *Key Access Service* (KAS) - Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients can use this rewrapped data key to decrypt TDF ciphertext.  A valid OIDC token containing [TDF Claims](../schema/ClaimsObject.md) must be used as a bearer token when communicating with KAS.  KAS will first verify the authenticity of the bearer token and then the policy claims within that bearer token.  An otherwise valid and trusted OIDC token without valid TDF Claims will be rejected.
+  * *Virtru Protocol Mapper* (PM) is Virtru's Keycloak-specific reference implementation of the above functionality.
+* *Attribute Provider* (AP) - A web service that receives requests which contain information about the authenticated subject from an OIDC IdP with custom claims support (ex: Keycloak with Virtru Protocol Mapper), and returns custom TDF OIDC claims in response. It is the responsibility of Attribute Provider to transform incoming 3rd party IdP claims/metadata to a set of outgoing [Attribute Objects](../schema/AttributeObject.md). It returns a TDF [Claims Object](../schema/ClaimsObject.md).
+* *Key Access Service* (KAS) - Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients can use this rewrapped data key to decrypt TDF ciphertext. A valid OIDC token containing [TDF Claims](../schema/ClaimsObject.md) must be used as a bearer token when communicating with KAS. KAS will first verify the authenticity of the bearer token and then the policy claims within that bearer token. An otherwise valid and trusted OIDC token without valid TDF Claims will be rejected.
 
 ## Workflow
 
-The following sequence diagrams illustrate the workflow taken by the client to encrypt or decrypt TDF ciphertext. The canonical TDF architecture supports two modes of operation: _online mode_ and _offline mode_, which have distinct workflows as shown below.
+The following sequence diagrams illustrate the client workflow for encrypting or decrypting TDF ciphertext. The canonical TDF architecture supports two modes of operation: _online mode_ and _offline mode_, which have distinct workflows as shown below.
 
 _Online mode_ is the default mode, where the [wrapped data key](../schema/KeyAccessObject.md) and [authorization policy](../schema/PolicyObject.md) for TDF ciphertext is committed to KAS in-band as part of the `encrypt` operation. This means that the `encrypt` will succeed if and only if all resources are prepared to facilitate an immediate decrypt.
 
