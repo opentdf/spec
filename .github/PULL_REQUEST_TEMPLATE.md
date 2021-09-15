@@ -5,7 +5,8 @@
 ### Checklist
 
 - [ ] A clear description of the change has been included in this PR.
-- [ ] The changelog has been updated.
+- [ ] Spec Semver version has been updated in the VERSION file
+- [ ] Tagged this branch with new semver version and an annotation describing the change (ex: `git tag -a 4.1.0 -m "Spec version 4.1.0 - did a thing"`)
 - [ ] All schema validation tests have been updated appropriately and are passing.
 - [ ] Version numbers have been updated as per the [Versioning Guidelines](../CONTRIBUTING.md#verison-changes).
 - [ ] Major/minor version changes only: A writeup has been included discussing the motivation and impact of this change.

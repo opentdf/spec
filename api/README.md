@@ -1,3 +1,3 @@
-# API
+# OpenAPI Specs
 
-This directory contains the swagger definitions for TDF service APIs.
+This directory contains example OpenAPI definitions for TDF service APIs.

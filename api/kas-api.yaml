@@ -1,0 +1,295 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Key Access Service
+  termsOfService: https://www.virtru.com/terms-of-service/
+  contact:
+    email: support@virtru.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+externalDocs:
+  description: Developer Hub
+  url: https://developer.virtru.com/
+
+paths:
+  "/":
+    get:
+      summary: Get the current version
+      description: |
+        This endpoint is for OPS so they have something to ping on to verify
+        that the server hasn't died.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "0.0.0"
+
+  "/kas_public_key":
+    get:
+      summary: "Get the public key for KAS"
+      description: |
+        This endpoint provides a public key for the private key that the
+        kas has internally.
+      parameters:
+        - name: algorithm
+          description: algorithm type rsa:<keysize> or ec:<curvename>
+          in: query
+          schema:
+            default: rsa:2048
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicKey"
+        "404":
+          description: Not found
+
+
+  "/v2/rewrap":
+    post:
+      summary: Request a rewrap
+      description: |
+        This endpoint performs the primary service of the KAS; to re-wrap
+        data keys as needed to provide access for entities with a TDF that they
+        would like to open.
+      operationId: tdf3_kas_core.web.rewrap.rewrap_v2
+      requestBody:
+        $ref: "#/components/requestBodies/RewrapV2"
+      # security:
+      #   - virtruOIDCBearerToken: []
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    default: {}
+                  kasWrappedKey:
+                    type: string
+                    nullable: true
+                  entityWrappedKey:
+                    type: string
+                    nullable: true
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          description: Forbidden
+
+
+  "/v2/upsert":
+    post:
+      summary: Request a upsert
+      description: |
+        The upsert service is a proxy to the back-end services that persist
+        policies and keys.
+      requestBody:
+        $ref: "#/components/requestBodies/UpsertV2"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                default: []
+                items: {}
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          description: Forbidden
+
+components:
+  responses:
+    ### Errors
+    BadRequest:
+      description: 400 Bad request
+      content:
+        application/json:
+          schema:
+            properties:
+              detail:
+                type: string
+              status:
+                type: number
+                default: 400
+              title:
+                type: string
+                default: Bad request
+              type:
+                type: string
+                default: about:blank
+    NotFound:
+      description: 404 Not found
+      content:
+        application/json:
+          schema:
+            type: string
+    ServerError:
+      description: Server error
+
+    ### Methods
+    PublicKey:
+      description: Public key response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PublicKey"
+    Version:
+      description: Respond with current version
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              version:
+                type: string
+                example: "0.0.0"
+
+  requestBodies:
+    RewrapV2:
+      description: RewrapV2 request body
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - type: object
+                required:
+                  - clientPayloadSignature
+                  - keyAccess
+                maxProperties: 5
+                properties:
+                  clientPayloadSignature:
+                    $ref: "#/components/schemas/AuthToken"
+                  keyAccess:
+                    $ref: "#/components/schemas/KeyAccess"
+                  policy:
+                    $ref: "#/components/schemas/Policy"
+                  algorithm:
+                    $ref: "#/components/schemas/TDF_Algorithm"
+              - type: object
+                required:
+                  - signedRequestToken
+                maxProperties: 1
+                properties:
+                  signedRequestToken:
+                    $ref: "#/components/schemas/JWT"
+    UpsertV2:
+      description: Upsert request body
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - type: object
+                required:
+                  - keyAccess
+                  - policy
+                maxProperties: 4
+                properties:
+                  keyAccess:
+                    $ref: "#/components/schemas/KeyAccess"
+                  policy:
+                    $ref: "#/components/schemas/Policy"
+              - type: object
+                required:
+                  - signedRequestToken
+
+  schemas:
+    Algorithm:
+      title: The algorithm used to encrypt the ciphertext
+      type: string
+      enum:
+        - AES-256-GCM
+    Aliases:
+      title: Array of userIds
+      type: array
+      items:
+        $ref: "#/components/schemas/UserId"
+    AuthToken:
+      $ref: "#/components/schemas/JWT"
+    Ciphertext:
+      title: Encrypted object
+      type: string
+    EncryptedMetadata:
+      title: Metadata in encrypted format
+      type: string
+    Exp:
+      title: JWT expiration date
+      type: number
+    IV:
+      title: Initial vector used to encrypt the ciphertext
+      type: string
+    JWT:
+      title: JSON Web token
+      type: string
+      pattern: ^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$
+    KeyAccess:
+      title: Key access object
+      type: object
+      required:
+        - type
+        - url
+        - protocol
+      properties:
+        encryptedMetadata:
+          $ref: "#/components/schemas/EncryptedMetadata"
+        policySyncOptions:
+          $ref: "#/components/schemas/Policy"
+        policyBinding:
+          $ref: "#/components/schemas/PolicyBinding"
+        protocol:
+          type: string
+          enum:
+            - kas
+        type:
+          type: string
+          enum:
+            - remote
+            - remoteWrapped
+            - wrapped
+        url:
+          type: string
+        wrappedKey:
+          $ref: "#/components/schemas/WrappedKey"
+    Policy:
+      title: Policy
+      type: string
+    PolicyBinding:
+      title: Policy binding
+      type: string
+    PolicySyncOptions:
+      title: Policy sync options
+      type: object
+      properties:
+        url:
+          type: string
+    PublicKey:
+      title: Public key
+      type: string
+      pattern: '-----BEGIN PUBLIC KEY-----(.|\s)*-----END PUBLIC KEY-----(\s)*'
+    UserId:
+      title: User id
+      type: string
+    WrappedKey:
+      title: Wrapped key
+      type: string
+    TDF_Algorithm:
+      description: String to define the type of algorithm the client performing the TDF operations.
+      type: string
+      example: "ec:secp256r1"
