@@ -24,10 +24,17 @@ The spec version is this repo's most recent semver Git tag - this means that if 
 
 Any changes that affect _project_ version must update both `git tag` and the [VERSION](VERSION) file.
 
-Rather than use a changelog, we ask that you use annotated `git tags` when bumping the spec Semver, and use the annotation message to describe the change.
-> Example: `git tag -a 4.1.0 -m "Spec version 4.1.0 - twiddled a doohickey"`)
+#### Tracking Versions
+Rather than use a CHANGELOG file, we ask that you use annotated `git tags` when bumping the spec Semver, and use the annotation message to describe the change.
+> Example: `git tag -s 4.1.0 -m "Spec version 4.1.0 - twiddled a doohickey"`)
+
+Please use the raw semver when tagging - no `v4.1.0`, just `4.1.0`
 
 A list of `git tag` versions and their annotations can be generated at will via `git tag -n`
+
+To create a CHANGELOG file, run the following command
+
+`git tag -n --sort=-v:refname > CHANGELOG`
 
 ## Asking Questions & Submitting Feeback
 
