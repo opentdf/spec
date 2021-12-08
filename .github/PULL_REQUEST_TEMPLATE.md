@@ -12,6 +12,6 @@
 - [ ] MAJOR/MINOR VERSION CHANGES ONLY: A writeup has been included discussing the motivation and impact of this change.
 - [ ] MAJOR/MINOR VERSION CHANGES ONLY: The minimum wait time has elapsed.
 - [ ] DRAFT MERGE ONLY: Draft Semver has been updated in the VERSION file (optional)
-- [ ] DRAFT MERGE ONLY: Tagged this branch with new semver version and an annotation describing the change (ex: `git tag -a 4.1.0 -m "Spec version 4.1.0 - did a thing"`)
+- [ ] DRAFT MERGE ONLY: Tagged this branch with new semver version and an annotation describing the change (ex: `git tag -s 4.1.0 -m "Spec version 4.1.0 - did a thing"`)
 - [ ] DRAFT MERGE ONLY: Version numbers have been updated as per the [Versioning Guidelines](../CONTRIBUTING.md#version-changes).
 - [ ] This change otherwise adheres to the project [Contribution Guidelines](../CONTRIBUTING.md).
