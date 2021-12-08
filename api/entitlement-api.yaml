@@ -1,0 +1,143 @@
+openapi: 3.0.2
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  /v1/claimsobject:
+    post:
+      summary: Request ClaimsObject
+      operationId: read_entity_attribute_relationship_v1_entity__entityId__claimsobject_post
+      requestBody:
+        $ref: "#/components/requestBodies/ClaimsRequest"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '404':
+          description: Entity Not Found Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2AuthorizationCodeBearer: []
+components:
+  schemas:
+    AttributeObject:
+      title: AttributeObject
+      required:
+        - attribute
+      type: object
+      properties:
+        attribute:
+          title: Attribute
+          maxLength: 2083
+          minLength: 1
+          type: string
+          format: uri
+      example:
+        attribute: https://eas.local/attr/ClassificationUS/value/Unclassified
+    ClaimsObject:
+      title: ClaimsObject
+      required:
+        - subjects
+        - client_public_signing_key
+      type: object
+      properties:
+        entities:
+          title: Entities (min. 1)
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitlementObject'
+        client_public_signing_key:
+          title: Requesting Entity Public Signing Key
+          type: string
+        tdf_spec_version:
+          title: Version of the TDF spec this object maps to (optional)
+          type: string
+    EntitlementObject:
+      title: EntitlementObject
+      required:
+        - entity_identifier
+        - entity_attributes
+      type: object
+      properties:
+        entity_identifier:
+          title: Entity Identifier
+          type: string
+        entity_attributes:
+          title: Entity Attributes
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeObject'
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+  requestBodies:
+    ClaimsRequest:
+      description: Claims request body
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - type: object
+                required:
+                  - primary_subject_id
+                  - secondary_entity_ids
+                  - client_public_signing_key
+                maxProperties: 3
+                properties:
+                  primary_subject_id:
+                    title: Primary entity ID entitlements are being fetched for (e.g. `sub` in JWT token)
+                    type: string
+                  secondary_entity_ids:
+                    title: Secondary Entity Ids
+                    description: Array of additional entities that EntitlementObjects should be fetched for.
+                    type: array
+                    items:
+                      type: string
+                  client_public_signing_key:
+                    title: Requesting Client Public Signing Key
+                    type: string
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: ''
