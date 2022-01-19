@@ -6,7 +6,8 @@ This document describes the canonical system architecture used to encrypt and de
 
 The canonical architecture contains four major components.
 
-* *TDF Client* - Initiates and drives the TDF encryption and decryption workflows. Only component with access to the content (ciphertext or plaintext).
+* *TDF Client* - Initiates and drives the TDF encryption and decryption workflows. Only component with access to the content (ciphertext or plaintext). 
+  * May be entitled as Non-Person Entity acting on behalf of itself, OR on behalf of a Person Entity.
 * *OpenID Connect (OIDC) Identity Provider (IdP)* - This system could be any OIDC IdP software.  Virtru has chosen Keycloak as its reference implementation IdP.
   * From Wikipedia:  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat.  Keycloak is licensed under Apache 2.0."
   * Any OIDC-compliant IdP software may be used, provided it supports custom claims, and can:
@@ -15,8 +16,8 @@ The canonical architecture contains four major components.
     * Return the resulting Claims Object in the signed IdP JWT.
   * A list of Certified OpenID Connect applications can be found at:  https://openid.net/developers/certified/
   * *Virtru Protocol Mapper* (PM) is Virtru's Keycloak-specific reference implementation of the above functionality.
-* *Attribute Provider* (AP) - A web service that receives requests which contain information about the authenticated subject from an OIDC IdP with custom claims support (ex: Keycloak with Virtru Protocol Mapper), and returns custom TDF OIDC claims in response. It is the responsibility of Attribute Provider to transform incoming 3rd party IdP claims/metadata to a set of outgoing [Attribute Objects](../schema/AttributeObject.md). It returns a TDF [Claims Object](../schema/ClaimsObject.md).
-* *Key Access Service* (KAS) - Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients can use this rewrapped data key to decrypt TDF ciphertext. A valid OIDC token containing [TDF Claims](../schema/ClaimsObject.md) must be used as a bearer token when communicating with KAS. KAS will first verify the authenticity of the bearer token and then the policy claims within that bearer token. An otherwise valid and trusted OIDC token without valid TDF Claims will be rejected.
+* *Attribute Provider* (AP) - A web service that receives requests which contain information about the authenticated entities from an OIDC IdP with custom claims support (ex: Keycloak with Virtru Protocol Mapper), and returns custom TDF OIDC claims in response. It is the responsibility of Attribute Provider to transform incoming 3rd party IdP claims/metadata to a set of outgoing [Attribute Objects](../schema/AttributeObject.md). It returns a TDF [Claims Object](../schema/ClaimsObject.md).
+* *Key Access Service* (KAS) - Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients (on behalf of themselves, or other entities) can use this rewrapped data key to decrypt TDF ciphertext. A valid OIDC token containing [TDF Claims](../schema/ClaimsObject.md) must be used as a bearer token when communicating with KAS. KAS will first verify the authenticity of the bearer token and then the policy claims within that bearer token. An otherwise valid and trusted OIDC token without valid TDF Claims will be rejected.
 
 ## Workflow
 
