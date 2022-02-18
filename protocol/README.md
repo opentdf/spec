@@ -26,15 +26,15 @@ OIDC Auth with a PoP scheme is used for **all** TDF Client interactions with bac
 1. The TDF Client requests an OIDC Bearer Token (either on behalf of itself, or another entity)
 by first authenticating via the OpenID Connect (OIDC) Identity Provider (IdP) with Custom Claims
 support (in this example, Keycloak). As part of this authentication process, the TDF Client **must** convey its signing public key to the IdP.
-  * If the TDF Client public signing key is rotated or changed, a new OIDC Bearer Token must be obtained from the IdP, containing the TDF Client's new public signing key.
-  * It should be assumed that the TDF Client's signing keypair is ephemeral, and that the TDF Client's _private_ signing key is known only to the TDF Client.
-  * Measures should be taken to protect all TDF Client private keys, but the mechanisms for doing so are outside the scope of this spec.
+    * If the TDF Client public signing key is rotated or changed, a new OIDC Bearer Token must be obtained from the IdP, containing the TDF Client's new public signing key.
+    * It should be assumed that the TDF Client's signing keypair is ephemeral, and that the TDF Client's _private_ signing key is known only to the TDF Client.
+    * Measures should be taken to protect all TDF Client private keys, but the mechanisms for doing so are outside the scope of this spec.
 
 1. If entity authentication succeeds, a
 [TDF Claims Object](../schema/ClaimsObject.md) is obtained from
 Attribute Provider and signed by the IdP.  The signing public key previously conveyed by the TDF Client is embedded within the [TDF Claims Object](../schema/ClaimsObject.md).
 The signed OIDC Bearer Token is then returned to the TDF Client, containing the complete [TDF Claims Object](../schema/ClaimsObject.md).
-  * The [TDF Claims Object](../schema/ClaimsObject.md)t contains one or more [Entitlement Objects](EntitlementObject.md) entitling all entities
+    * The [TDF Claims Object](../schema/ClaimsObject.md) contains one or more [Entitlement Objects](EntitlementObject.md) entitling all entities
 involved in the authentication request.
 
 1. The TDF Client must convey the IdP-signed OIDC Bearer Token to backend services with all requests, and in addition, the TDF Client **must** sign all requests to backend services with its _private signing key_
