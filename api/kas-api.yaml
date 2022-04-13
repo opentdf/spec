@@ -170,11 +170,11 @@ components:
             oneOf:
               - type: object
                 required:
-                  - clientPayloadSignature
+                  - signedRequestToken
                   - keyAccess
                 maxProperties: 5
                 properties:
-                  clientPayloadSignature:
+                  signedRequestToken:
                     $ref: "#/components/schemas/AuthToken"
                   keyAccess:
                     $ref: "#/components/schemas/KeyAccess"
