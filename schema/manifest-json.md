@@ -8,7 +8,7 @@ A TDF's manifest holds this information, and is used by a client in its request 
 ## At a Glance
 From the top level, the TDF manifest contains only two properties: `payload` and `encryptionInformation`. Each of which are objects, and are decomposed in their own sections below.
 
-If you'd like to see a real manifest created using the TDF3 client, check it out [here](#authentic-manifest).
+If you'd like to see a real manifest created using the TDF client, check it out [here](#authentic-manifest).
 
 ## payload
 The payload contains metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
@@ -114,7 +114,7 @@ Object containing integrity information about a segment of the payload, includin
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|
 
 ## Authentic Manifest
-Here is the JSON from an actual `.tdf` file, created by the TDF3 client.
+Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
 ```javascript
 {
