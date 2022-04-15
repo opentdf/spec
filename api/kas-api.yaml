@@ -4,14 +4,14 @@ info:
   title: Key Access Service
   termsOfService: https://www.virtru.com/terms-of-service/
   contact:
-    email: support@virtru.com
+    email: support@OpenTDF.io
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 
 externalDocs:
   description: Developer Hub
-  url: https://developer.virtru.com/
+  url: https://OpenTDF.io
 
 paths:
   "/":
@@ -66,8 +66,6 @@ paths:
       operationId: tdf3_kas_core.web.rewrap.rewrap_v2
       requestBody:
         $ref: "#/components/requestBodies/RewrapV2"
-      # security:
-      #   - virtruOIDCBearerToken: []
       responses:
         "200":
           description: Ok

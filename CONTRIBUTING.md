@@ -6,7 +6,7 @@ Contributions to the TDF specification are welcome! Please be sure to follow the
 
 1. Pull Requests(PRs) proposing changes should be made in branches prefixed with `draft-<change>`
 2. If the changes proposed to the spec would result in a _Major_ or _Minor_ semver version bump (see [versioning guidelines](#version-changes)) to the spec, the spec change MUST LINK TO A REFERENCE IMPLEMENTATION OF THE CHANGES in a publicly-visible Git repository.
-   - It is suggested that the PR include a link to one or more reference implementation PRs in [the openTDF project's reference implementation](https://github.com/opentdf)
+   - It is suggested that the PR include a link to one or more reference implementation PRs in [the OpenTDF project's reference implementation](https://github.com/opentdf)
 
 Proposed changes must specify what kind of semver change they would cause - (see [guidelines](#version-changes)).
 
