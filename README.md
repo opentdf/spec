@@ -44,7 +44,7 @@ Multiple KAS servers, each hosted by a different organization, can jointly contr
 A TDF file at rest can be in one of the two forms: 
 
 * As a Zip file with extension of `.tdf`. For example, if you are trying to protect a file named `demo.jpeg`, the file will be stored as `demo.jpeg.tdf` after encryption.
-* As a HTML file with extension of `.html`. For example, if you are trying to protect a file named `demo.jpeg`, the file will be stored as `demo.jpeg.html` after encryption. An example HTML file is (here)[https://github.com/virtru/tdf3-spec/blob/master/schema/HtmlProtocolExample.html]. 
+* As a HTML file with extension of `.html`. For example, if you are trying to protect a file named `demo.jpeg`, the file will be stored as `demo.jpeg.html` after encryption. An example HTML file is (here)[https://github.com/opentdf/spec/blob/master/schema/HtmlProtocolExample.html]. 
 
 ### Components of a TDF file
 Irrespective of whether the TDF file is composed as a Zip or HTML, there are always two components in a TDF file:
