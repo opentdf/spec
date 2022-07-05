@@ -1,6 +1,8 @@
 # Trusted Data Format Specification
 
-Trusted Data Format (TDF) is an Open, Interoperable, JSON encoded data format for implementing Data Centric Security for objects (such as files or emails). This repository specifies the protocols and schemas required for TDF operation. Versioning of this spec follows the [Semver standard](https://semver.org/). The latest major version of the TDF spec and corresponding protocol is TDF 3.x.x.
+Trusted Data Format (TDF) is an Open, Interoperable data format for implementing Data Centric Security for objects (such as files or emails). This repository specifies the protocols and schemas required for TDF operation. Versioning of this spec follows the [Semver standard](https://semver.org/). The latest major version of the TDF spec and corresponding protocol is TDF 4.x.x.
+
+OpenTDF derives its modern JSON-encoded format from the [TDF XML Specification](https://www.dni.gov/index.php/who-we-are/organizations/ic-cio/ic-cio-related-menus/ic-cio-related-links/ic-technical-specifications/trusted-data-format). If you are interested in interoperability between OpenTDF and Base TDF XML or community-specific implementations, please [contact us](mailto:support@opentdf.io). 
 
 ## Documentation
 * [Schema](schema/) - Schema definitions for common TDF data objects.
