@@ -42,6 +42,7 @@ const example = {
   },
   "assertions": [
     {
+      "id": "1234-12312-123123-12312",
       "scope": "payload",
       "appliesToState": "encrypted",
       "statement": "VGhpcyBpcyBhIHRlc3Qu",
