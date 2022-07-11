@@ -1,4 +1,4 @@
-{
+const example = {
   "payload": {
     "type": "reference",
     "url": "0.payload",
@@ -39,5 +39,15 @@
       "encryptedSegmentSizeDefault": 1000028
     },
     "policy": "eyJ1dWlkIjoiNjEzMzM0NjYtNGYwYS00YTEyLTk1ZmItYjZkOGJkMGI4YjI2IiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
+    "assertions": [
+      {
+        "scope": "payload",
+        "appliesToState": "encrypted",
+        "statement": "VGhpcyBpcyBhIHRlc3Qu",
+        "encryptionInformation": {
+          /* isEncrypted, Key access, method/alg/iv,   */
+        }
+      }
+    ]
   }
 }
