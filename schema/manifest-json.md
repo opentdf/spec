@@ -157,6 +157,16 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
       ],
       "encryptedSegmentSizeDefault": 1000028
     },
+    "assertions": [
+      {
+        "scope": "payload",
+        "appliesToState": "encrypted",
+        "statement": "VGhpcyBpcyBhIHRlc3Qu",
+        "encryptionInformation": {
+          /* isEncrypted, Key access, method/alg/iv,   */
+        }
+      }
+    ],    
     "policy": "eyJ1dWlkIjoiNjEzMzM0NjYtNGYwYS00YTEyLTk1ZmItYjZkOGJkMGI4YjI2IiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
   }
 }
