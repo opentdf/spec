@@ -74,7 +74,6 @@ If these requirements are met, the KAS will permit a decrypt of the file.
       ]
     }
   ],
-  "client_public_signing_key":"-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy18Efi6+3vSELpbK58gC\nA9vJxZtoRHR604yi707h6nzTsTSNUg5mNzt/nWswWzloIWCgA7EPNpJy9lYn4h1Z\n6LhxEgf0wFcaux0/C19dC6WRPd6 ... XzNO4J38CoFz/\nwwIDAQAB\n-----END PUBLIC KEY-----",
   "tdf_spec_version:":"x.y.z"
 }
 ```
@@ -82,5 +81,5 @@ If these requirements are met, the KAS will permit a decrypt of the file.
 | Parameter                   | Type   | Description                                                                                                                              | Required?          |
 |-----------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
 | `entitlements`              | Array  | An array of [Entitlement Objects](EntitlementObject.md) for each entity (PE or NPE) involved in the authentication request.              | Yes                |
-| `client_public_signing_key` | String | The TDF Client's public signing key, in a PEM-encoded format.                                                                            | Yes                |
+| `client_public_signing_key` | String | [DEPRECATED] The TDF Client's public signing key, in a PEM-encoded format. Replaced by the `pop_key` custom claim.                       | No                 |
 | `tdf_spec_version`          | String | Semver version number of the TDF spec.                                                                                                   | No                 |
