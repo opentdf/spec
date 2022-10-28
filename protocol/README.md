@@ -1,4 +1,4 @@
-# Protocol
+`# Protocol
 
 This document describes the canonical system architecture used to encrypt and decrypt TDF ciphertext.
 
@@ -33,20 +33,17 @@ support (in this example, Keycloak). As part of this authentication process, the
 1. If entity authentication succeeds, a
 [TDF Claims Object](../schema/ClaimsObject.md) is obtained from
 Entitlement PDP.
-The signing public key previously conveyed by the TDF Client is embedded within the [JWT's `pop_key` claim](../schema/ProofOfPosession.md).
+A hash of the signing public key is embedded within the [JWT's `cnf.jkt` claim](../schema/ProofOfPosession.md).
 The signed OIDC Bearer Token is then returned to the TDF Client, containing the complete [TDF Claims Object](../schema/ClaimsObject.md).
     * The [TDF Claims Object](../schema/ClaimsObject.md) contains one or more [Entitlement Objects](EntitlementObject.md) entitling all entities
 involved in the authentication request.
 
-1. The TDF Client must convey the IdP-signed OIDC Bearer Token as a JWT to backend services with all requests, and in addition, the TDF Client **must** sign all requests to backend services with its _private signing key_
-    * The request signature should be a signature of the entire request body, sans the request signature itself.
-    * For HTTPS, it should be considered best practice to insert the request signature itself in the request body rather than send it as a custom header.
-
+1. The TDF Client must convey the IdP-signed OIDC Bearer Token as a JWT to backend services with all requests, and a DPoP proof with its _private signing key_
+    * The DPoP proof claims must include a `body_hash` claim, which is a hash of the request body.
 1. Backend services are required to:
     * Validate AuthN:
       * Examine the validity of the OIDC Bearer Token signature and other assertions by contacting the issuing IdP.
-      * Validate that the [`pop_key`](../schema/ProofOfPosession.md) contains a TDF Client public signing key.
-      * Validate that the request signature in the TDF Client's payload **can be validated** with the TDF Client's public signing key embedded in the OIDC Bearer Token associated with the signed request
+      * Validate that the [`DPoP`](../schema/ProofOfPosession.md) header
     * Validate AuthZ (if necessary)
       * Determine if all the entities entitled in the presented bearer token have all the required Attributes for a given operation, as per service requirements.
 

@@ -81,5 +81,5 @@ If these requirements are met, the KAS will permit a decrypt of the file.
 | Parameter                   | Type   | Description                                                                                                                              | Required?          |
 |-----------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
 | `entitlements`              | Array  | An array of [Entitlement Objects](EntitlementObject.md) for each entity (PE or NPE) involved in the authentication request.              | Yes                |
-| `client_public_signing_key` | String | [DEPRECATED] The TDF Client's public signing key, in a PEM-encoded format. Replaced by the `pop_key` custom claim.                       | No                 |
+| `client_public_signing_key` | String | [DEPRECATED] The TDF Client's public signing key, in a PEM-encoded format. Replaced by cnf claim and the DPoP protocol.                  | No                 |
 | `tdf_spec_version`          | String | Semver version number of the TDF spec.                                                                                                   | No                 |

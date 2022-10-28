@@ -1,14 +1,16 @@
-# Proof of Possession Key
+# Proof of Possession
+
+In order to allow extended offline flows, and to deal with potential leaks of bearer tokens,
+we enforce the use of proof of token possession, as currently described in 
+[this IETF draft](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop).
 
 ## What is this?
 
-The Proof of Posession key is the public half of a session-level public/private
-key pair that allows the client application to sign each exchange with KAS or other backend services.
-
-It is stored in the JWT as the custom claim, `pop_key`,
-in JWK format.*
-
-> Note: This was previously included within th [`tdf_claims`](./ClaimsObject.md) as `client_public_signing_key` in PEM format
+The proof of possession works by having the client generate a key pair, which it
+then associates with an access_token via a code or token exchange. This produces
+an access token with an explicit binding (via the `cnf` claim) to the public
+key of the value. Then, the client can issue DPoP proofs that will be allow servers
+to trust that the client has possession of the private key.
 
 ## How does it work?
 
@@ -19,13 +21,10 @@ passing along a signing key with the request.
 In some scenarios, a key may be added using an exchange or refresh.
 
 2. The client requests a decrypt from the Key Access Server (KAS), 
-presenting its annotated JWT with PoP key and entitlement claims.
+presenting its annotated JWT with PoP proof and entitlement claims in the access token.
 
 ## Example
 
 ```javascript
-{
-  "pop_key":"-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy18Efi6+3vSELpbK58gC\nA9vJxZtoRHR604yi707h6nzTsTSNUg5mNzt/nWswWzloIWCgA7EPNpJy9lYn4h1Z\n6LhxEgf0wFcaux0/C19dC6WRPd6 ... XzNO4J38CoFz/\nwwIDAQAB\n-----END PUBLIC KEY-----",
-  "tdf_spec_version:":"x.y.z"
-}
+TK
 ```
