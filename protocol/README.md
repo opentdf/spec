@@ -8,26 +8,25 @@ The canonical architecture contains four major components.
 
 * *TDF Client* - Initiates and drives the TDF encryption and decryption workflows. Only component with access to the content (ciphertext or plaintext). 
   * May be entitled as Non-Person Entity acting on behalf of itself, OR on behalf of a Person Entity.
-* *OpenID Connect (OIDC) Identity Provider (IdP)* - This system could be any OIDC IdP software.  OpenTDF has chosen Keycloak as its reference implementation IdP.
-  * From Wikipedia:  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat.  Keycloak is licensed under Apache 2.0."
-  * Any OIDC-compliant IdP software may be used, provided it supports custom claims, and can:
-    * Read the TDF Client public key from a custom HTTP header sent with the OIDC authentication request.
-    * Construct and send an Attribute Provider web service request, including sufficient information to identify the client and its capabilities.
-    * Include the client's `pop_key` and `tdf_claims` in the signed IdP JWT.
-  * A list of Certified OpenID Connect applications can be found at:  https://openid.net/developers/certified/
-  * *OpenTDF Protocol Mapper* (PM) is OpenTDF's Keycloak-specific reference implementation of the above functionality.
+* *OpenID Connect (OIDC) Identity Provider (IdP)* - This system could be any OIDC IdP software.Any OIDC-compliant IdP software may be used, provided it supports custom claims and *Demonstration of Proof of Possession (DPoP)*.
+  * Receive a TDF Client public key from a custom HTTP header sent with the OIDC authentication request, or via a side channel or additional request.
+  * Construct and send an Attribute Provider web service request, including sufficient information to identify the client and its capabilities.
+  * In the signed access JWT, include the evidence of the client's public key in the `cnf` claim, and the entitlements in the `tdf_claims`.
+  * A list of Certified OpenID Connect applications can be found at:  https://openid.net/developers/certified/  OpenTDF has chosen Keycloak as its reference implementation IdP.
+    * From Wikipedia:  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat.  Keycloak is licensed under Apache 2.0."
+    * *OpenTDF Protocol Mapper* (PM) is OpenTDF's Keycloak-specific reference implementation of the above functionality.
 * *Entitlement Policy Decision Point (PDP)* (AP) - A web service that receives requests which contain information about the authenticated entities from an OIDC IdP with custom claims support (ex: Keycloak with OpenTDF Protocol Mapper), and returns custom TDF OIDC claims in response. It is the responsibility of Entitlement PDP to transform incoming 3rd party IdP claims/metadata to a set of outgoing [Attribute Objects](../schema/AttributeObject.md). It returns a TDF [Claims Object](../schema/ClaimsObject.md).
-* *Key Access Service* (KAS) - Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients (on behalf of themselves, or other entities) can use this rewrapped data key to decrypt TDF ciphertext. A valid OIDC token containing [`tdf_claims`](../schema/ClaimsObject.md) and [`pop_key` (Proof of Posession)](../schema/ProofOfPossession.md) must be used as a bearer token when communicating with KAS. KAS will verify the authenticity of the bearer token, the request signature, and then the policy claims within that bearer token. An otherwise valid and trusted OIDC token without valid TDF Claims will be rejected.
+* *Key Access Service* (KAS) - Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients (on behalf of themselves, or other entities) can use this rewrapped data key to decrypt TDF ciphertext. A valid OIDC token containing [`tdf_claims`](../schema/ClaimsObject.md) and [`dpop` (Demonstration Proof of Posession)](../schema/ProofOfPossession.md) must be used as a bearer token when communicating with KAS. KAS will verify the authenticity of the bearer token, the request signature, and then the policy claims within that bearer token. An otherwise valid and trusted OIDC token without valid TDF Claims will be rejected.
 
 ## General Authentication Protocol
 
-OIDC Auth with a PoP (Proof of Posession) scheme is used for **all** TDF Client interactions with backend TDF services:
+OIDC Auth with a DPoP (Demonstration Proof of Posession) scheme is used for **all** TDF Client interactions with backend TDF services:
 
 1. The TDF Client requests an OIDC Bearer Token (either on behalf of itself, or another entity)
 by first authenticating via the OpenID Connect (OIDC) Identity Provider (IdP) with Custom Claims
-support (in this example, Keycloak). As part of this authentication process, the TDF Client **must** convey its signing public key to the IdP.
-    * If the TDF Client public signing key is rotated or changed, a new OIDC Bearer Token must be obtained from the IdP, containing the TDF Client's new public signing key.
-    * It should be assumed that the TDF Client's signing keypair is ephemeral, and that the TDF Client's _private_ signing key is known only to the TDF Client.
+support (in this example, Keycloak). As part of this authentication process, the TDF Client **must** convey a DPoP key to the IdP.
+    * To change (or rotate) its DPoP key, a client must obtain a new access token from the IdP iwth the new public signing key.
+    * The TDF Client's signing keypair is ephemeral and the _private_ signing key must be known only to the TDF Client.
     * Measures should be taken to protect all TDF Client private keys, but the mechanisms for doing so are outside the scope of this spec.
 
 1. If entity authentication succeeds, a
