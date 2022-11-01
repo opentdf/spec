@@ -28,3 +28,7 @@ presenting its annotated JWT with PoP proof and entitlement claims in the access
 ```javascript
 TK
 ```
+
+## DEPRECATED: Validating with the `client_public_signing_key`
+
+Previously (<4.2) we stored the entire public key within the `tdf_claims` as the client_public_signing_key and used that to sign the request body. IdPs *may* include both the `cnf` hash of the public key and the `client_public_signing_key` subclaim for compatibility with older KAS services.
