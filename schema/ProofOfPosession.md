@@ -6,7 +6,7 @@ we enforce the use of proof of token possession, as currently described in
 
 ## What is this?
 
-The proof of possession works by having the client generate a key pair, which it
+The proof of possession works by having the client generate an ephemeral key pair, which it
 then associates with an access_token via a code or token exchange. This produces
 an access token with an explicit binding (via the `cnf` claim) to the public
 key of the value. Then, the client can issue DPoP proofs that will be allow servers

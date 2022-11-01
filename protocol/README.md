@@ -15,8 +15,8 @@ The canonical architecture contains four major components.
   * A list of Certified OpenID Connect applications can be found at:  https://openid.net/developers/certified/  OpenTDF has chosen Keycloak as its reference implementation IdP.
     * From Wikipedia:  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat.  Keycloak is licensed under Apache 2.0."
     * *OpenTDF Protocol Mapper* (PM) is OpenTDF's Keycloak-specific reference implementation of the above functionality.
-* *Entitlement Policy Decision Point (PDP)* (AP) - A web service that receives requests which contain information about the authenticated entities from an OIDC IdP with custom claims support (ex: Keycloak with OpenTDF Protocol Mapper), and returns custom TDF OIDC claims in response. It is the responsibility of Entitlement PDP to transform incoming 3rd party IdP claims/metadata to a set of outgoing [Attribute Objects](../schema/AttributeObject.md). It returns a TDF [Claims Object](../schema/ClaimsObject.md).
-* *Key Access Service* (KAS) - Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients (on behalf of themselves, or other entities) can use this rewrapped data key to decrypt TDF ciphertext. A valid OIDC token containing [`tdf_claims`](../schema/ClaimsObject.md) and [`dpop` (Demonstration Proof of Posession)](../schema/ProofOfPossession.md) must be used as a bearer token when communicating with KAS. KAS will verify the authenticity of the bearer token, the request signature, and then the policy claims within that bearer token. An otherwise valid and trusted OIDC token without valid TDF Claims will be rejected.
+* *Entitlement Policy Decision Point (PDP)* (AP) - A web service that receives requests from entity authorities (e.g. IdPs) which contain information about authenticated entities, and returns a TDF [Claims Object](../schema/ClaimsObject.md) in response, which contains one [Attribute Object](../schema/AttributeObject.md) per authenticated entity. It is the responsibility of the Entitlement PDP to transform IdP AuthN results/metadata into AuthZ entitlements for each entity involved in the AuthN process.
+* *Key Access Service* (KAS) - A reference ABAC Access Policy Enforcement Point (PEP), specifically for enforcing key release. Responsible for authorizing and granting TDF Clients access to rewrapped data key material. If authorized, TDF Clients (on behalf of themselves, or other entities) can use this rewrapped data key to decrypt TDF ciphertext. A valid OIDC token containing [`tdf_claims`](../schema/ClaimsObject.md) and [`dpop` (Demonstration Proof of Posession)](../schema/ProofOfPossession.md) must be used as a bearer token when communicating with KAS. KAS will verify the authenticity of the bearer token, the request signature, and then the policy claims within that bearer token. An otherwise valid and trusted OIDC token without a valid TDF [Claims Object](../schema/ClaimsObject.md) will be rejected by KAS.
 
 ## General Authentication Protocol
 
@@ -25,7 +25,7 @@ OIDC Auth with a DPoP (Demonstration Proof of Posession) scheme is used for **al
 1. The TDF Client requests an OIDC Bearer Token (either on behalf of itself, or another entity)
 by first authenticating via the OpenID Connect (OIDC) Identity Provider (IdP) with Custom Claims
 support (in this example, Keycloak). As part of this authentication process, the TDF Client **must** convey a DPoP key to the IdP.
-    * To change (or rotate) its DPoP key, a client must obtain a new access token from the IdP iwth the new public signing key.
+    * To change (or rotate) its DPoP key, a client must obtain a new OIDC access token from the IdP containing its own new public signing key.
     * The TDF Client's signing keypair is ephemeral and the _private_ signing key must be known only to the TDF Client.
     * Measures should be taken to protect all TDF Client private keys, but the mechanisms for doing so are outside the scope of this spec.
 
@@ -37,14 +37,15 @@ The signed OIDC Bearer Token is then returned to the TDF Client, containing the 
     * The [TDF Claims Object](../schema/ClaimsObject.md) contains one or more [Entitlement Objects](EntitlementObject.md) entitling all entities
 involved in the authentication request.
 
-1. The TDF Client must convey the IdP-signed OIDC Bearer Token as a JWT to backend services with all requests, and a DPoP proof with its _private signing key_
+1. The TDF Client must convey the IdP-signed OIDC Bearer Token as a JWT to backend services with all requests, and a DPoP proof generated from its _private signing key_
     * The DPoP proof claims must include a `body_hash` claim, which is a hash of the request body.
-1. Backend services are required to:
+1. All backend services are required to _minimally_:
     * Validate AuthN:
       * Examine the validity of the OIDC Bearer Token signature and other assertions by contacting the issuing IdP.
       * Validate that the [`DPoP`](../schema/ProofOfPosession.md) header
-    * Validate AuthZ (if necessary)
-      * Determine if all the entities entitled in the presented bearer token have all the required Attributes for a given operation, as per service requirements.
+1. Backend services acting as Access PEPs must _additionally_ validate AuthZ:
+    * Validate that the access token contains a valid [TDF Claims Object](../schema/ClaimsObject.md) under the `tdf_claims` key,
+    * Validate AuthZ by presenting the attributes for all authenticated entities to an Access PDP.
 
 If these requirements are met, a TDF Client may be considered authenticated and authorized.
 
