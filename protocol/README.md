@@ -82,7 +82,5 @@ information must be included).
 ![IdP Brokered Authentication](../diagrams/OIDC_brokered_auth.png)
 
 [Keycloak]: https://www.keycloak.org/
-[^client_public_signing_key]:
-  Clients in version [4..4.2) may include the signing key in the `tdf_claims` object in the `client_public_signing_key` field, instead of the `cnf`.
-[^why-keycloak]:
-  [From Wikipedia](https://en.wikipedia.org/wiki/Keycloak):  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat.  Keycloak is licensed under Apache 2.0."
+[^client_public_signing_key]: Clients in version [4..4.2) may include the signing key in the `tdf_claims` object in the `client_public_signing_key` field, instead of the `cnf`.
+[^why-keycloak]: [From Wikipedia](https://en.wikipedia.org/wiki/Keycloak):  "Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. As of March 2018 this JBoss community project is under the stewardship of Red Hat.  Keycloak is licensed under Apache 2.0."
