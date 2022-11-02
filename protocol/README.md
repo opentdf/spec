@@ -41,7 +41,7 @@ involved in the authentication request.
 1. All backend services are required to _minimally_:
     * Validate AuthN:
       * Examine the validity of the OIDC Bearer Token signature and other assertions by contacting the issuing IdP.
-      * Validate that the [`DPoP`](../schema/ProofOfPosession.md) header
+      * Validate the [`DPoP`](../schema/ProofOfPosession.md) header
 1. Backend services acting as Access PEPs must _additionally_ validate AuthZ:
     * Validate that the access token contains a valid [TDF Claims Object](../schema/ClaimsObject.md) under the `tdf_claims` key,
     * Validate AuthZ by presenting the attributes for all authenticated entities to an Access PDP.
