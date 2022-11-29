@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/manifest.schema.json",
+  "title": "manifest",
+  "description": "TDF manifest in JSON",
+  "type": "object",
+  "properties": {
+    "payload": {
+      "type": "object",
+      "description": "An object which contains information describing the payload.",
+      "properties": {
+        "type": {
+          "description": "Describes the type of payload is associated with the TDF.",
+          "type": "string"
+        },
+        "url": {
+          "description": "URL which points to payload. For reference types, with the default ZIP protocol, the URL would point to a local file within the zip.",
+          "type": "string"
+        },
+        "protocol": {
+          "description": "The payload protocol. Default is zip."
+        },
+        "isEncrypted": {
+          "description": "Designates whether or not the payload is encrypted, or cleartext.",
+          "type": "boolean"
+        }
+      }
+    },
+    "encryptionInformation": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Designates the type of key access protocol was used. Default, is split.",
+          "type": "string"
+        },
+        "keyAccess": {
+          "description": "An array of keyAccess objects which are used to retrieve keys from one, or more Key Access Services",
+          "type": "array",
+          "items": {
+            "description": "A key access object",
+            "type": "object",
+            "properties": {
+              "type": {
+                "description": "The type of key access object.",
+                "type": "string",
+                "enum": ["wrapped", "remote"]
+              },
+              "url": {
+                "description": "A fully qualified URL pointing to a key access service responsible for managing access to the encryption keys.",
+                "type": "string"
+              },
+              "protocol": {
+                "description": "The protocol to be used for managing key access.",
+                "type": "string",
+                "enum": ["kas"]
+              },
+              "wrappedKey": {
+                "description": "The symmetric key used to encrypt the payload. It has been encrypted using the public key of the KAS, then base64 encoded.",
+                "type": "string"
+              },
+              "policyBinding": {
+                "description": "Object describing the policyBinding. Contains a hash, and an algorithm used.",
+                "type": "object",
+                "properties": {
+                  "alg": {
+                    "description": "The policy binding algorithm used to generate the hash.",
+                    "type": "string"
+                  },
+                  "hash": {
+                    "description": "This contains a keyed hash that will provide cryptographic integrity on the policy object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy.",
+                    "type": "string"
+                  }
+                }
+              },
+              "encryptedMetadata": {
+                "description": "Metadata associated with the TDF, and the request. The contents of the metadata are freeform, and are used to pass information from the client, and any plugins that may be in use by the KAS. The metadata stored here should not be used for primary access decisions. Base64.",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "method": {
+          "type": "object",
+          "properties": {
+            "algorithm": {
+              "description": "Algorithm used to encrypt the payload",
+              "type": "string"
+            },
+            "isStreamable": {
+              "description": "Designates whether or not the payload is streamable.",
+              "type": "boolean"
+            },
+            "iv": {
+              "description": "IV for the payload. Default IV is 0.",
+              "type": "string"
+            }
+          }
+        },
+        "integrityInformation": {
+          "type": "object",
+          "properties": {
+            "rootSignature": {
+              "type": "object",
+              "properties": {
+                "alg": {
+                  "description": "Algorithm used to generate the root signature of the payload",
+                  "type": "string"
+                },
+                "sig": {
+                  "description": "The payload signature",
+                  "type": "string"
+                }
+              }
+            },
+            "segmentSizeDefault": {
+              "description": "Default size of a encryption segment",
+              "type": "number"
+            },
+            "segmentHashAlg": {
+              "description": "Algorithm used to generate segment hashes",
+              "type": "string"
+            },
+            "segments": {
+              "description": "An array of segment objects. Allows for the possibility of assuring integrity over file segments, in addition to the entire payload. Useful for streaming.",
+              "type": "array",
+              "items": {
+                "description": "Segment object. Contains information necessary to validate integrity over a specific byte range of a payload.",
+                "type": "object",
+                "properties": {
+                  "hash": {
+                    "description": "Generated hash using the segment hashing algorithm specified in the parent object.",
+                    "type": "string"
+                  },
+                  "segmentSize": {
+                    "description": "The size of the segment prior to its encryption. Optional field only specified if it differs from the 'segmentSizeDefault', specified above.",
+                    "type": "number"
+                  },
+                  "encryptedSegmentSize": {
+                    "description": "The size of the segment once it has been encrypted.",
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "encryptedSegmentSizeDefault": {
+              "description": "Default size of an encrypted segment. TODO: Is this necessary??",
+              "type": "number"
+            }
+          }
+        },
+        "policy": {
+          "description": "The Policy Object is defined by the client at the time of the payload's encryption. It contains the information required by the KAS to make an access decision during decryption.",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "description": "A unique identifier associated with the policy",
+              "type": "string"
+            },
+            "body": {
+              "description": "An object which contains information about the policy required for the KAS to make an access decision.",
+              "type": "object",
+              "properties": {
+                "dataAttributes": {
+                  "description": "An array of data attributes an entity would need in order to gain access to an encryption key.",
+                  "type": "array",
+                  "items": {
+                    "description": "An attribute object",
+                    "type": "object",
+                    "properties": {
+                      "TODO": "Fill this in"
+                    }
+                  }
+                },
+                "dissem": {
+                  "description": "An array of entity IDs allowed to access a policy.",
+                  "type": "array",
+                  "items": {
+                    "description": "A unique ID associated with an entity",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
