@@ -8,25 +8,31 @@ and in the [Entitlement Object](EntitlementObject.md) to assert the attributes t
 
 Access decisions are made by comparing the attributes all entities have with the attributes a data policy requires.
 
-Attributes that an entity (or actor, or subject) "has" are referred to as "entity entitlements" and are represented by [Entitlement Objects](EntitlementObject.md) 
+Attributes that a single entity (a system actor or subject) "has" are referred to as "entity entitlements" and are represented by [Entity Entitlement Objects](EntitlementObject.md) 
 
-Attributes that entities "need" in order to access data are referred to as "data attributes" and are represented by [Policy Objects](PolicyObject.md)
+Attributes that entities "need" in order to access data are referred to as "data attributes" and are represented by [Data Policy Objects](PolicyObject.md)
 
 The set of all entity entitlements involved in a request are referred to as "claims" and are represented by a [Claims Object](ClaimsObject.md) 
 
-The _attribute_ field must be both globally unique and immutable as it is the reference id for the attribute. 
-All of the other fields are mutable. The attribute string contains three pieces of information - the authority namespace, the attribute name, and the attribute value.
+Attributes themselves are represented as URIs. Given the example attribute URI `https://demo.com/attr/Blob/value/Green`, the named parts of the URI are:
 
-When encrypting, the client determines which attributes an entity must have in order to decrypt the payload and applies those attributes to the file's [Policy Object](PolicyObject.md).
+- **Attribute Namespace** = `https://demo.com`. Typically a standard DNS name. It is recommended that the root DNS name of the authoritative owner of the attribute be used as the Attribute Namespace.
+- **Attribute Name** = `Blob` Attribute Names are not globally unique.
+- **Attribute Canonical Name** = `Attribute Namespace` + `Attribute Name` = `https://demo.com/attr/Blob`. Attribute Canonical Names must be _globally unique_
+- **Attribute Value** = `Green`. Attribute Values are not globaly unique.
+- **Attribute Definition** = Authorization-relevant metadata (rule type: AllOf/AnyOf/Hierarchy, allowed values, etc) associated with a specific, globally unique `Attribute Canonical Name`
+- **Attribute Instance** = `Attribute Canonical Name` + `(a specific value, valid as per the Attribute Definition)` = `https://demo.com/attr/Blob/value/Green`
 
-When a decrypt is requested, the KAS checks the [Policy Object](PolicyObject.md) against the [Claims Object](ClaimsObject.md) from the requesting client to 
-ensure the attributes that an entity "has" satisfies those that an entity "needs".
+> Key Point: Attribute Namespaces are not globally unique by themselves. Attribute Names are not globally unique by themselves. The combination of **both Namespace and Value** (the Canonical Name) _must_ be globally unique, and _must_ globally identify the Attribute.
+> Key Point: As Attribute Canonical Names are globally unique, and Attribute Definitions are associated with a specific Attribute Canonical Name, it follows that there can be _only one_ Attribute Definition globally, for a given Canonical Name.
+> Key Point: Only an Attribute Instance (Canonical Name + Value) can used for authorization decisions, or added to [Data Policy Objects](PolicyObject.md) or [Entity Entitlement Objects](EntitlementObject.md)
 
-If this check succeeds, the KAS permits a decrypt operation and returns a valid key which the client can decrypt and use to expose the file contents.
+When encrypting, the client determines which Attribute Instances an entity must have in order to decrypt the payload and appends those Attribute Instance URIs to the data's [Data Policy Object](PolicyObject.md).
 
-The AttributeObject alone does not define how the KAS will compare an entity's attribute to an object attribute when making an access decision.
-The KAS uses the namespaced object attributes in the [Policy Object](PolicyObject.md) to look up attribute policies from the cognizant authority
-to make its policy decisions. Clients writing policies should use best available information from their organizations to select which AttributeObjects to include to protect the policy.
+When a decrypt is requested, the KAS checks the [Data Policy Object](PolicyObject.md) against the [Claims Object](ClaimsObject.md) from the requesting client to 
+ensure that the Attribute Instances that each entity "has" matches the Attribute Instances that the data "has", using the Attribute Definitions currently associated with each individual data Attribute to determine comparison rule (AnyOf/AllOf/Hierarchy).
+
+If this check succeeds, the KAS permits a decrypt operation and returns a valid key which the client can decrypt and use to expose the data contents.
 
 ## Example
 
@@ -38,4 +44,4 @@ to make its policy decisions. Clients writing policies should use best available
 
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
-|`attribute`|String|Also known as the "attribute url."  The unique resource name for the attribute represented as a case-insensitive URL string. This field must be both unique and immutable as it is the reference id for the attribute. The attribute URL string contains three pieces of information - in the above example, the authority namespace (https://example.com), the attribute name (classification), and the attribute value (topsecret). |Yes|
+|`attribute`|String|The full Attribute Instance (Canonical Name + Value). |Yes|
