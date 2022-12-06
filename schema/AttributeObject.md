@@ -24,7 +24,7 @@ Given the example attribute URI `https://demo.com/attr/Blob/value/Green`, the na
 | **Attribute Name** | `Blob` | Attribute Names are not globally unique. |
 | **Attribute Canonical Name** | `https://demo.com/attr/Blob` | Combination of `Attribute Namespace` and `Attribute Name`, separated by the string `/attr/`. Attribute Canonical Names are the _globally unique_ part of the attribute. |
 | **Attribute Value** | `Green` | Attribute Values are not globally unique. |
-| **Attribute Definition** | `{rule_type: AllOF}` | Authorization-relevant metadata (rule type: AllOf/AnyOf/Hierarchy, allowed values, etc) associated with a specific, globally unique `Attribute Canonical Name` |
+| **Attribute Definition** | `{rule_type: AllOf, valid_values: [Green, Red, Purple]}` | Authorization-relevant metadata (rule type: AllOf/AnyOf/Hierarchy, allowed values, etc) associated with a specific, globally unique `Attribute Canonical Name`. Stored/managed by the authoritative owner of the attribute, separately from data or entity policy. |
 | **Attribute Instance** | `https://demo.com/attr/Blob/value/Green` | `Attribute Canonical Name` + (a specific value, valid as per the `Attribute Definition`) |
 
 > Key Point: Attribute Namespaces are not globally unique by themselves. Attribute Names are not globally unique by themselves. The combination of **both Namespace and Value** (the Canonical Name) _must_ be globally unique, and _must_ globally identify the Attribute.
