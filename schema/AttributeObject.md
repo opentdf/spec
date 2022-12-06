@@ -14,14 +14,17 @@ Attributes that entities "need" in order to access data are referred to as "data
 
 The set of all entity entitlements involved in a request are referred to as "claims" and are represented by a [Claims Object](ClaimsObject.md) 
 
-Attributes themselves are represented as URIs. Given the example attribute URI `https://demo.com/attr/Blob/value/Green`, the named parts of the URI are:
+Attributes themselves are represented as URIs. 
 
-- **Attribute Namespace** = `https://demo.com`. Typically a standard DNS name. It is recommended that the root DNS name of the authoritative owner of the attribute be used as the Attribute Namespace.
-- **Attribute Name** = `Blob` Attribute Names are not globally unique.
-- **Attribute Canonical Name** = `Attribute Namespace` + `Attribute Name` = `https://demo.com/attr/Blob`. Attribute Canonical Names must be _globally unique_
-- **Attribute Value** = `Green`. Attribute Values are not globaly unique.
-- **Attribute Definition** = Authorization-relevant metadata (rule type: AllOf/AnyOf/Hierarchy, allowed values, etc) associated with a specific, globally unique `Attribute Canonical Name`
-- **Attribute Instance** = `Attribute Canonical Name` + `(a specific value, valid as per the Attribute Definition)` = `https://demo.com/attr/Blob/value/Green`
+Given the example attribute URI `https://demo.com/attr/Blob/value/Green`, the named parts of the URI are:
+
+| Name | Example Value | Description | 
+| **Attribute Namespace** | `https://demo.com` | Typically a standard DNS name. It is recommended that the root DNS name of the authoritative owner of the attribute be used as the Attribute Namespace. |
+| **Attribute Name** | `Blob` | Attribute Names are not globally unique. |
+| **Attribute Canonical Name** | `https://demo.com/attr/Blob` | Combination of `Attribute Namespace` and `Attribute Name`, separated by the string `/attr/`. Attribute Canonical Names are the _globally unique_ part of the attribute. |
+| **Attribute Value** | `Green` | Attribute Values are not globally unique. |
+| **Attribute Definition** | | Authorization-relevant metadata (rule type: AllOf/AnyOf/Hierarchy, allowed values, etc) associated with a specific, globally unique `Attribute Canonical Name` |
+| **Attribute Instance** | `https://demo.com/attr/Blob/value/Green` | `Attribute Canonical Name` + (a specific value, valid as per the `Attribute Definition`) |
 
 > Key Point: Attribute Namespaces are not globally unique by themselves. Attribute Names are not globally unique by themselves. The combination of **both Namespace and Value** (the Canonical Name) _must_ be globally unique, and _must_ globally identify the Attribute.
 > Key Point: As Attribute Canonical Names are globally unique, and Attribute Definitions are associated with a specific Attribute Canonical Name, it follows that there can be _only one_ Attribute Definition globally, for a given Canonical Name.
