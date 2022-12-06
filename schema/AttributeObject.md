@@ -19,6 +19,7 @@ Attributes themselves are represented as URIs.
 Given the example attribute URI `https://demo.com/attr/Blob/value/Green`, the named parts of the URI are:
 
 | Name | Example Value | Description | 
+| ---- | ------------- | ----------- |
 | **Attribute Namespace** | `https://demo.com` | Typically a standard DNS name. It is recommended that the root DNS name of the authoritative owner of the attribute be used as the Attribute Namespace. |
 | **Attribute Name** | `Blob` | Attribute Names are not globally unique. |
 | **Attribute Canonical Name** | `https://demo.com/attr/Blob` | Combination of `Attribute Namespace` and `Attribute Name`, separated by the string `/attr/`. Attribute Canonical Names are the _globally unique_ part of the attribute. |
