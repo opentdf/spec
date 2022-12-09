@@ -24,8 +24,8 @@ Given the example attribute URI `https://demo.com/attr/Blob/value/Green`, the na
 | **Attribute Name** | `Blob` | Attribute Names are not globally unique. |
 | **Attribute Canonical Name** | `https://demo.com/attr/Blob` | Combination of `Attribute Namespace` and `Attribute Name`, separated by the string `/attr/`. Attribute Canonical Names are the _globally unique_ part of the attribute. |
 | **Attribute Value** | `Green` | Attribute Values are not globally unique. |
+| **Attribute Instance** | `https://demo.com/attr/Blob/value/Green` | Combination of `Attribute Canonical Name` + a single `Attribute Value`, separated by the string `/value/`. The complete representation of an actionable authorization attribute, as found in data and entity policy documents. |
 | **Attribute Definition** | `{rule_type: AllOf, valid_values: [Green, Red, Purple]}` | Authorization-relevant metadata (rule type: AllOf/AnyOf/Hierarchy, allowed values, etc) associated with a specific, globally unique `Attribute Canonical Name`. Stored/managed by the authoritative owner of the attribute, separately from data or entity policy. |
-| **Attribute Instance** | `https://demo.com/attr/Blob/value/Green` | `Attribute Canonical Name` + (a specific value, valid as per the `Attribute Definition`) |
 
 > Key Point: Attribute Namespaces are not globally unique by themselves. Attribute Names are not globally unique by themselves. The combination of **both Namespace and Value** (the Canonical Name) _must_ be globally unique, and _must_ globally identify the Attribute.
 
@@ -36,7 +36,7 @@ Given the example attribute URI `https://demo.com/attr/Blob/value/Green`, the na
 When encrypting, the client determines which Attribute Instances an entity must have in order to decrypt the payload and appends those Attribute Instance URIs to the data's [Data Policy Object](PolicyObject.md).
 
 When a decrypt is requested, the KAS checks the [Data Policy Object](PolicyObject.md) against the [Claims Object](ClaimsObject.md) from the requesting client to 
-ensure that the Attribute Instances that each entity "has" matches the Attribute Instances that the data "has", using the Attribute Definitions currently associated with each individual data Attribute to determine comparison rule (AnyOf/AllOf/Hierarchy).
+ensure that the entity Attribute Instances match the data Attribute Instances, using the Attribute Definitions currently associated with each individual data Attribute Instance to determine comparison rules (AnyOf/AllOf/Hierarchy).
 
 If this check succeeds, the KAS permits a decrypt operation and returns a valid key which the client can decrypt and use to expose the data contents.
 
