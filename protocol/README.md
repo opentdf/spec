@@ -6,7 +6,7 @@ This document describes the canonical system architecture used to encrypt and de
 
 The canonical architecture contains four major components.
 
-* *TDF Client* - Initiates and drives the TDF encryption and decryption workflows.Only component with access to the content (ciphertext or plaintext). 
+* *TDF Client* - Initiates and drives the TDF encryption and decryption workflows. Only component with access to the content (ciphertext or plaintext). 
   * May be entitled as Non-Person Entity acting on behalf of itself, OR on behalf of a Person Entity.
 * *OpenID Connect (OIDC) Identity Provider (IdP)* - This system could be any OIDC IdP software. Any OIDC-compliant IdP software may be used, provided it supports custom claims and *Demonstration of Proof of Possession (DPoP)*.
   * Supporting this protocol must include:
