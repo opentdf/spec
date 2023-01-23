@@ -110,12 +110,12 @@ consequently, is `TDFM` (think TDF mini/micro/etc) when base64 encoded.
 
 This section contains a Resource Locator type that allows describing access to a
 resource. In the case of the KAS, the Resource Locator defines how to access a
-KAS. Refer to the Resource Locator object's definition in [section X.X.X.X]()
+KAS. Refer to the Resource Locator object's definition in [Section 3.4.1].
 
 ##### 3.3.1.3 ECC And Binding Mode
 
-[ECC And Binding Mode]: #3.3.1.3-ecc-and-binding-mode
-[Section 3.3.1.3]: #3.3.1.3-ecc-and-binding-mode
+[ECC And Binding Mode]: #3313-ecc-and-binding-mode
+[Section 3.3.1.3]: #3313-ecc-and-binding-mode
 
 This section contains a 1-byte bitfield describing the ECC Params and Policy
 binding strategy to use. The Policy Binding strategy is either using a 64-bit
@@ -152,8 +152,8 @@ describes the valid values and the associated ECC Params.
 
 ##### 3.3.1.4 Symmetric and Payload Config
 
-[Symmetric and Payload Config]: #3.3.1.4-symmetric-and-payload-config
-[Section 3.3.1.4]: #3.3.1.4-symmetric-and-payload-config
+[Symmetric and Payload Config]: #3314-symmetric-and-payload-config
+[Section 3.3.1.4]: #3314-symmetric-and-payload-config
 
 This section contains a 1 byte data structure composed of bitfields that
 describe the symmetric ciphers for encrypted payloads. This cipher applies to
@@ -174,7 +174,7 @@ zero otherwise.
 
 ###### 3.3.1.4.2 Signature ECC Mode
 
-[Section 3.3.1.4.2]: #3.3.1.4.2-signature-ecc-mode
+[Section 3.3.1.4.2]: #33142-signature-ecc-mode
 
 The Signature ECC Mode is used to determine the length of the signature at the
 end of a nanotdf. This, in combination with the previous `HAS_SIGNATURE`
@@ -229,7 +229,7 @@ the policy defined in the Header. The structure of the Payload is as follows:
 
 ##### 3.3.2.1 Length
 
-[Section 3.3.2.1]: #3.3.2.1-length
+[Section 3.3.2.1]: #3321-length
 
 This 3 byte unsigned integer dictates the length of the subsequent ciphertext
 section.
@@ -269,8 +269,7 @@ Method Enum used in the [Symmetric and Payload Config] object in the header.
 The signature section is an optional section that contains an ECDSA signature
 used to cryptographically bind the Header and Payload to a creator of the
 nanotdf. The key used for signing is the private key of the creator of the
-nanotdf. The ECC Params used for the signature are described in [Section
-3.3.1.4.2]. The private key used for this signature is distinctly different than
+nanotdf. The ECC Params used for the signature are described in [Section 3.3.1.4.2]. The private key used for this signature is distinctly different than
 the ephemeral private key. This is a persistent key belonging to an individual,
 entity, or device that creates nanotdfs. The signature is used to authenticate
 the entire nanotdf and contains both the public key related to the creators
@@ -298,8 +297,8 @@ This section describes embedded types that are used in multiple places in a
 
 #### 3.4.1 Resource Locator
 
-[Resource Locator]: #3.4.1-resource-locator
-[Section 3.4.1]: #3.4.1-resource-locator
+[Resource Locator]: #341-resource-locator
+[Section 3.4.1]: #341-resource-locator
 
 The Resource Locator is a way for the nanotdf to represent references to
 external resources in as succinct a format as possible. 
@@ -312,8 +311,8 @@ external resources in as succinct a format as possible.
 
 ##### 3.4.1.1 Protocol Enum
 
-[Section 3.4.1.1]: #3.4.1.1-protocol-enum
-[Protocol Enum]: #3.4.1.1-protocol-enum
+[Section 3.4.1.1]: #3411-protocol-enum
+[Protocol Enum]: #3411-protocol-enum
 
 This is a single byte used to describe the protocol used to locate a resource. 
 The following are the available values:
@@ -344,14 +343,13 @@ the Resource Locator.
 ##### 3.4.1.3 Body
 
 The data required to retrieve the Resource referenced by the Resource Locator.
-The type of the data contained in the Body is determined by the [Protocol
-Enum]. For `http` or `https` the data contained in this
+The type of the data contained in the Body is determined by the [Protocol Enum]. For `http` or `https` the data contained in this
 section would be everything following the `://` in a URL.
 
 #### 3.4.2 Policy
 
-[Policy]: #3.4.2-policy
-[Section 3.4.2]: #3.4.2-policy
+[Policy]: #342-policy
+[Section 3.4.2]: #342-policy
 
 The structure of the Policy is as follows:
 
@@ -408,8 +406,8 @@ reused.
 
 ###### 3.4.2.3.2.3 (Optional) Policy Key Access
 
-[Policy Key Access]: #3.4.2.3.2.3-optional-policy-key-access
-[Section 3.4.2.3.2.3]: #3.4.2.3.2.3-optional-policy-key-access
+[Policy Key Access]: #342323-optional-policy-key-access
+[Section 3.4.2.3.2.3]: #342323-optional-policy-key-access
 
 This section allows for an ephemeral key other than the Payload key to encrypt
 the policy. However, for speed's sake, it is suggested that this only be used if
@@ -483,7 +481,7 @@ the X9.62 ECC Public Key Compressed Encoding format.
 
 ### 5.2 ECDSA Signature Encoding
 
-[Section 5.2]: #5.2-ecdsa-signature-encoding
+[Section 5.2]: #52-ecdsa-signature-encoding
 
 ECDSA signatures are big endian encodings of the `r` and `s` values of an ECDSA
 signature. The length of `r` and `s` values is determined by the ECC Mode used
