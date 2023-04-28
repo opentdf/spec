@@ -159,9 +159,13 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
     },
     "assertions": [
       {
+        "type": "handling",
         "scope": "payload",
         "appliesToState": "encrypted",
-        "statement": "VGhpcyBpcyBhIHRlc3Qu",
+        "statement": {
+            "format": "xml",
+            "statement": "VGhpcyBpcyBhIHRlc3Qu"
+        },
         "encryptionInformation": {
           /* isEncrypted, Key access, method/alg/iv,   */
         }
