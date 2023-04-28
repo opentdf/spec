@@ -164,7 +164,7 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
         "appliesToState": "encrypted",
         "statement": {
             "format": "xml",
-            "statement": "VGhpcyBpcyBhIHRlc3Qu"
+            "value": "VGhpcyBpcyBhIHRlc3Qu"
         },
         "encryptionInformation": {
           /* isEncrypted, Key access, method/alg/iv,   */
