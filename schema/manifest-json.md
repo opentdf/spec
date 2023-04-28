@@ -163,7 +163,7 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
         "scope": "payload",
         "appliesToState": "encrypted",
         "statement": {
-            "format": "xml",
+            "format": "xml-structured",
             "value": "VGhpcyBpcyBhIHRlc3Qu"
         },
         "encryptionInformation": {
