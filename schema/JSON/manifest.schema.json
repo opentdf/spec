@@ -23,6 +23,14 @@
         "isEncrypted": {
           "description": "Designates whether or not the payload is encrypted, or cleartext.",
           "type": "boolean"
+        },
+        "mimeType": {
+          "description": "Specifies the type of file that is encrypted. Default is `application/octet-stream`.",
+          "type": "string"
+        },
+        "tdf_spec_version": {
+          "description": "Semver version number of the TDF spec.",
+          "type": "string"
         }
       }
     },
@@ -179,6 +187,46 @@
                     "type": "string"
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "description": "An array of objects which contains information describing assertions.",
+      "items": {
+        "type": "object",
+        "description": "A single assertion",
+        "properties": {
+          "id": {
+            "description": "A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.",
+            "type": "string"
+          },
+          "type": {
+            "description": "Describes the type of assertion ('handling' or 'other').",
+            "type": "string"
+          },
+          "scope": {
+            "description": "An enumeration of the object to which the assertion applies ('tdo' or 'payload').",
+            "type": "string"
+          },
+          "appliesToState": {
+            "description": "Used to indicate if the statement metadata applies to 'encrypted' or 'unencrypted' data.",
+            "type": "string"
+          },
+          "statement": {
+            "description": "Intended for access, rights, and/or handling instructions that apply to the scope of the assertion.",
+            "type": "object",
+            "properties": {
+              "format": {
+                "description": "Describes the payload content encoding format ('xml-structured', 'base64binary', 'string').",
+                "type": "string"
+              },
+              "value": {
+                "description": "Payload content encoded in the format specified.",
+                "type": "string"
               }
             }
           }

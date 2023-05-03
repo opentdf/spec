@@ -6,7 +6,7 @@ In order to decrypt an encrypted TDF payload (such as an image, text file, etc.)
 A TDF's manifest holds this information, and is used by a client in its request to the KAS to supply the necessary keys such that the client can decrypt its payload. It describes the location of the payload , the method used to encrypt it, information to verify its authenticity, the KASes a client must make requests to in order to get an unwrapped key, etc. It also contains the TDF's policy which describes who, or what should be given access to the content.
 
 ## At a Glance
-From the top level, the TDF manifest contains only two properties: `payload` and `encryptionInformation`. Each of which are objects, and are decomposed in their own sections below.
+From the top level, the TDF manifest contains only three properties: `payload`,  `encryptionInformation`, and `assertions`. Each of which are objects, and are decomposed in their own sections below.
 
 If you'd like to see a real manifest created using the TDF client, check it out [here](#authentic-manifest).
 
@@ -40,8 +40,8 @@ Contains information describing the method of encryption. As well as information
 "encryptionInformation": {
     "type": "split",
     "keyAccess": [<Key Access Object>],
-    "method": {},
-    "integrityInformation": {},
+    "method": {<Method Object>},
+    "integrityInformation": {<Integrity Information Object>},
     "policy": "eyJ1dWlkIjoiNGYwYWIxMzEtNGRmZS00YmExLTljMDQtZjIzZTE0MDMyNzZhIiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
 }
 ```
@@ -113,6 +113,46 @@ Object containing integrity information about a segment of the payload, includin
 |`segmentSize`|Number|The size of the segment. This field is optional. The size of the segment is inferred from 'segmentSizeDefault' defined above, but in the event that a segment were modified and re-encrypted, the segment size would change.|
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|
 
+## assertions
+Assertions contain metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
+
+```javascript
+"assertions": [
+  {
+    "id": "123qwerty456",
+    "type": "handling",
+    "scope": "payload",
+    "appliesToState": "encrypted",
+    "statement": {<Statement Object>}
+  }
+]
+```
+
+|Parameter|Type|Description|Required?|
+|---|---|---|---|
+|`id`|String|A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.|Yes|
+|`type`|String|Describes the type of assertion (`handling` or `other`).|Yes|
+|`scope`|String|An enumeration of the object to which the assertion applies (`tdo` or `payload`).|Yes|
+|`appliesToState`|String|Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.|Yes|
+|`statement`|Object|`statement` is defined below in its own section: [statement](#assertionsstatement)|Yes|
+
+
+## assertions.statement
+Objecting comtaining access, rights, and/or handling instructions that apply to the scope of the assertion.
+
+```javascript
+{
+  "format": "xml-structured",
+  "value": "VGhpcyBpcyBhIHRlc3Qu"
+}
+```
+
+|Parameter|Type|Description|
+|---|---|---|
+|`format`|String|Describes the payload content encoding format (`xml-structured`, `base64binary`, `string`).|
+|`value`|String|Payload content encoded in the format specified.|
+
+
 ## Authentic Manifest
 Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
@@ -157,21 +197,19 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
       ],
       "encryptedSegmentSizeDefault": 1000028
     },
-    "assertions": [
-      {
-        "type": "handling",
-        "scope": "payload",
-        "appliesToState": "encrypted",
-        "statement": {
-            "format": "xml-structured",
-            "value": "VGhpcyBpcyBhIHRlc3Qu"
-        },
-        "encryptionInformation": {
-          /* isEncrypted, Key access, method/alg/iv,   */
-        }
-      }
-    ],    
     "policy": "eyJ1dWlkIjoiNjEzMzM0NjYtNGYwYS00YTEyLTk1ZmItYjZkOGJkMGI4YjI2IiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
-  }
+  },
+  "assertions": [
+    {
+      "id": "123qwerty456",
+      "type": "handling",
+      "scope": "payload",
+      "appliesToState": "encrypted",
+      "statement": {
+          "format": "xml-structured",
+          "value": "VGhpcyBpcyBhIHRlc3Qu"
+      }
+    }
+  ]
 }
 ```
