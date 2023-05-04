@@ -6,7 +6,7 @@ In order to decrypt an encrypted TDF payload (such as an image, text file, etc.)
 A TDF's manifest holds this information, and is used by a client in its request to the KAS to supply the necessary keys such that the client can decrypt its payload. It describes the location of the payload , the method used to encrypt it, information to verify its authenticity, the KASes a client must make requests to in order to get an unwrapped key, etc. It also contains the TDF's policy which describes who, or what should be given access to the content.
 
 ## At a Glance
-From the top level, the TDF manifest contains only three properties: `payload`,  `encryptionInformation`, and `assertions`. Each of which are objects, and are decomposed in their own sections below.
+From the top level, the TDF manifest contains only three properties: `payload`,  `encryptionInformation`, and `assertions`. Each of which are objects and are decomposed in their own sections below.
 
 If you'd like to see a real manifest created using the TDF client, check it out [here](#authentic-manifest).
 
@@ -26,7 +26,7 @@ The payload contains metadata required to decrypt the TDF's payload, including _
 
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
-|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server?\n\nCurrently a type of `reference` is the only possible type.|Yes|
+|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server? Currently a type of `reference` is the only possible type.|Yes|
 |`url`|String|A url pointing to the location of the payload. For example, `0.payload`, as a file local to the TDF.|Yes|
 |`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
@@ -123,7 +123,8 @@ Assertions contain metadata required to decrypt the TDF's payload, including _ho
     "type": "handling",
     "scope": "payload",
     "appliesToState": "encrypted",
-    "statement": {<Statement Object>}
+    "statement": {<Statement Object>},
+    "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
   }
 ]
 ```
@@ -133,8 +134,11 @@ Assertions contain metadata required to decrypt the TDF's payload, including _ho
 |`id`|String|A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.|Yes|
 |`type`|String|Describes the type of assertion (`handling` or `other`).|Yes|
 |`scope`|String|An enumeration of the object to which the assertion applies (`tdo` or `payload`).|Yes|
-|`appliesToState`|String|Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.|Yes|
+|`appliesToState`|String|Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.|No|
 |`statement`|Object|`statement` is defined below in its own section: [statement](#assertionsstatement)|Yes|
+|`assertionBinding`|Object|Object describing the assertionBinding. Contains a hash, and an algorithm used.|Yes|
+|`assertionBinding.alg`|String|The policy binding algorithm used to generate the hash.|Yes|
+|`assertionBinding.hash`|String|This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the assertion. <p>This is Base64 encoding of HMAC(ASSERTION,KEY), where: <dl><dt>ASSERTION</dt><dd>`base64(assertionjson)` that is in the “assertion”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey).</dd></dl>|Yes|
 
 
 ## assertions.statement
@@ -208,7 +212,29 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
       "statement": {
           "format": "xml-structured",
           "value": "VGhpcyBpcyBhIHRlc3Qu"
-      }
+      },
+      "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+    },
+    {
+      "id": "147852zxcv",
+      "type": "handling",
+      "scope": "payload",
+      "appliesToState": "unencrypted",
+      "statement": {
+          "format": "xml-structured",
+          "value": "VGhpcyBpcyBhIHRlc3Qu"
+      },
+      "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+    },
+    {
+      "id": "789asdfgh012",
+      "type": "handling",
+      "scope": "tdo",
+      "statement": {
+          "format": "xml-structured",
+          "value": "VGhpcyBpcyBhIHRlc3Qu"
+      },
+      "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
     }
   ]
 }

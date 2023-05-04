@@ -195,7 +195,7 @@
     },
     "assertions": {
       "type": "array",
-      "description": "An array of objects which contains information describing assertions.",
+      "description": "An array of objects used to express metadata about the objects in the scope attribute of the assertion. An assertion also supports metadata about the assertion statement for the purposes of indicating any handling instructions pertinent to the statement itself. Also supports encrypted statements and binding the statement with objects in its scope.",
       "items": {
         "type": "object",
         "description": "A single assertion",
@@ -226,6 +226,20 @@
               },
               "value": {
                 "description": "Payload content encoded in the format specified.",
+                "type": "string"
+              }
+            }
+          },
+          "assertionBinding": {
+            "description": "Object describing the assertionBinding. Contains a hash, and an algorithm used.",
+            "type": "object",
+            "properties": {
+              "alg": {
+                "description": "The assertion binding algorithm used to generate the hash.",
+                "type": "string"
+              },
+              "hash": {
+                "description": "This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy.",
                 "type": "string"
               }
             }
