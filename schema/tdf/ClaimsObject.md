@@ -21,7 +21,7 @@ the following happens:
 by first authenticating via the
 OpenID Connect (OIDC) Identity Provider (IdP) with Custom Claims
 support (in this case Keycloak), and if entity authentication succeeds, a
-[TDF Claims Object](../schema/ClaimsObject.md) is obtained from
+[TDF Claims Object](ClaimsObject.md) is obtained from
 Attribute Provider and signed by the IdP.  The signed OIDC Bearer Token is
 returned to the client with the Claims Object inside. 
 

@@ -84,4 +84,4 @@ With embedding cryptographically bound policy and wrapped keys, we enable a high
 ![offline](https://files.readme.io/f5fb283-Screen_Shot_2018-12-10_at_9.15.27_AM.png "Offline create")
 
 ### 3. Key Server Federation
-Want to protect files such that two (or more) organizations control the keys? It is now possible with TDF3. [keyAccess](schema/KeyAccessObject.md) object in particular allows for array of objects, which can allow for multiple KAS servers to participate in an object key grant.
+Want to protect files such that two (or more) organizations control the keys? It is now possible with TDF3. [keyAccess](schema/tdf/KeyAccessObject.md) object in particular allows for array of objects, which can allow for multiple KAS servers to participate in an object key grant.

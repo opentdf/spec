@@ -26,7 +26,7 @@ A Key Access Object stores not only a wrapped (encrypted) key used to encrypt th
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
 |`keyAccess`|Object|KeyAccess object stores all information about how an object key OR key split is stored, and if / how it has been encrypted (e.g., with KEK or pub wrapping key).|Yes|
-|`type`|String|Specifies how the key is stored.<p>Possible Values: <dl><dt>remote</dt><dd>The wrapped key (see below) is stored using Virtru infrastructure and is thus not part of the final TDF manifest.</dd><dt>wrapped</dt><dd>Default for TDF 3.x and newer, the wrapped key is stored as part of the manifest.</dd><dt>remoteWrapped</dt><dd>Allows management of customer hosted keys, such as with a [Customer Key Server](https://www.virtru.com/faq/virtru-customer-key-server/). This feature is available as an upgrade path.</dd></dl>|Yes|
+|`type`|String|Specifies how the key is stored.<p>Possible Values: <dl><dt>remote</dt><dd>The wrapped key (see below) is stored using Virtru infrastructure and is thus not part of the final TDF manifest.</dd><dt>wrapped</dt><dd>Default for TDF 3.x and newer, the wrapped key is stored as part of the manifest.</dd><dt>remoteWrapped</dt><dd>Allows management of customer hosted keys, such as with a *Customer Key Server*. This feature is available as an upgrade path.</dd></dl>|Yes|
 |`url`|String|A url pointing to the desired KAS deployment|Yes|
 |`protocol`|String|Protocol being used. Currently only `kas` is supported|Yes|
 |`wrappedKey`|String|The symmetric key used to encrypt the payload. It has been encrypted using the public key of the KAS, then base64 encoded.|Yes|
