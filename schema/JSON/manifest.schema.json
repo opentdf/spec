@@ -230,7 +230,7 @@
               }
             }
           },
-          "assertionBinding": {
+          "binding": {
             "description": "Object describing the assertionBinding. Contains a hash, and an algorithm used.",
             "type": "object",
             "properties": {
@@ -238,7 +238,7 @@
                 "description": "The assertion binding algorithm used to generate the hash.",
                 "type": "string"
               },
-              "hash": {
+              "signature": {
                 "description": "This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy.",
                 "type": "string"
               }
