@@ -66,6 +66,14 @@
                 "description": "The symmetric key used to encrypt the payload. It has been encrypted using the public key of the KAS, then base64 encoded.",
                 "type": "string"
               },
+              "sid": {
+                "description": "A unique identifier for a single key split. In some complex policies, multiple key access objects may exist that share a specific key split. Using a splitId allows software to more efficiently operate by not reusing key material unnecessarily. ",
+                "type": "string"
+              },
+              "kid": {
+                "description": "A UUID for the specific keypair used for wrapping the symmetric key.",
+                "type": "string"
+              },
               "policyBinding": {
                 "description": "Object describing the policyBinding. Contains a hash, and an algorithm used.",
                 "type": "object",
@@ -234,8 +242,8 @@
             "description": "Object describing the assertionBinding. Contains a hash, and an algorithm used.",
             "type": "object",
             "properties": {
-              "alg": {
-                "description": "The assertion binding algorithm used to generate the hash.",
+              "method": {
+                "description": "The assertion binding method used encode the signature. Default is 'jws'",
                 "type": "string"
               },
               "signature": {

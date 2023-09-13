@@ -129,16 +129,16 @@ Assertions contain metadata required to decrypt the TDF's payload, including _ho
 ]
 ```
 
-|Parameter|Type|Description|Required?|
-|---|---|---|---|
-|`id`|String|A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.|Yes|
-|`type`|String|Describes the type of assertion (`handling` or `other`).|Yes|
-|`scope`|String|An enumeration of the object to which the assertion applies (`tdo` or `payload`).|Yes|
-|`appliesToState`|String|Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.|No|
-|`statement`|Object|`statement` is defined below in its own section: [statement](#assertionsstatement)|Yes|
-|`assertionBinding`|Object|Object describing the assertionBinding. Contains a hash, and an algorithm used.|Yes|
-|`assertionBinding.alg`|String|The policy binding algorithm used to generate the hash.|Yes|
-|`assertionBinding.hash`|String|This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the assertion. <p>This is Base64 encoding of HMAC(ASSERTION,KEY), where: <dl><dt>ASSERTION</dt><dd>`base64(assertionjson)` that is in the “assertion”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey).</dd></dl>|Yes|
+| Parameter           |Type|Description|Required?|
+|---------------------|---|---|---|
+| `id`                |String|A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.|Yes|
+| `type`              |String|Describes the type of assertion (`handling` or `other`).|Yes|
+| `scope`             |String|An enumeration of the object to which the assertion applies (`tdo` or `payload`).|Yes|
+| `appliesToState`    |String|Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.|No|
+| `statement`         |Object|`statement` is defined below in its own section: [statement](#assertionsstatement)|Yes|
+| `binding`           |Object|Object describing the assertionBinding. Contains a hash, and an algorithm used.|Yes|
+| `binding.alg`       |String|The policy binding algorithm used to generate the hash.|Yes|
+| `binding.signature` |String|This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the assertion. <p>This is Base64 encoding of HMAC(ASSERTION,KEY), where: <dl><dt>ASSERTION</dt><dd>`base64(assertionjson)` that is in the “assertion”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey).</dd></dl>|Yes|
 
 
 ## assertions.statement
@@ -160,7 +160,7 @@ Objecting comtaining access, rights, and/or handling instructions that apply to 
 ## Authentic Manifest
 Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
-```javascript
+```json
 {
   "payload": {
     "type": "reference",
@@ -175,6 +175,8 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
         "type": "wrapped",
         "url": "http://kas.example.com:4000",
         "protocol": "kas",
+        "sid": "0",
+        "kid": "1201301201-231-23-12-3123123",
         "wrappedKey": "YBkqvsiDnyDfw5JQzux2S2IaiClhsojZuLYY9WOc9N9l37A5/Zi7iloxcqgFvBFbzVjGW4QBwAHsytKQvE87bHTuQkZs4XyPACOZE/k9r+mK8KazcGTkOnqPKQNhf2XK4TBACJZ6eItO5Q1eHUQVLKjxUfgyx2TBDfhB/7XifNthu+6lFbKHmPl1q7q1Vaa/rpPRhSgqf89x5fQvcSWdkuOH9Y4wTa8tdKqSS3DUNMKTIUQq8Ti/WFrq26DRemybBgBcL/CyUZ98hFjDQgy4csBusEqwQ5zG+UAoRgkLkHiAw7hNAayAUCVRw6aUYRF4LWfcs2BM9k6d3bHqun0v5w==",
         "policyBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA==",
         "encryptedMetadata": "OEOqJCS6mZsmLWJ38lh6EN2lDUA8OagL/OxQRQ=="
@@ -213,7 +215,10 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
           "format": "xml-structured",
           "value": "VGhpcyBpcyBhIHRlc3Qu"
       },
-      "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      "assertionBinding": {
+        "method": "jws",
+        "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      }
     },
     {
       "id": "147852zxcv",
@@ -224,7 +229,10 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
           "format": "xml-structured",
           "value": "VGhpcyBpcyBhIHRlc3Qu"
       },
-      "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      "assertionBinding": {
+        "method": "jws",
+        "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      }
     },
     {
       "id": "789asdfgh012",
@@ -234,7 +242,10 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
           "format": "xml-structured",
           "value": "VGhpcyBpcyBhIHRlc3Qu"
       },
-      "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      "assertionBinding": {
+        "method": "jws",
+        "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      }
     }
   ]
 }
