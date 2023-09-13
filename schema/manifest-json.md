@@ -124,21 +124,21 @@ Assertions contain metadata required to decrypt the TDF's payload, including _ho
     "scope": "payload",
     "appliesToState": "encrypted",
     "statement": {<Statement Object>},
-    "assertionBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+    "binding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
   }
 ]
 ```
 
-| Parameter           |Type|Description|Required?|
-|---------------------|---|---|---|
-| `id`                |String|A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.|Yes|
-| `type`              |String|Describes the type of assertion (`handling` or `other`).|Yes|
-| `scope`             |String|An enumeration of the object to which the assertion applies (`tdo` or `payload`).|Yes|
-| `appliesToState`    |String|Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.|No|
-| `statement`         |Object|`statement` is defined below in its own section: [statement](#assertionsstatement)|Yes|
-| `binding`           |Object|Object describing the assertionBinding. Contains a hash, and an algorithm used.|Yes|
-| `binding.alg`       |String|The policy binding algorithm used to generate the hash.|Yes|
-| `binding.signature` |String|This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the assertion. <p>This is Base64 encoding of HMAC(ASSERTION,KEY), where: <dl><dt>ASSERTION</dt><dd>`base64(assertionjson)` that is in the “assertion”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey).</dd></dl>|Yes|
+| Parameter           |Type| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |Required?|
+|---------------------|---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| `id`                |String| A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |Yes|
+| `type`              |String| Describes the type of assertion (`handling` or `other`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |Yes|
+| `scope`             |String| An enumeration of the object to which the assertion applies (`tdo` or `payload`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |Yes|
+| `appliesToState`    |String| Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |No|
+| `statement`         |Object| `statement` is defined below in its own section: [statement](#assertionsstatement)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |Yes|
+| `binding`           |Object| Object describing the binding. Contains a hash, and an algorithm used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |Yes|
+| `binding.alg`       |String| The policy binding algorithm used to generate the hash.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |Yes|
+| `binding.signature` |String| This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the assertion. <p>This is Base64 encoding of HMAC(ASSERTION,KEY), where: <dl><dt>ASSERTION</dt><dd>`base64(assertionjson)` that is in the “assertion”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey).</dd></dl> |Yes|
 
 
 ## assertions.statement
@@ -215,7 +215,7 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
           "format": "xml-structured",
           "value": "VGhpcyBpcyBhIHRlc3Qu"
       },
-      "assertionBinding": {
+      "binding": {
         "method": "jws",
         "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
       }
@@ -229,7 +229,7 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
           "format": "xml-structured",
           "value": "VGhpcyBpcyBhIHRlc3Qu"
       },
-      "assertionBinding": {
+      "binding": {
         "method": "jws",
         "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
       }
@@ -242,7 +242,7 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
           "format": "xml-structured",
           "value": "VGhpcyBpcyBhIHRlc3Qu"
       },
-      "assertionBinding": {
+      "binding": {
         "method": "jws",
         "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
       }
