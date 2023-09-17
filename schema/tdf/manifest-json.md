@@ -55,13 +55,12 @@ Contains information describing the method of encryption. As well as information
 |`policy`|String|The policy object which has been JSON stringified, then base64 encoded. The policy object is described in its own section: [Policy Object](PolicyObject.md)|
 
 ## encryptionInformation.method
-An object which describes the information required to actually decrypt the payload once the key is retrieved. Includes the algorithm, and iv at a minimum.
+An object which describes the information required to actually decrypt the payload once the key is retrieved. Includes the algorithm and isStreamable.
 
 ```javascript
 "method": {
   "algorithm": "AES-256-GCM",
-  "isStreamable": true,
-  "iv": "D6s7cSgFXzhVkran"
+  "isStreamable": true
 }
 ```
 
@@ -69,7 +68,6 @@ An object which describes the information required to actually decrypt the paylo
 |---|---|---|
 |`algorithm`|String|The algorithm used for encryption. Currently the two available options are `aes-256-gcm`.|
 |`isStreamable`|Boolean|`isStreamable` designates whether or not a TDF payload is streamable. If it's streamable, the payload is broken into chunks, and individual hashes are generated per chunk to establish integrity of the individual chunks.|
-|`iv`|String|The initialization vector for the encrypted payload.|
 
 ## encryptionInformation.integrityInformation
 An object which allows an application to validate the integrity of the payload, or a chunk of a payload should it be a streamable TDF.
