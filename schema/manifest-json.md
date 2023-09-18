@@ -6,7 +6,7 @@ In order to decrypt an encrypted TDF payload (such as an image, text file, etc.)
 A TDF's manifest holds this information, and is used by a client in its request to the KAS to supply the necessary keys such that the client can decrypt its payload. It describes the location of the payload , the method used to encrypt it, information to verify its authenticity, the KASes a client must make requests to in order to get an unwrapped key, etc. It also contains the TDF's policy which describes who, or what should be given access to the content.
 
 ## At a Glance
-From the top level, the TDF manifest contains only two properties: `payload` and `encryptionInformation`. Each of which are objects, and are decomposed in their own sections below.
+From the top level, the TDF manifest contains only three properties: `payload`,  `encryptionInformation`, and `assertions`. Each of which are objects and are decomposed in their own sections below.
 
 If you'd like to see a real manifest created using the TDF client, check it out [here](#authentic-manifest).
 
@@ -26,7 +26,7 @@ The payload contains metadata required to decrypt the TDF's payload, including _
 
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
-|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server?\n\nCurrently a type of `reference` is the only possible type.|Yes|
+|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server? Currently a type of `reference` is the only possible type.|Yes|
 |`url`|String|A url pointing to the location of the payload. For example, `0.payload`, as a file local to the TDF.|Yes|
 |`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
@@ -40,8 +40,8 @@ Contains information describing the method of encryption. As well as information
 "encryptionInformation": {
     "type": "split",
     "keyAccess": [<Key Access Object>],
-    "method": {},
-    "integrityInformation": {},
+    "method": {<Method Object>},
+    "integrityInformation": {<Integrity Information Object>},
     "policy": "eyJ1dWlkIjoiNGYwYWIxMzEtNGRmZS00YmExLTljMDQtZjIzZTE0MDMyNzZhIiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
 }
 ```
@@ -113,10 +113,54 @@ Object containing integrity information about a segment of the payload, includin
 |`segmentSize`|Number|The size of the segment. This field is optional. The size of the segment is inferred from 'segmentSizeDefault' defined above, but in the event that a segment were modified and re-encrypted, the segment size would change.|
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|
 
+## assertions
+Assertions contain metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
+
+```javascript
+"assertions": [
+  {
+    "id": "123qwerty456",
+    "type": "handling",
+    "scope": "payload",
+    "appliesToState": "encrypted",
+    "statement": {<Statement Object>},
+    "binding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+  }
+]
+```
+
+| Parameter           |Type| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |Required?|
+|---------------------|---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| `id`                |String| A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |Yes|
+| `type`              |String| Describes the type of assertion (`handling` or `other`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |Yes|
+| `scope`             |String| An enumeration of the object to which the assertion applies (`tdo` or `payload`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |Yes|
+| `appliesToState`    |String| Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |No|
+| `statement`         |Object| `statement` is defined below in its own section: [statement](#assertionsstatement)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |Yes|
+| `binding`           |Object| Object describing the binding. Contains a hash, and an algorithm used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |Yes|
+| `binding.alg`       |String| The policy binding algorithm used to generate the hash.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |Yes|
+| `binding.signature` |String| This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the assertion. <p>This is Base64 encoding of HMAC(ASSERTION,KEY), where: <dl><dt>ASSERTION</dt><dd>`base64(assertionjson)` that is in the “assertion”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey).</dd></dl> |Yes|
+
+
+## assertions.statement
+Objecting comtaining access, rights, and/or handling instructions that apply to the scope of the assertion.
+
+```javascript
+{
+  "format": "xml-structured",
+  "value": "VGhpcyBpcyBhIHRlc3Qu"
+}
+```
+
+|Parameter|Type|Description|
+|---|---|---|
+|`format`|String|Describes the payload content encoding format (`xml-structured`, `base64binary`, `string`).|
+|`value`|String|Payload content encoded in the format specified.|
+
+
 ## Authentic Manifest
 Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
-```javascript
+```json
 {
   "payload": {
     "type": "reference",
@@ -131,6 +175,8 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
         "type": "wrapped",
         "url": "http://kas.example.com:4000",
         "protocol": "kas",
+        "sid": "0",
+        "kid": "1201301201-231-23-12-3123123",
         "wrappedKey": "YBkqvsiDnyDfw5JQzux2S2IaiClhsojZuLYY9WOc9N9l37A5/Zi7iloxcqgFvBFbzVjGW4QBwAHsytKQvE87bHTuQkZs4XyPACOZE/k9r+mK8KazcGTkOnqPKQNhf2XK4TBACJZ6eItO5Q1eHUQVLKjxUfgyx2TBDfhB/7XifNthu+6lFbKHmPl1q7q1Vaa/rpPRhSgqf89x5fQvcSWdkuOH9Y4wTa8tdKqSS3DUNMKTIUQq8Ti/WFrq26DRemybBgBcL/CyUZ98hFjDQgy4csBusEqwQ5zG+UAoRgkLkHiAw7hNAayAUCVRw6aUYRF4LWfcs2BM9k6d3bHqun0v5w==",
         "policyBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA==",
         "encryptedMetadata": "OEOqJCS6mZsmLWJ38lh6EN2lDUA8OagL/OxQRQ=="
@@ -157,21 +203,50 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
       ],
       "encryptedSegmentSizeDefault": 1000028
     },
-    "assertions": [
-      {
-        "type": "handling",
-        "scope": "payload",
-        "appliesToState": "encrypted",
-        "statement": {
-            "format": "xml-structured",
-            "value": "VGhpcyBpcyBhIHRlc3Qu"
-        },
-        "encryptionInformation": {
-          /* isEncrypted, Key access, method/alg/iv,   */
-        }
-      }
-    ],    
     "policy": "eyJ1dWlkIjoiNjEzMzM0NjYtNGYwYS00YTEyLTk1ZmItYjZkOGJkMGI4YjI2IiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
-  }
+  },
+  "assertions": [
+    {
+      "id": "123qwerty456",
+      "type": "handling",
+      "scope": "payload",
+      "appliesToState": "encrypted",
+      "statement": {
+          "format": "xml-structured",
+          "value": "VGhpcyBpcyBhIHRlc3Qu"
+      },
+      "binding": {
+        "method": "jws",
+        "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      }
+    },
+    {
+      "id": "147852zxcv",
+      "type": "handling",
+      "scope": "payload",
+      "appliesToState": "unencrypted",
+      "statement": {
+          "format": "xml-structured",
+          "value": "VGhpcyBpcyBhIHRlc3Qu"
+      },
+      "binding": {
+        "method": "jws",
+        "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      }
+    },
+    {
+      "id": "789asdfgh012",
+      "type": "handling",
+      "scope": "tdo",
+      "statement": {
+          "format": "xml-structured",
+          "value": "VGhpcyBpcyBhIHRlc3Qu"
+      },
+      "binding": {
+        "method": "jws",
+        "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+      }
+    }
+  ]
 }
 ```

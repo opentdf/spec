@@ -23,6 +23,14 @@
         "isEncrypted": {
           "description": "Designates whether or not the payload is encrypted, or cleartext.",
           "type": "boolean"
+        },
+        "mimeType": {
+          "description": "Specifies the type of file that is encrypted. Default is `application/octet-stream`.",
+          "type": "string"
+        },
+        "tdf_spec_version": {
+          "description": "Semver version number of the TDF spec.",
+          "type": "string"
         }
       }
     },
@@ -56,6 +64,14 @@
               },
               "wrappedKey": {
                 "description": "The symmetric key used to encrypt the payload. It has been encrypted using the public key of the KAS, then base64 encoded.",
+                "type": "string"
+              },
+              "sid": {
+                "description": "A unique identifier for a single key split. In some complex policies, multiple key access objects may exist that share a specific key split. Using a splitId allows software to more efficiently operate by not reusing key material unnecessarily. ",
+                "type": "string"
+              },
+              "kid": {
+                "description": "A UUID for the specific keypair used for wrapping the symmetric key.",
                 "type": "string"
               },
               "policyBinding": {
@@ -179,6 +195,60 @@
                     "type": "string"
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "description": "An array of objects used to express metadata about the objects in the scope attribute of the assertion. An assertion also supports metadata about the assertion statement for the purposes of indicating any handling instructions pertinent to the statement itself. Also supports encrypted statements and binding the statement with objects in its scope.",
+      "items": {
+        "type": "object",
+        "description": "A single assertion",
+        "properties": {
+          "id": {
+            "description": "A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.",
+            "type": "string"
+          },
+          "type": {
+            "description": "Describes the type of assertion ('handling' or 'other').",
+            "type": "string"
+          },
+          "scope": {
+            "description": "An enumeration of the object to which the assertion applies ('tdo' or 'payload').",
+            "type": "string"
+          },
+          "appliesToState": {
+            "description": "Used to indicate if the statement metadata applies to 'encrypted' or 'unencrypted' data.",
+            "type": "string"
+          },
+          "statement": {
+            "description": "Intended for access, rights, and/or handling instructions that apply to the scope of the assertion.",
+            "type": "object",
+            "properties": {
+              "format": {
+                "description": "Describes the payload content encoding format ('xml-structured', 'base64binary', 'string').",
+                "type": "string"
+              },
+              "value": {
+                "description": "Payload content encoded in the format specified.",
+                "type": "string"
+              }
+            }
+          },
+          "binding": {
+            "description": "Object describing the assertionBinding. Contains a hash, and an algorithm used.",
+            "type": "object",
+            "properties": {
+              "method": {
+                "description": "The assertion binding method used encode the signature. Default is 'jws'",
+                "type": "string"
+              },
+              "signature": {
+                "description": "This contains a keyed hash that will provide cryptographic integrity on the assertion object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy.",
+                "type": "string"
               }
             }
           }
