@@ -119,6 +119,26 @@ An object which allows an application to validate the integrity of the payload, 
 |`segmentSizeDefault`|Number|The default size of each chunk, or segment in bytes. By setting the default size here, the segments array becomes more space efficient as it will not have to specify the segment size each time.|
 |`encryptedSegmentSizeDefault`|Number|Similar to `segmentSizeDefault` -  the default size of each chunk of _encrypted_ data, in bytes.|
 
+### encryptionInformation.integrityInformation.payloadHashSignature PEM
+
+```
+  "payloadHashSignature": {
+    "alg": "HS256",
+    "sig": "DtEhU3ljbEg8L38VWAfUAqOyKAM6-Xx-F4GawxaepmXFCgfTjDxw5djxLa8ISlSApmWQxfKTUJqPP3-Kg6NU01Q",
+    "sigKey": {
+      "kid": "e9bc097a-ce51-4036-9562-d2ade882db0d",
+      "url": "https://example.com/keys/e9bc097a-ce51-4036-9562-d2ade882db0d?format=pem",
+      "type": "PEM",
+      "controller": "https://example.com/keys",
+      "certificate": "-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiIMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV\n...-----END CERTIFICATE-----\n",
+      "chain": [
+        "-----BEGIN CERTIFICATE-----\nMIIDxTCCAq2gAwIBAgIQAqxcJmoLQJuPC3nyrkYldzANBgkqhkiG9w0BAQUFADBs\n...-----END CERTIFICATE-----\n",
+        "-----BEGIN CERTIFICATE-----\nMIID2TCCAsGgAwIBAgIDOQ0ESHYDICADTANBgkqhkiG9w0BAQUFADB9MQswCQYD\n...-----END CERTIFICATE-----\n"
+      ]
+    }
+  },
+```
+
 ## encryptionInformation.integrityInformation.segment
 Object containing integrity information about a segment of the payload, including its hash.
 
