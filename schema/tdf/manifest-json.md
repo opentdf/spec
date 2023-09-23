@@ -20,6 +20,8 @@ The payload contains metadata required to decrypt the TDF's payload, including _
     "protocol": "zip",
     "isEncrypted": true,
     "mimeType": "application/pdf",
+    "hash": "hoOspQQ1lFTy/4Tp8Epx670E5QW5NwkNR+2b30KFXug=",
+    "hashAlg": "sha256",
     "tdf_spec_version:": "x.y.z"
 }
 ```
@@ -31,6 +33,8 @@ The payload contains metadata required to decrypt the TDF's payload, including _
 |`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
 |`mimeType`|String|Specifies the type of file that is encrypted. Default is `application/octet-stream`. |No|
+|`hash`|String|SHA-2 hash of the original, unencrypted payload |No|
+|`hashAlg`|String|Specific SHA-2 algorithm used.  `sha256`|`sha384`|`sha512` |No|
 |`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
 
 ## encryptionInformation
@@ -80,6 +84,21 @@ An object which allows an application to validate the integrity of the payload, 
     "alg": "HS256",
     "sig": "M2E2MTI5YmMxMWU0ODIzZDA4YTdkNTY2MzdlNDM4OGRlZDE2MTFhZjU1YTY1YzBhYWNlMWVjYjlmODUzNmNiZQ=="
   },
+  "payloadHashSignature": {
+    "alg": "HS256",
+    "sig": "DtEhU3ljbEg8L38VWAfUAqOyKAM6-Xx-F4GawxaepmXFCgfTjDxw5djxLa8ISlSApmWQxfKTUJqPP3-Kg6NU01Q",
+    "sigKey": {
+      "kid": "e9bc097a-ce51-4036-9562-d2ade882db0d",
+      "url": "https://example.com/keys/e9bc097a-ce51-4036-9562-d2ade882db0d",
+      "type": "JsonWebKey2020",
+      "controller": "https://example.com/keys",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "CV-aGlld3nVdgnhoZK0D36Wk-9aIMlZjZOK2XhPMnkQ"
+      }
+    }
+  },
   "segmentHashAlg": "GMAC",
   "segments": [<Segment Object>],
   "segmentSizeDefault": 1000000,
@@ -91,6 +110,10 @@ An object which allows an application to validate the integrity of the payload, 
 |`rootSignature`|Object|Object containing a signature for the entire payload, and the algorithm used to generate it.|
 |`rootSignature.alg`|String|The algorithm used to generate the root signature. `HS256` is the only available option currently.|
 |`rootSignature.sig`|String|The signature for the entire payload. \n\nExample of signature generation:\n`Base64.encode(HMAC(BinaryOfAllHashesCombined, payloadKey))`|
+|`payloadHashSignature`|Object|Object containing a signature for the entire payload, and the algorithm used to generate it.|
+|`payloadHashSignature.alg`|String|The algorithm used to generate the payload.hash signature. `HS256` is the only available option currently.|
+|`payloadHashSignature.sig`|String|The signature for the payload.hash|
+|`payloadHashSignature.sigKey`|String|The public key used `payloadHashSignature.sig`.  Loosely follows https://www.w3.org/TR/2023/WD-vc-jws-2020-20230629/|
 |`segmentHashAlg`|String|The name of the hashing algorithm used to generate the hashes for each segment. Currently only `GMAC` is available.|
 |`segments`|Array|An array of objects containing each segment object. A segment is defined in its own section: [segment](#encryptioninformationintegrityinformationsegment)|
 |`segmentSizeDefault`|Number|The default size of each chunk, or segment in bytes. By setting the default size here, the segments array becomes more space efficient as it will not have to specify the segment size each time.|
