@@ -34,7 +34,7 @@ The payload contains metadata required to decrypt the TDF's payload, including _
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
 |`mimeType`|String|Specifies the type of file that is encrypted. Default is `application/octet-stream`. |No|
 |`hash`|String|SHA-2 hash of the original, unencrypted payload |No|
-|`hashAlg`|String|Specific SHA-2 algorithm used.  `sha256`|`sha384`|`sha512` |No|
+|`hashAlg`|String|Specific SHA-2 algorithm used.  `sha256`,`sha384`,`sha512` |No|
 |`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
 
 ## encryptionInformation
