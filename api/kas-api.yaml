@@ -313,6 +313,12 @@ components:
       properties:
         kid:
           type: string
+          description: |
+            A stable identifier for the returned public key. This allows 
+            a service to change their public key or to even present multiple
+            public keys with the same algorithm type at a time. This value
+            may be derived from the key data, e.g. a JWK thumbprint or other
+            hash value, or it may be any other unique or generated identifier.
         publicKey:
           oneOf:
             - $ref: "#/components/schemas/PublicKey"
