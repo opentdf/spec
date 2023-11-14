@@ -45,13 +45,33 @@ paths:
           schema:
             default: rsa:2048
             type: string
+        - name: fmt
+          description: response format
+          in: query
+          schema:
+            default: spki
+            type: string
+            enum:
+              - jwk
+              - spki
+        - name: v
+          description: request version
+          in: query
+          schema:
+            default: '1'
+            type: string
+            enum:
+              - '1'
+              - '2'
       responses:
         "200":
           description: Ok
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublicKey"
+                oneOf:
+                  - $ref: "#/components/schemas/PublicKeyV2"
+                  - $ref: "#/components/schemas/PublicKey"
         "404":
           description: Not found
 
@@ -233,6 +253,9 @@ components:
     IV:
       title: Initial vector used to encrypt the ciphertext
       type: string
+    JWK:
+      title: JSON Web Key
+      type: object
     JWT:
       title: JSON Web token
       type: string
@@ -280,6 +303,26 @@ components:
     PublicKey:
       title: Public key
       type: string
+      pattern: '-----BEGIN PUBLIC KEY-----(.|\s)*-----END PUBLIC KEY-----(\s)*'
+    PublicKeyV2:
+      title: Public key and metadata
+      type: object
+      required:
+        - kid
+        - publicKey
+      properties:
+        kid:
+          type: string
+          description: |
+            A stable identifier for the returned public key. This allows 
+            a service to change their public key or to even present multiple
+            public keys with the same algorithm type at a time. This value
+            may be derived from the key data, e.g. a JWK thumbprint or other
+            hash value, or it may be any other unique or generated identifier.
+        publicKey:
+          oneOf:
+            - $ref: "#/components/schemas/PublicKey"
+            - $ref: "#/components/schemas/JWK"
       pattern: '-----BEGIN PUBLIC KEY-----(.|\s)*-----END PUBLIC KEY-----(\s)*'
     UserId:
       title: User id
