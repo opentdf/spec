@@ -1,6 +1,7 @@
 # Attribute Object
 
 ## Summary
+
 An Attribute Object contains attribute information the TDF system uses to enforce attribute-based access control (ABAC). 
 
 Attributes are used in both the [Policy Object](PolicyObject.md) to define the attributes that an entity "needs" to gain access to data in an ABAC sense, 
@@ -42,7 +43,7 @@ If this check succeeds, the KAS permits a decrypt operation and returns a valid 
 
 ## Data policy payload example
 
-```javascript
+```json
 {
   "attribute": "https://example.com/attr/classification/value/topsecret"
 }

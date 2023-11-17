@@ -44,7 +44,7 @@ If these requirements are met, the KAS will permit a decrypt of the file.
 
 ## Example
 
-```javascript
+```json
 {
   "entitlements":[
     {

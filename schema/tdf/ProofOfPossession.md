@@ -25,7 +25,7 @@ presenting its annotated JWT with PoP proof and entitlement claims in the access
 
 ## Example
 
-```javascript
+```json
 TK
 ```
 

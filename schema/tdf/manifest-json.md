@@ -1,19 +1,22 @@
 # manifest.json
 
 ## Summary
+
 In order to decrypt an encrypted TDF payload (such as an image, text file, etc.), there needs to be a location in which to store supporting data and metadata regarding its encryption details.
 
 A TDF's manifest holds this information, and is used by a client in its request to the KAS to supply the necessary keys such that the client can decrypt its payload. It describes the location of the payload , the method used to encrypt it, information to verify its authenticity, the KASes a client must make requests to in order to get an unwrapped key, etc. It also contains the TDF's policy which describes who, or what should be given access to the content.
 
 ## At a Glance
+
 From the top level, the TDF manifest contains only two properties: `payload` and `encryptionInformation`. Each of which are objects, and are decomposed in their own sections below.
 
 If you'd like to see a real manifest created using the TDF client, check it out [here](#authentic-manifest).
 
 ## payload
+
 The payload contains metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
 
-```javascript
+```json
 "payload": {
     "type": "reference",
     "url": "0.payload",
@@ -26,17 +29,18 @@ The payload contains metadata required to decrypt the TDF's payload, including _
 
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
-|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server?\n\nCurrently a type of `reference` is the only possible type.|Yes|
+|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server? Currently a type of `reference` is the only possible type.|Yes|
 |`url`|String|A url pointing to the location of the payload. For example, `0.payload`, as a file local to the TDF.|Yes|
 |`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
-|`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
+|`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. The default is `true`. |Yes|
 |`mimeType`|String|Specifies the type of file that is encrypted. Default is `application/octet-stream`. |No|
 |`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
 
 ## encryptionInformation
+
 Contains information describing the method of encryption. As well as information about one or more KASes which own the TDF.
 
-```javascript
+```json
 "encryptionInformation": {
     "type": "split",
     "keyAccess": [<Key Access Object>],
@@ -48,16 +52,17 @@ Contains information describing the method of encryption. As well as information
 
 |Parameter|Type|Description|
 |---|---|---|
-|`type`|String|The type of scheme used for accessing keys, and providing authorization to the payload. The schema supports multiple options, but currently the only option supported by our libraries is `split`.|
+|`type`|String|The type of scheme used for accessing keys, and providing authorization to the payload. The schema supports multiple options, but currently the only option supported by our libraries is [`split`](#definitions).|
 |`keyAccess`|Array|An array of keyAccess Objects. This object is defined in its own section: [Key Access Object](KeyAccessObject.md)|
 |`method`|Object|The encryption method object is defined below: [method](#encryptioninformationmethod)|
 |`integrityInformation`|Object|`integrityInformation` is defined below in its own section: [integrityInformation](#encryptioninformationintegrityinformation)|
 |`policy`|String|The policy object which has been JSON stringified, then base64 encoded. The policy object is described in its own section: [Policy Object](PolicyObject.md)|
 
 ## encryptionInformation.method
+
 An object which describes the information required to actually decrypt the payload once the key is retrieved. Includes the algorithm, and iv at a minimum.
 
-```javascript
+```json
 "method": {
   "algorithm": "AES-256-GCM",
   "isStreamable": true,
@@ -72,9 +77,10 @@ An object which describes the information required to actually decrypt the paylo
 |`iv`|String|The initialization vector for the encrypted payload.|
 
 ## encryptionInformation.integrityInformation
+
 An object which allows an application to validate the integrity of the payload, or a chunk of a payload should it be a streamable TDF.
 
-```javascript
+```json
 "integrityInformation": {
   "rootSignature": {
     "alg": "HS256",
@@ -86,12 +92,13 @@ An object which allows an application to validate the integrity of the payload, 
   "encryptedSegmentSizeDefault": 1000028
 }
 ```
+
 |Parameter|Type|Description|
 |---|---|---|
 |`rootSignature`|Object|Object containing a signature for the entire payload, and the algorithm used to generate it.|
 |`rootSignature.alg`|String|The algorithm used to generate the root signature. `HS256` is the only available option currently.|
-|`rootSignature.sig`|String|The signature for the entire payload. \n\nExample of signature generation:\n`Base64.encode(HMAC(BinaryOfAllHashesCombined, payloadKey))`|
-|`segmentHashAlg`|String|The name of the hashing algorithm used to generate the hashes for each segment. Currently only `GMAC` is available.|
+|`rootSignature.sig`|String|The signature is the combined [segment](#encryptioninformationintegrityinformationsegment) hashes signed with the payload key then base64 encoded.<br> Example of signature generation: `Base64.encode(HMAC(BinaryOfAllHashesCombined, payloadKey))`|
+|`segmentHashAlg`|String|The name of the hashing algorithm used to generate the hashes for each segment. Currently only [`GMAC`](#definitions) is available.|
 |`segments`|Array|An array of objects containing each segment object. A segment is defined in its own section: [segment](#encryptioninformationintegrityinformationsegment)|
 |`segmentSizeDefault`|Number|The default size of each chunk, or segment in bytes. By setting the default size here, the segments array becomes more space efficient as it will not have to specify the segment size each time.|
 |`encryptedSegmentSizeDefault`|Number|Similar to `segmentSizeDefault` -  the default size of each chunk of _encrypted_ data, in bytes.|
@@ -99,7 +106,7 @@ An object which allows an application to validate the integrity of the payload, 
 ## encryptionInformation.integrityInformation.segment
 Object containing integrity information about a segment of the payload, including its hash.
 
-```javascript
+```json
 {
   "hash": "NzhlZDg5OWMwZWVhZDBjMWEzZTQyYmFlODA0NjNlMDM=",
   "segmentSize": 14056,
@@ -109,14 +116,15 @@ Object containing integrity information about a segment of the payload, includin
 
 |Parameter|Type|Description|
 |---|---|---|
-|`hash`|String|A hash generated using the specified 'segmentHashAlg'. `Base64.encode(HMAC(segment, payloadKey))`|
+|`hash`|String|A hash generated using the specified 'segmentHashAlg'. <br> Because tdf only supports [`GMAC`](#definitions) today this is the gcm authentication tag attached to the end of the ciphertext. |
 |`segmentSize`|Number|The size of the segment. This field is optional. The size of the segment is inferred from 'segmentSizeDefault' defined above, but in the event that a segment were modified and re-encrypted, the segment size would change.|
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|
 
 ## Authentic Manifest
+
 Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
-```javascript
+```json
 {
   "payload": {
     "type": "reference",
@@ -161,3 +169,9 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
   }
 }
 ```
+
+## Appendix
+
+**GMAC:** Galois Message Authentication Code is a MAC derived from GCM which adds a layer of authentication to the ciphertext called a `tag`.
+
+**Split:** When referring to `split` in the case of the `encryptionInformation.type`. The current implementation does an `XOR` on the key based on the number of key access objects.
