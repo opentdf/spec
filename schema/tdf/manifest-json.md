@@ -52,7 +52,7 @@ Contains information describing the method of encryption. As well as information
 
 |Parameter|Type|Description|
 |---|---|---|
-|`type`|String|The type of scheme used for accessing keys, and providing authorization to the payload. The schema supports multiple options, but currently the only option supported by our libraries is [`split`](#definitions).|
+|`type`|String|The type of scheme used for accessing keys, and providing authorization to the payload. The schema supports multiple options, but currently the only option supported by our libraries is [`split`](#appendix).|
 |`keyAccess`|Array|An array of keyAccess Objects. This object is defined in its own section: [Key Access Object](KeyAccessObject.md)|
 |`method`|Object|The encryption method object is defined below: [method](#encryptioninformationmethod)|
 |`integrityInformation`|Object|`integrityInformation` is defined below in its own section: [integrityInformation](#encryptioninformationintegrityinformation)|
@@ -98,12 +98,13 @@ An object which allows an application to validate the integrity of the payload, 
 |`rootSignature`|Object|Object containing a signature for the entire payload, and the algorithm used to generate it.|
 |`rootSignature.alg`|String|The algorithm used to generate the root signature. `HS256` is the only available option currently.|
 |`rootSignature.sig`|String|The signature is the combined [segment](#encryptioninformationintegrityinformationsegment) hashes signed with the payload key then base64 encoded.<br> Example of signature generation: `Base64.encode(HMAC(BinaryOfAllHashesCombined, payloadKey))`|
-|`segmentHashAlg`|String|The name of the hashing algorithm used to generate the hashes for each segment. Currently only [`GMAC`](#definitions) is available.|
+|`segmentHashAlg`|String|The name of the hashing algorithm used to generate the hashes for each segment. Currently only [`GMAC`](#appendix) is available.|
 |`segments`|Array|An array of objects containing each segment object. A segment is defined in its own section: [segment](#encryptioninformationintegrityinformationsegment)|
 |`segmentSizeDefault`|Number|The default size of each chunk, or segment in bytes. By setting the default size here, the segments array becomes more space efficient as it will not have to specify the segment size each time.|
 |`encryptedSegmentSizeDefault`|Number|Similar to `segmentSizeDefault` -  the default size of each chunk of _encrypted_ data, in bytes.|
 
 ## encryptionInformation.integrityInformation.segment
+
 Object containing integrity information about a segment of the payload, including its hash.
 
 ```json
@@ -116,7 +117,7 @@ Object containing integrity information about a segment of the payload, includin
 
 |Parameter|Type|Description|
 |---|---|---|
-|`hash`|String|A hash generated using the specified 'segmentHashAlg'. <br> Because tdf only supports [`GMAC`](#definitions) today this is the gcm authentication tag attached to the end of the ciphertext. |
+|`hash`|String|A hash generated using the specified 'segmentHashAlg'. <br> Because tdf only supports [`GMAC`](#appendix) today this is the gcm authentication tag attached to the end of the ciphertext. |
 |`segmentSize`|Number|The size of the segment. This field is optional. The size of the segment is inferred from 'segmentSizeDefault' defined above, but in the event that a segment were modified and re-encrypted, the segment size would change.|
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|
 
