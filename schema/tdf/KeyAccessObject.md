@@ -1,11 +1,12 @@
 # Key Access Object
 
 ## Summary
+
 A Key Access Object stores not only a wrapped (encrypted) key used to encrypt the file's payload,  but also additional metadata about _how_ it is stored.
 
 ## Example"
 
-```javascript
+```json
 {
   "type": "wrapped",
   "url": "https:\/\/kas.example.com:5000",

@@ -1,13 +1,14 @@
 # Policy Object
 
 ## Summary
+
 The Policy Object is defined by the client at the time of the payload's encryption. It contains the information required by the KAS to make an access decision during decryption.  The policyObject is stored in the [manifest.json](manifest-json.md) for a TDF, and sent to the KAS along with an OIDC bearer token containing a [Claims Object](ClaimsObject.md) so that the KAS may make an access decision.
 
 The KAS uses the Policy Object to make its decision to grant access to the TDF payload.  The entity or user requesting access must be in the `dissem` (dissemination) list _AND_ must possess  entity attributes (as returned by the EAS) that satisfy all the data [Attributes](AttributeObject.md).
 
 ## Example
 
-```javascript
+```json
 {
 "uuid": "1111-2222-33333-44444-abddef-timestamp",
 "body": {

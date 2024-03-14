@@ -1,6 +1,7 @@
 # Entitlement Object
 
 ## Summary
+
 An Entitlement Object represents a complete set of entitlements (that is, a set of [Attribute Objects](AttributeObject.md)) for a single Entity (PE or NPE).
 
 An Entitlement Object defines the attributes a single Entity (PE or NPE) _is entitled with_.
@@ -13,7 +14,7 @@ The Entitlement Object alone _does not_ define how the KAS will compare an entit
 
 ## Example
 
-```javascript
+```json
 {
     "entity_identifier":"cliententityid-14443434-1111343434-asdfdffff",
     "entity_attributes":[
