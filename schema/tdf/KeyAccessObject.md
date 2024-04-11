@@ -10,7 +10,7 @@ A Key Access Object stores not only a wrapped (encrypted) key used to encrypt th
   "type": "wrapped",
   "url": "https:\/\/kas.example.com:5000",
   "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
-  "split": "split-id-1",
+  "sid": "split-id-1",
   "protocol": "kas",
   "wrappedKey": "OqnOETpwyGE3PVpUpwwWZoJTNW24UMhnXIif0mSnqLVCUPKAAhrjeue11uAXWpb9sD7ZDsmrc9ylmnSKP9vWel8ST68tv6PeVO+CPYUND7cqG2NhUHCLv5Ouys3Klurykvy8\/O3cCLDYl6RDISosxFKqnd7LYD7VnxsYqUns4AW5\/odXJrwIhNO3szZV0JgoBXs+U9bul4tSGNxmYuPOj0RE0HEX5yF5lWlt2vHNCqPlmSBV6+jePf7tOBBsqDq35GxCSHhFZhqCgA3MvnBLmKzVPArtJ1lqg3WUdnWV+o6BUzhDpOIyXzeKn4cK2mCxOXGMP2ck2C1a0sECyB82uw==",
   "policyBinding": "BzmgoIxZzMmIF42qzbdD4Rw30GtdaRSQL2Xlfms1OPs=",
@@ -28,7 +28,7 @@ A Key Access Object stores not only a wrapped (encrypted) key used to encrypt th
 |`type`|String|Specifies how the key is stored.<p>Possible Values: <dl><dt>remote</dt><dd>The wrapped key (see below) is stored using Virtru infrastructure and is thus not part of the final TDF manifest.</dd><dt>wrapped</dt><dd>Default for TDF 3.x and newer, the wrapped key is stored as part of the manifest.</dd><dt>remoteWrapped</dt><dd>Allows management of customer hosted keys, such as with a *Customer Key Server*. This feature is available as an upgrade path.</dd></dl>|Optional|
 |`url`|String|A url pointing to the desired KAS deployment|Yes|
 |`kid`|String|Identifier for the KAS public key, such as its thumbprint. The current preferred identifier can be looked up using the `kas_public_key` endpoint. For compatibility, our reference implementation uses the associated x509 certificate's fingerprint, although this may be a UUID or other simple string selector.|Recommended|
-|`split`|String|A key 'split' identifier. To allow sharing a key across several access domains, the KAO supports a 'Split Identifier'. To reconstruct such a key, use the `xor` operation to combine one of each separate split identitifier.|Optional|
+|`sid`|String|A key split (or share) identifier. To allow sharing a key across several access domains, the KAO supports a 'Split Identifier'. To reconstruct such a key, use the `xor` operation to combine one of each separate sid, at least under the current encryption information type (`split`).|Optional|
 |`protocol`|String|Protocol being used. Currently only `kas` is supported. Defaults to `kas`|Optional|
 |`wrappedKey`|String|The symmetric key used to encrypt the payload. It has been encrypted using the public key of the KAS, then base64 encoded.|Yes|
 |`policyBinding`|Object|This contains a keyed hash that will provide cryptographic integrity on the policy object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy. <p>This is Base64 encoding of HMAC(POLICY,KEY), where: <dl><dt>POLICY</dt><dd>`base64(policyjson)` that is in the “encryptionInformation/policy”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey.</dd></dl>|Yes|
@@ -42,9 +42,9 @@ A Key Access Object stores not only a wrapped (encrypted) key used to encrypt th
 
 The `encryptionInformation` field allows storing not just one, but a list of `KeyAccess` objects.
 This allows the same data encryption key to be encapsulated by multiple access services,
-or for the key to be 'split' using an XOR among two or more access services.
+or for the key to be split using an XOR among two or more access services.
 
-To support both functionalities together, the `split` identity field indicates if a split occurs
+To support both functionalities together, the `sid` identity field indicates if a split occurs
 and allows for selection of the necessary components to reassmble the data encryption key.
 
 ### Examples
@@ -254,7 +254,7 @@ fraction.
 - policyBinding: |
     TkRrNE9HSTRZV001WVROa09HWmhZVGd3TWpOaE5qWTRZMlF3WldZNU4yVmhNRGN3TlRWaE56VTJP
     VFpsT0RsaFl6QmhPVEk0TXpVMk5tUm1OVFk0WkE9PQ==
-  split: split-alpha.kas
+  sid: split-alpha.kas
   url: alpha.kas
   wrappedKey: |
     SkxtU2QxVDZwMlhNdmQrd2JHSjRPK3p1d005V2xWQTBvR0pwVThzMTR5RWlMMzlza0NQSG9DaEpr
@@ -267,7 +267,7 @@ fraction.
 - policyBinding: |
     WVRneFpUbGhOelpqWm1JNU16aG1ZemhpWXpWbE5qSXpNakZqWlRBeVpqbGhPR1ExTnpZM1pUZzRO
     VGt6WlRRNVlUUTVZelU0Wm1FME5EVXpPRGMzTVE9PQ==
-  split: split-beta.kas
+  sid: split-beta.kas
   url: beta.kas
   wrappedKey: |
     aDNEOEUvKzRDZzNGVUVjVEhEbDBoS0hxN2FqbUZMVmEyYUh2UHlTVUl5ZlhSY3Q0dFFCSi9MNTB1
@@ -292,7 +292,7 @@ with the HSM.
 - policyBinding: |
     TkRrNE9HSTRZV001WVROa09HWmhZVGd3TWpOaE5qWTRZMlF3WldZNU4yVmhNRGN3TlRWaE56VTJP
     VFpsT0RsaFl6QmhPVEk0TXpVMk5tUm1OVFk0WkE9PQ==
-  split: a
+  sid: a
   url: alpha.kas
   wrappedKey: |
     UVRiUnZteDFFc1I3S3pHenBLeVdncEFnVGt6aW9zVm5vc3NDM05mcVNUOS80cDhvdDZwMTJWQU93
@@ -305,7 +305,7 @@ with the HSM.
 - policyBinding: |
     WVRneFpUbGhOelpqWm1JNU16aG1ZemhpWXpWbE5qSXpNakZqWlRBeVpqbGhPR1ExTnpZM1pUZzRO
     VGt6WlRRNVlUUTVZelU0Wm1FME5EVXpPRGMzTVE9PQ==
-  split: b
+  sid: b
   url: beta.kas
   wrappedKey: |
     SjRlOHNKVDBVNjJ5ODY4NXJqZGMydUhZem5MREc5NEI2YU9ybVgyTHJlazlXa29sVDh5bzZnYjZ4
@@ -318,7 +318,7 @@ with the HSM.
 - policyBinding: |
     TkRrNE9HSTRZV001WVROa09HWmhZVGd3TWpOaE5qWTRZMlF3WldZNU4yVmhNRGN3TlRWaE56VTJP
     VFpsT0RsaFl6QmhPVEk0TXpVMk5tUm1OVFk0WkE9PQ==
-  split: a
+  sid: a
   url: local.hsm
   wrappedKey: |
     Tnp0U1NXRXVxU0dlVGRLRGJMK3gzMGt6bEsrdE9NdTYyV3lGWFdJbDdNdkx0eHZQWUpCUEhNZG1v
@@ -331,7 +331,7 @@ with the HSM.
 - policyBinding: |
     WVRneFpUbGhOelpqWm1JNU16aG1ZemhpWXpWbE5qSXpNakZqWlRBeVpqbGhPR1ExTnpZM1pUZzRO
     VGt6WlRRNVlUUTVZelU0Wm1FME5EVXpPRGMzTVE9PQ==
-  split: b
+  sid: b
   url: local.hsm
   wrappedKey: |
     Z0dIRmdRMFZNR042VnpCMTBHTjlUcUlvUUpvU0FyUmR3MXhnZld0UEhBaGlkTTVRVE5nZ3JqYk1D
