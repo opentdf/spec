@@ -26,19 +26,15 @@ TDF allows the data owner (or org's administrator) to revoke or expire access to
 TDF protocol and infrastructure enables logging every key request - effectively adding the most reliable auditing and tracking of access requests.
 
 ### 5. Streaming and Support for Large Files
-`New in TDF3`
 TDF supports protection (encryption and decryption) of very large files. This is done by supporting streaming. 
 
 ### 6. Policy Binding
-`New in TDF3`
 TDF format provides support for cryptographic binding between payload and metadata via public key-based signatures. This guarantees that the Policy Object has not been tampered with.
 
-### 6. Offline Create
-`New in TDF3`
+### 7. Offline Create
 Thanks to the assurances provided by `Policy Binding` described above, TDF-enabled clients can create TDFs without actively connecting to the key server (in other words, no access to the internet). The offline created TDF can be sent to anyone via offline methods or when the device has access to internet again. 
 
-### 7. Key Server Federation
-`New in TDF3`
+### 8. Key Server Federation
 Multiple KAS servers, each hosted by a different organization, can jointly control access to a TDF file. This enables organizations to jointly own, control, audit files in a zero trust manner. 
 
 
