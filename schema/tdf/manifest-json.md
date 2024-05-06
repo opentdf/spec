@@ -13,25 +13,27 @@ If you'd like to see a real manifest created using the TDF client, check it out 
 ## payload
 The payload contains metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
 
-```javascript
+```json
 "payload": {
     "type": "reference",
     "url": "0.payload",
     "protocol": "zip",
     "isEncrypted": true,
     "mimeType": "application/pdf",
-    "tdf_spec_version:": "x.y.z"
+    "tdf_spec_version:": "x.y.z",
+    "value": "aGVsbG8gd29ybGQ="
 }
 ```
 
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
-|`type`|String|Type of payload. The type would be a description of where to get the payload. Is it contained within the TDF, for example, or stored on a remote server?\n\nCurrently a type of `reference` is the only possible type.|Yes|
-|`url`|String|A url pointing to the location of the payload. For example, `0.payload`, as a file local to the TDF.|Yes|
-|`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
+|`type`|String|Type of payload. The type would be a description of where to get the payload. Default type `reference` is stored within the zip archive.  Type `inline` is stored in the manifest at `payload.value`.  Type `remote` is stored externally on a remote server. |Yes|
+|`url`|String|A url pointing to the location of the payload. Examples: `type=reference,url=0.payload` a file at root of the zip archive. `type=inline,url=""` an encoded value at `payload.value` |Yes|
+|`protocol`|String|Designates which protocol was used during encryption. `zip` and `zipstream` are specified at time of encryption depending on the use of non-streaming vs. streaming encryption. `base64` and `hex` are used for `type=inline` and determines the encoding of `value` |Yes|
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
 |`mimeType`|String|Specifies the type of file that is encrypted. Default is `application/octet-stream`. |No|
 |`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
+|`value`|String|Encoded payload, used when `type=inline` is specified.  Payload must be one segment only. |No|
 
 ## encryptionInformation
 Contains information describing the method of encryption. As well as information about one or more KASes which own the TDF.
