@@ -2,11 +2,7 @@
 
 Attributes are represented by [Attribute Objects](AttributeObject.md)
 
-Attributes that an entity (or actor, or subject) "has" are referred to as "entity entitlements" and are represented by [Entitlement Objects](EntitlementObject.md)
-
 Attributes that entities "need" in order to access data are referred to as "data attributes" and are represented by [Policy Objects](PolicyObject.md)
-
-The set of all entity entitlements involved in a request are referred to as "claims" and are represented by a [Claims Object](ClaimsObject.md)
 
 A TDF file consists of:
 
