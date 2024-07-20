@@ -11,6 +11,7 @@ From the top level, the TDF manifest contains only two properties: `payload` and
   - [Method](#encryptioninformationmethod)
   - [Integrity Information](#encryptioninformationintegrityinformation)
     - [Segment](#encryptioninformationintegrityinformationsegment)
+- [Assertions](#assertions)
 
 If you'd like to see a real manifest created using the TDF client, check it out [here](#authentic-manifest).
 
@@ -123,6 +124,84 @@ Object containing integrity information about a segment of the payload, includin
 |`segmentSize`|Number|The size of the segment. This field is optional. The size of the segment is inferred from 'segmentSizeDefault' defined above, but in the event that a segment were modified and re-encrypted, the segment size would change.|
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|
 
+## assertions
+Assertions contain metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
+
+```javascript
+"assertions": [
+  {
+    "id": "123qwerty456",
+    "type": "handling",
+    "scope": "payload",
+    "appliesToState": "encrypted",
+    "statement": {/* Statement Object */},
+    "binding": {
+      "method": "jws",
+      "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+    }
+  }
+]
+```
+
+| Parameter           |Type| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |Required?|
+|---------------------|---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| `id`                |String| A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |Yes|
+| `type`              |String| Describes the type of assertion (`handling` or `other`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |Yes|
+| `scope`             |String| An enumeration of the object to which the assertion applies (`tdo` or `payload`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |Yes|
+| `appliesToState`    |String| Used to indicate if the statement metadata applies to `encrypted` or `unencrypted` data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |No|
+| `statement`         |Object| `statement` is defined below in its own section: [statement](#assertionsstatement)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |Yes|
+| `binding`           |Object| Object describing the binding. Contains a hash, and an algorithm used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |Yes|
+
+## assertions.statement
+Object containing information applying to the scope of the assertion. May contain rights, handling instructions, or general metadata.
+
+```javascript
+{
+  "format": "json-structured",
+  "value": {
+      "format": "json-structured",
+      "value": {
+        "Xmlns": "urn:nato:stanag:4774:confidentialitymetadatalabel:1:0",
+        "CreationTime": "2015-08-29T16:15:00Z",
+        "ConfidentialityInformation": {
+            "PolicyIdentifier": "NATO",
+            "Classification": "SECRET",
+            "Category": {
+                "Type": "PERMISSIVE",
+                "TagName": "Releasable to",
+                "GenericValues": [
+                    "SWE",
+                    "FIN",
+                    "FRA"
+                ]
+            }
+        }
+    }
+  }
+}
+```
+
+|Parameter|Type| Description                                                                                  |
+|---|---|----------------------------------------------------------------------------------------------|
+|`format`|String| Describes the payload content encoding format (`json-structured`, `base64binary`, `string`). |
+|`value`|String| Payload content encoded in the format specified.                                             |
+
+## assertions.binding
+Object containing a signature of the assertion that will provide cryptographic integrity on the assertion object, 
+such that it cannot be modified or copied to another TDF, without invalidating the binding.     
+
+```javascript
+{
+  "method": "jws",
+  "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+}
+```
+| Parameter   |Type| Description                                                                                                           |
+|-------------|---|-----------------------------------------------------------------------------------------------------------------------|
+| `method`    |String| The method, or algorithm used to generate the hash usually JWS.                                                       |Yes|
+| `signature` |String| A base64 represenation of the assertion signature which was created using the method described in the 'method' field. |Yes|
+
+ 
 ## Authentic Manifest
 
 Here is the JSON from an actual `.tdf` file, created by the TDF client.
@@ -172,6 +251,38 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
       "encryptedSegmentSizeDefault": 1000028
     },
     "policy": "eyJ1dWlkIjoiNjEzMzM0NjYtNGYwYS00YTEyLTk1ZmItYjZkOGJkMGI4YjI2IiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
-  }
+  },
+  "assertions": [
+      {
+        "id": "123qwerty456",
+        "type": "handling",
+        "scope": "payload",
+        "appliesToState": "encrypted",
+        "statement": {
+            "format": "json-structured",
+            "value": {
+              "Xmlns": "urn:nato:stanag:4774:confidentialitymetadatalabel:1:0",
+              "CreationTime": "2015-08-29T16:15:00Z",
+              "ConfidentialityInformation": {
+                  "PolicyIdentifier": "NATO",
+                  "Classification": "SECRET",
+                  "Category": {
+                      "Type": "PERMISSIVE",
+                      "TagName": "Releasable to",
+                      "GenericValues": [
+                          "SWE",
+                          "FIN",
+                          "FRA"
+                      ]
+                  }
+              }
+          }
+        },
+        "binding": {
+          "method": "jws",
+          "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+        }
+      }
+  ]
 }
 ```
