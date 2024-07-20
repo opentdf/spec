@@ -109,7 +109,7 @@ An object which allows an application to validate the integrity of the payload, 
 
 Object containing integrity information about a segment of the payload, including its hash.
 
-```javascript
+```json
 {
   "hash": "NzhlZDg5OWMwZWVhZDBjMWEzZTQyYmFlODA0NjNlMDM=",
   "segmentSize": 14056,
@@ -127,7 +127,7 @@ Object containing integrity information about a segment of the payload, includin
 
 Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
-```javascript
+```json
 {
   "payload": {
     "type": "reference",
@@ -143,7 +143,10 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
         "url": "http://kas.example.com:4000",
         "protocol": "kas",
         "wrappedKey": "YBkqvsiDnyDfw5JQzux2S2IaiClhsojZuLYY9WOc9N9l37A5/Zi7iloxcqgFvBFbzVjGW4QBwAHsytKQvE87bHTuQkZs4XyPACOZE/k9r+mK8KazcGTkOnqPKQNhf2XK4TBACJZ6eItO5Q1eHUQVLKjxUfgyx2TBDfhB/7XifNthu+6lFbKHmPl1q7q1Vaa/rpPRhSgqf89x5fQvcSWdkuOH9Y4wTa8tdKqSS3DUNMKTIUQq8Ti/WFrq26DRemybBgBcL/CyUZ98hFjDQgy4csBusEqwQ5zG+UAoRgkLkHiAw7hNAayAUCVRw6aUYRF4LWfcs2BM9k6d3bHqun0v5w==",
-        "policyBinding": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA==",
+        "policyBinding": {
+          "alg": "HS256",
+          "hash": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
+        },
         "encryptedMetadata": "OEOqJCS6mZsmLWJ38lh6EN2lDUA8OagL/OxQRQ=="
       }
     ],
