@@ -370,7 +370,7 @@ The values for Type Enum are as follows:
 |---------|---------------------------------------------------|
 | `0x00`  | Remote Policy                                     |
 | `0x01`  | Embedded Policy (Plaintext)                       |
-| `0x02`  | Embedded Policy (Encrypted)                       |
+| `0x02`  | ~~Embedded Policy (Encrypted)~~ (deprecated)      |
 | `0x03`  | Embedded Policy (Encrypted w/[Policy Key Access]) |
 
 ##### 3.4.2.3 Body
@@ -391,7 +391,7 @@ These policy types allow for creation and binding of arbitraty policies.
 |-------------------------------|--------------------|---------------------|
 | Content Length                | 2                  | 2                   |
 | Plaintext/Ciphertext          | 1                  | 255                 |
-| (Optional) Policy Key Access  | 36                 | 136                 |
+| (Required w/Ciphertext) Policy Key Access  | 36    | 136                 |
 
 ###### 3.4.2.3.2.1 Content Length
 
@@ -404,7 +404,7 @@ section is missing for the encrypted policy. To save space, the IV used for an
 encrypted policy is always `0x000000`. This IV and key combination should not be
 reused.
 
-###### 3.4.2.3.2.3 (Optional) Policy Key Access
+###### 3.4.2.3.2.3 (Required w/Ciphertext) Policy Key Access
 
 [Policy Key Access]: #342323-optional-policy-key-access
 [Section 3.4.2.3.2.3]: #342323-optional-policy-key-access
