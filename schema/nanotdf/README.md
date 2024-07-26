@@ -452,6 +452,21 @@ then the key derived from the Ephemeral Public Key is used to encrypt the policy
 and payload together and generate the GMAC tag. For key derivation details see
 [Section 4].
 
+###### 3.4.3 Key Identifier
+
+This section defines where and which Public key is being used,
+essentially the key identifier (KID).  
+Used in Payload and Policy keys.
+
+
+The structure of this section is as follows:
+
+| Section                | Minimum Length (B) | Maximum Length (B)  |
+|------------------------|--------------------|---------------------|
+| Resource Locator       | 3                  | 257                 |
+| Public Key             | 33                 | 133                 |
+
+
 ## 4. ECC Encryption Key Derivation
 
 [Section 4]: #4-ecc-encryption-key-derivation
