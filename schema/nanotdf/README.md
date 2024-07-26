@@ -407,7 +407,7 @@ section is missing for the encrypted policy. To save space, the IV used for an
 encrypted policy is always `0x000000`. This IV and key combination should not be
 reused.
 
-###### 3.4.2.3.2.3 (Optional) Policy Key Identifer
+###### 3.4.2.3.2.3 (Optional) Policy Key Identifier
 
 [Policy Key Access]: #342323-optional-policy-key-access
 [Section 3.4.2.3.2.3]: #342323-optional-policy-key-access
