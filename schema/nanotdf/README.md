@@ -84,7 +84,7 @@ structured as follows:
 | Section                | Minimum Length (B)  | Maximum Length (B)  |
 |------------------------|---------------------|---------------------|
 | Magic Number + Version | 3                   | 3                   |
-| KAS                    | 3                   | 257                 |
+| KAS Key Identifier     | 36                  | 380                 |
 | ECC Mode               | 1                   | 1                   |
 | Payload + Sig Mode     | 1                   | 1                   |
 | Policy                 | 3                   | 257                 |
@@ -106,11 +106,11 @@ count at 12, all versions before that should be considered invalid. So the first
 version of the nanotdf has a Magic Number + Version value of `L1L` which,
 consequently, is `TDFM` (think TDF mini/micro/etc) when base64 encoded. 
 
-##### 3.3.1.2 KAS
+##### 3.3.1.2 KAS Key Identifier
 
-This section contains a Resource Locator type that allows describing access to a
-resource. In the case of the KAS, the Resource Locator defines how to access a
-KAS. Refer to the Resource Locator object's definition in [Section 3.4.1].
+This section contains a Key Identifier type that allows describing access to a
+key and resource. In the case of the KAS, the Key Identifier defines how to access a
+KAS and the KAS public key used. Refer to the Key Identifier object's definition in [Section 3.4.2].
 
 ##### 3.3.1.3 ECC And Binding Mode
 
