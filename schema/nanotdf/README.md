@@ -110,7 +110,10 @@ consequently, is `TDFM` (think TDF mini/micro/etc) when base64 encoded.
 
 This section contains a Key Identifier type that allows describing access to a
 key and resource. In the case of the KAS, the Key Identifier defines how to access a
-KAS and the KAS public key used. Refer to the Key Identifier object's definition in [Section 3.4.2].
+KAS and the KAS public key used. The KAS Key is the Payload key and optionally
+the Policy key.
+
+Refer to the Key Identifier object's definition in [Section 3.4.2].
 
 ##### 3.3.1.3 ECC And Binding Mode
 
@@ -404,7 +407,7 @@ section is missing for the encrypted policy. To save space, the IV used for an
 encrypted policy is always `0x000000`. This IV and key combination should not be
 reused.
 
-###### 3.4.2.3.2.3 (Optional) Policy Key Access
+###### 3.4.2.3.2.3 (Optional) Policy Key Identifer
 
 [Policy Key Access]: #342323-optional-policy-key-access
 [Section 3.4.2.3.2.3]: #342323-optional-policy-key-access
@@ -414,12 +417,7 @@ the policy. However, for speed's sake, it is suggested that this only be used if
 the nanotdf's encrypted payload is encrypted for a KAS's HSM (formerly called a
 CKS). 
 
-The structure of this section is as follows:
-
-| Section                | Minimum Length (B) | Maximum Length (B)  |
-|------------------------|--------------------|---------------------|
-| Resource Locator       | 3                  | 257                 |
-| Ephemeral Public Key   | 33                 | 133                 |
+Refer to the Key Identifier object's definition in [Section 3.4.2].
 
 ###### 3.4.2.3.2.3.1 Resource Locator
 
