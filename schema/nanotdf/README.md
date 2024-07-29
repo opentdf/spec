@@ -303,11 +303,12 @@ This section describes embedded types that are used in multiple places in a
 The Resource Locator is a way for the nanotdf to represent references to
 external resources in as succinct a format as possible. 
 
-| Section       | Minimum Length (B)  | Maximum Length (B)  |
-|---------------|---------------------|---------------------|
-| Protocol Enum | 1                   | 1                   |
-| Body Length   | 1                   | 1                   |
-| Body          | 1                   | 255                 |
+| Section               | Minimum Length (B)  | Maximum Length (B)  |
+|-----------------------|---------------------|---------------------|
+| Protocol Enum         | 1                   | 1                   |
+| Body Length           | 1                   | 1                   |
+| Body                  | 1                   | 255                 |
+| Identifier (optional) | 0                   | 32                  |
 
 ##### 3.4.1.1 Protocol Enum
 
@@ -321,7 +322,9 @@ The following are the available values:
 |---------|---------------------------|
 | `0x00`  | `http`                    |
 | `0x01`  | `https`                   |
-| `0x02`  | unreserved                |
+| `0x21`  | `https` w/identifier 2B   |
+| `0x81`  | `https` w/identifier 8B   |
+| `0xf1`  | `https` w/identifier 32B  |
 | `0xff`  | Shared Resource Directory |
 
 _Note: Any unlisted values are unreserved. Clients should consider their use
