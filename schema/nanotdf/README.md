@@ -110,7 +110,10 @@ consequently, is `TDFM` (think TDF mini/micro/etc) when base64 encoded.
 
 This section contains a Resource Locator type that allows describing access to a
 resource. In the case of the KAS, the Resource Locator defines how to access a
-KAS. Refer to the Resource Locator object's definition in [Section 3.4.1].
+KAS and its key. The Key Identifier (KID) uses the Protocol Enum w/Identifier.
+Protocol Enum w/Identifier is required.
+
+Refer to the Resource Locator object's definition in [Section 3.4.1].
 
 ##### 3.3.1.3 ECC And Binding Mode
 
