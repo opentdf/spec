@@ -313,7 +313,7 @@ external resources in as succinct a format as possible.
 | Body                  | 1                   | 255                 |
 | Identifier (optional) | 0                   | 32                  |
 
-##### 3.4.1.1 Protocol Enum
+##### 3.4.1.1 Protocol Header
 
 [Section 3.4.1.1]: #3411-protocol-enum
 [Protocol Enum]: #3411-protocol-enum
@@ -325,10 +325,19 @@ The following are the available values:
 |---------|---------------------------|
 | `0x00`  | `http`                    |
 | `0x01`  | `https`                   |
-| `0x21`  | `https` w/identifier 2B   |
-| `0x81`  | `https` w/identifier 8B   |
-| `0xf1`  | `https` w/identifier 32B  |
-| `0xff`  | Shared Resource Directory |
+|Bits 3-0 | Protocol Enum Value |
+|-------|------|
+| `0x0`  | `http`   |
+| `0x1`  | `https`  |
+| `0x2`  | unreserved  |
+| `0xf`  | Shared Resource Directory  |
+
+| Bits 7-4 | Meaning for KAS key lookup |
+|-------|------|
+| `0x0`  | No Key Identifier   |
+| `0x1`  | 2 Byte Identifier |
+| `0x2`  | 8 Byte Identifier  |
+| `0x3`  | 32 Byte Identifier |
 
 _Note: Any unlisted values are unreserved. Clients should consider their use
 an errorneous condition._
