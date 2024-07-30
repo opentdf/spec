@@ -332,9 +332,9 @@ The following are the available values:
 | `0x2`  | unreserved  |
 | `0xf`  | Shared Resource Directory  |
 
-| Bits 7-4 | Meaning for KAS key lookup |
+| Bits 7-4 | Used for lokkups of KAS key, Remote Policy, Policy key |
 |-------|------|
-| `0x0`  | No Key Identifier   |
+| `0x0`  | No Identifier   |
 | `0x1`  | 2 Byte Identifier |
 | `0x2`  | 8 Byte Identifier  |
 | `0x3`  | 32 Byte Identifier |
@@ -349,6 +349,8 @@ version. This actually allows users of a shared directory to have reduced sizes
 of their nanotdf. The shared resource directory at this time is still an
 experimental part of the nanotdf and is included in the documentation to support
 a minor update to the nanotdf in a subsequent specification. 
+
+Note is this version the "Shared Resource Directory" flag has moved.
 
 ##### 3.4.1.2 Body Length
 
@@ -434,7 +436,6 @@ The structure of this section is as follows:
 | Section                | Minimum Length (B) | Maximum Length (B)  |
 |------------------------|--------------------|---------------------|
 | Resource Locator       | 3                  | 257                 |
-| Ephemeral Public Key   | 33                 | 133                 |
 
 ###### 3.4.2.3.2.3.1 Resource Locator
 
