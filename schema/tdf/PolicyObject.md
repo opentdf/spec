@@ -2,7 +2,7 @@
 
 ## Summary
 
-The Policy Object is defined by the client at the time of the TDF creation. It contains the information required by a Policy Enforcement Point (PEP) to make an access decision. The Policy Object is stored in the [manifest.json](manifest-json.md) for a TDF.
+The Policy Object is defined by the client at the time of the TDF creation. It contains the information required by a Policy Enforcement Point (PEP) to make an access decision. The Policy Object is stored in the [manifest.json](Manifest.md) for a TDF.
 
 A PEP uses the Policy Object to decide whether to grant access to the TDF payload. The entity or user requesting access must be in the `dissem` (dissemination) list _AND_ must possess entitlements that satisfy all the data [Attributes](AttributeObject.md).
 
