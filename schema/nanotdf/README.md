@@ -110,7 +110,10 @@ consequently, is `TDFM` (think TDF mini/micro/etc) when base64 encoded.
 
 This section contains a Resource Locator type that allows describing access to a
 resource. In the case of the KAS, the Resource Locator defines how to access a
-KAS. Refer to the Resource Locator object's definition in [Section 3.4.1].
+KAS and its key. The Key Identifier (KID) uses the Protocol Enum w/Identifier.
+Protocol Enum w/Identifier is required.
+
+Refer to the Resource Locator object's definition in [Section 3.4.1].
 
 ##### 3.3.1.3 ECC And Binding Mode
 
@@ -303,13 +306,14 @@ This section describes embedded types that are used in multiple places in a
 The Resource Locator is a way for the nanotdf to represent references to
 external resources in as succinct a format as possible. 
 
-| Section       | Minimum Length (B)  | Maximum Length (B)  |
-|---------------|---------------------|---------------------|
-| Protocol Enum | 1                   | 1                   |
-| Body Length   | 1                   | 1                   |
-| Body          | 1                   | 255                 |
+| Section               | Minimum Length (B)  | Maximum Length (B)  |
+|-----------------------|---------------------|---------------------|
+| Protocol Enum         | 1                   | 1                   |
+| Body Length           | 1                   | 1                   |
+| Body                  | 1                   | 255                 |
+| Identifier (optional) | 0                   | 32                  |
 
-##### 3.4.1.1 Protocol Enum
+##### 3.4.1.1 Protocol Header
 
 [Section 3.4.1.1]: #3411-protocol-enum
 [Protocol Enum]: #3411-protocol-enum
@@ -321,8 +325,19 @@ The following are the available values:
 |---------|---------------------------|
 | `0x00`  | `http`                    |
 | `0x01`  | `https`                   |
-| `0x02`  | unreserved                |
-| `0xff`  | Shared Resource Directory |
+|Bits 3-0 | Protocol Enum Value |
+|-------|------|
+| `0x0`  | `http`   |
+| `0x1`  | `https`  |
+| `0x2`  | unreserved  |
+| `0xf`  | Shared Resource Directory  |
+
+| Bits 7-4 | Used for lokkups of KAS key, Remote Policy, Policy key |
+|-------|------|
+| `0x0`  | No Identifier   |
+| `0x1`  | 2 Byte Identifier |
+| `0x2`  | 8 Byte Identifier  |
+| `0x3`  | 32 Byte Identifier |
 
 _Note: Any unlisted values are unreserved. Clients should consider their use
 an errorneous condition._
@@ -334,6 +349,8 @@ version. This actually allows users of a shared directory to have reduced sizes
 of their nanotdf. The shared resource directory at this time is still an
 experimental part of the nanotdf and is included in the documentation to support
 a minor update to the nanotdf in a subsequent specification. 
+
+Note is this version the "Shared Resource Directory" flag has moved.
 
 ##### 3.4.1.2 Body Length
 
@@ -419,7 +436,6 @@ The structure of this section is as follows:
 | Section                | Minimum Length (B) | Maximum Length (B)  |
 |------------------------|--------------------|---------------------|
 | Resource Locator       | 3                  | 257                 |
-| Ephemeral Public Key   | 33                 | 133                 |
 
 ###### 3.4.2.3.2.3.1 Resource Locator
 
