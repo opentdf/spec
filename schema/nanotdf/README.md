@@ -321,26 +321,24 @@ external resources in as succinct a format as possible.
 This is a single byte used to describe the protocol used to locate a resource. 
 The following are the available values:
 
-| Value   | Protocol                  |
-|---------|---------------------------|
-| `0x00`  | `http`                    |
-| `0x01`  | `https`                   |
-|Bits 3-0 | Protocol Enum Value |
-|-------|------|
-| `0x0`  | `http`   |
-| `0x1`  | `https`  |
-| `0x2`  | unreserved  |
-| `0xf`  | Shared Resource Directory  |
+| Value      | Protocol                    |
+|------------|-----------------------------|
+| Bits 3-0   | Protocol Enum Value         |
+| `0x0`      | `http`                      |
+| `0x1`      | `https`                     |
+| `0x2`      | unreserved                  |
+| `0xf`      | Shared Resource Directory   |
 
-| Bits 7-4 | Used for lokkups of KAS key, Remote Policy, Policy key |
-|-------|------|
-| `0x0`  | No Identifier   |
-| `0x1`  | 2 Byte Identifier |
-| `0x2`  | 8 Byte Identifier  |
-| `0x3`  | 32 Byte Identifier |
+| Value      | Identifier                                               |
+|------------|----------------------------------------------------------|
+| Bits 7-4   | Used for lookups of KAS key, Remote Policy, Policy key   |
+| `0x0`      | None                                                     |
+| `0x1`      | 2 Byte                                                   |
+| `0x2`      | 8 Byte                                                   |
+| `0x3`      | 32 Byte                                                  |
 
 _Note: Any unlisted values are unreserved. Clients should consider their use
-an errorneous condition._
+an erroneous condition._
 
 ###### 3.4.1.1.1 The Shared Resource Directory
 
@@ -350,7 +348,7 @@ of their nanotdf. The shared resource directory at this time is still an
 experimental part of the nanotdf and is included in the documentation to support
 a minor update to the nanotdf in a subsequent specification. 
 
-Note is this version the "Shared Resource Directory" flag has moved.
+Note is this specification version ( > `opentdf/spec` 4.3.0) the "Shared Resource Directory" flag has moved.
 
 ##### 3.4.1.2 Body Length
 
