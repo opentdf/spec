@@ -434,6 +434,7 @@ The structure of this section is as follows:
 | Section                | Minimum Length (B) | Maximum Length (B)  |
 |------------------------|--------------------|---------------------|
 | Resource Locator       | 3                  | 257                 |
+| Ephemeral Public Key   | 33                 | 133                 |
 
 ###### 3.4.2.3.2.3.1 Resource Locator
 
