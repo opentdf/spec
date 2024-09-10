@@ -81,14 +81,14 @@ packet-beta
 0-17: "Magic Number"
 18-23: "Version"
 24-31: "KAS Resource Locator*"
-32: "Use ECDSA for Binding"
+32: "EC+Bind"
 33-36: "Reserved"
-37-39: "Binding ECC Mode"
-40: "Has Signature?"
-41-43: "Signature ECC Mode"
-44-47: "Symmetric Cipher Enum"
-48-143: "Policy*"
-144-407: "Ephemeral Public Key*"
+37-39: "ECC Mode"
+40: "Sign?"
+41-43: "Sig EC Mode"
+44-47: "Sym Cipher Mode"
+48-63: "Policy*"
+64-79: "Ephemeral Public Key*"
 ```
 
 ```mermaid
@@ -99,8 +99,8 @@ packet-beta
 0-3: "Identifier Type"
 4-7: "Protocol Type"
 8-15: "URL Body Length"
-16-31: "URL Body*"
-32-47: "Identifier"
+16-47: "URL Body*"
+47-63: "Identifier*"
 ```
 
 ```mermaid
@@ -111,7 +111,7 @@ packet-beta
 0-7: "Policy Mode"
 8-23: "Policy Body Length"
 24-31: "Body*"
-32-95: "Binding*"
+32-63: "Binding*"
 ```
 
 ```mermaid
@@ -121,7 +121,7 @@ title: "Remote Policy"
 packet-beta
 0-7: "Policy Mode"
 8-31: "Resource Locator"
-32-95: "Binding*"
+32-63: "Binding*"
 ```
 
 ```mermaid
@@ -132,7 +132,7 @@ packet-beta
 0-23: "Length of rest of payload"
 24-47: "Initialization Vector"
 48-63: "Payload*"
-64-159: "Message Authentication Code*"
+64-95: "Message Authentication Code*"
 ```
 
 ```mermaid
@@ -140,8 +140,8 @@ packet-beta
 title: "NanoTDF Envelope Signature"
 ---
 packet-beta
-0-263: "Signer Public Key"
-263-767: "Signature"
+0-31: "Signer Public Key"
+32-63: "Signature"
 ```
 
 ```mermaid
@@ -152,7 +152,7 @@ packet-beta
 0-7: "Length of R"
 8-31: "R*"
 32-39: "Length of S"
-40-47: "S*"
+40-63: "S*"
 ```
 
 #### 3.3.1 Header
