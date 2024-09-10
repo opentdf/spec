@@ -81,10 +81,10 @@ packet-beta
 0-17: "Magic Number"
 18-23: "Version"
 24-31: "KAS Resource Locator*"
-32: "EC+Bind"
+32: "ECB?"
 33-36: "Reserved"
-37-39: "ECC Mode"
-40: "Sign?"
+37-39: "EC Mode"
+40: "Sig?"
 41-43: "Sig EC Mode"
 44-47: "Sym Cipher Mode"
 48-95: "Policy*"
@@ -120,7 +120,7 @@ title: "Remote Policy"
 ---
 packet-beta
 0-7: "Policy Mode"
-8-31: "Resource Locator"
+8-31: "Resource Locator*"
 32-63: "Binding*"
 ```
 
