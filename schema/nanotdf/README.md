@@ -71,7 +71,8 @@ and a high level diagram is present after the table below.
 | Payload              | 14                  | 16,777,218          |
 | Signature (Optional) | 97                  | 133                 |
 
-The following diagram is the general overview of the nanotdf structure:
+The following diagram is the general overview of the nanotdf structure.
+Starred fields have variable sizes that may be larger than indicated.
 
 ```mermaid
 ---
