@@ -87,8 +87,8 @@ packet-beta
 40: "Sign?"
 41-43: "Sig EC Mode"
 44-47: "Sym Cipher Mode"
-48-63: "Policy*"
-64-79: "Ephemeral Public Key*"
+48-95: "Policy*"
+96-127: "Ephemeral Public Key*"
 ```
 
 ```mermaid
@@ -100,7 +100,7 @@ packet-beta
 4-7: "Protocol Type"
 8-15: "URL Body Length"
 16-47: "URL Body*"
-47-63: "Identifier*"
+48-63: "Identifier*"
 ```
 
 ```mermaid
