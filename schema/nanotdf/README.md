@@ -71,9 +71,90 @@ and a high level diagram is present after the table below.
 | Payload              | 14                  | 16,777,218          |
 | Signature (Optional) | 97                  | 133                 |
 
-The following diagram is the general overview of the nanotdf structure:
+The following diagram is the general overview of the nanotdf structure.
+Starred fields have variable sizes that may be larger than indicated.
 
-![nanotdf 1.0 diagram](../../diagrams/nanotdf.svg)
+```mermaid
+---
+title: "NanoTDF Header"
+---
+packet-beta
+0-17: "Magic Number"
+18-23: "Version"
+24-31: "KAS Resource Locator*"
+32: "ECB?"
+33-36: "Reserved"
+37-39: "EC Mode"
+40: "Sig?"
+41-43: "Sig EC Mode"
+44-47: "Sym Cipher Mode"
+48-95: "Policy*"
+96-127: "Ephemeral Public Key*"
+```
+
+```mermaid
+---
+title: "Resource Locator"
+---
+packet-beta
+0-3: "Identifier Type"
+4-7: "Protocol Type"
+8-15: "URL Body Length"
+16-47: "URL Body*"
+48-63: "Identifier*"
+```
+
+```mermaid
+---
+title: "Embedded Policy"
+---
+packet-beta
+0-7: "Policy Mode"
+8-23: "Policy Body Length"
+24-31: "Body*"
+32-63: "Binding*"
+```
+
+```mermaid
+---
+title: "Remote Policy"
+---
+packet-beta
+0-7: "Policy Mode"
+8-31: "Resource Locator*"
+32-63: "Binding*"
+```
+
+```mermaid
+---
+title: "Payload"
+---
+packet-beta
+0-23: "Length of rest of payload"
+24-47: "Initialization Vector"
+48-63: "Payload*"
+64-95: "Message Authentication Code*"
+```
+
+```mermaid
+---
+title: "NanoTDF Envelope Signature"
+---
+packet-beta
+0-31: "Signer Public Key"
+32-63: "Signature"
+```
+
+```mermaid
+---
+title: "EC Signature"
+---
+packet-beta
+0-7: "Length of R"
+8-31: "R*"
+32-39: "Length of S"
+40-63: "S*"
+```
 
 #### 3.3.1 Header
 
