@@ -1,11 +1,12 @@
 # Key Access Object
 
 ## Summary
+
 A Key Access Object stores not only a wrapped (encrypted) key used to encrypt the file's payload, but also additional metadata about _how_ it is stored.
 
 ## Example"
 
-```javascript
+```json
 {
   "type": "wrapped",
   "url": "https:\/\/kas.example.com:5000",
@@ -19,13 +20,12 @@ A Key Access Object stores not only a wrapped (encrypted) key used to encrypt th
 }
 ```
 
-
 ## keyAccess
 
 |Parameter|Type|Description|Required?|
 |---|---|---|---|
 |`keyAccess`|Object|KeyAccess object stores all information about how an object key OR key split is stored, and if / how it has been encrypted (e.g., with KEK or pub wrapping key).|Yes|
-|`type`|String|Specifies how the key is stored.<p>Possible Values: <dl><dt>remote</dt><dd>The wrapped key (see below) is stored using Virtru infrastructure and is thus not part of the final TDF manifest.</dd><dt>wrapped</dt><dd>Default for TDF 3.x and newer, the wrapped key is stored as part of the manifest.</dd><dt>remoteWrapped</dt><dd>Allows management of customer hosted keys, such as with a *Customer Key Server*. This feature is available as an upgrade path.</dd></dl>|Optional|
+|`type`|String|Specifies how the key is stored.<p>Possible Values: <dl><dt>remote</dt><dd>The wrapped key (see below) is stored using Virtru infrastructure and is thus not part of the final TDF manifest.</dd><dt>wrapped</dt><dd>Default for TDF 3.x and newer, the wrapped key is stored as part of the manifest.</dd><dt>remoteWrapped</dt><dd>Allows management of customer hosted keys, such as with a _Customer Key Server_. This feature is available as an upgrade path.</dd></dl>|Yes|
 |`url`|String|A url pointing to the desired KAS deployment|Yes|
 |`kid`|String|Identifier for the KAS public key, such as its thumbprint. The current preferred identifier can be looked up using the `kas_public_key` endpoint. For compatibility, our reference implementation uses the associated x509 certificate's fingerprint, although this may be a UUID or other simple string selector.|Recommended|
 |`sid`|String|A key split (or share) identifier. To allow sharing a key across several access domains, the KAO supports a 'Split Identifier'. To reconstruct such a key, use the `xor` operation to combine one of each separate sid, at least under the current encryption information type (`split`).|Optional|
@@ -34,9 +34,6 @@ A Key Access Object stores not only a wrapped (encrypted) key used to encrypt th
 |`policyBinding`|Object|This contains a keyed hash that will provide cryptographic integrity on the policy object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy. <p>This is Base64 encoding of HMAC(POLICY,KEY), where: <dl><dt>POLICY</dt><dd>`base64(policyjson)` that is in the “encryptionInformation/policy”</dd><dt>HMAC</dt><dd>HMAC SHA256 (default, but can be specified in the alg field described above)</dd><dt>KEY</dt><dd>Whichever Key Split or Key that is available to the KAS (e.g. the underlying AES 256 key in the wrappedKey.</dd></dl>|Yes|
 |`encryptedMetadata`|String|Metadata associated with the TDF, and the request. The contents of the metadata are freeform, and are used to pass information from the client, and any plugins that may be in use by the KAS. The metadata stored here should not be used for primary access decisions. <p>Note: `encryptedMetadata` is stored as [a base64-encoded string](https://en.wikipedia.org/wiki/Base64#Base64_table). One example of the metadata, decoded and decrypted, could be, depending on specific needs:<p><code>{authHeader:"sd9f8dfkjhwkej8sdfj",connectOptions:{url:'http://localhost:4010'}}</code>|Optional|
 |`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
-
-[comment]: <> (FIXME: description formatting)
-
 
 ### Key Sharing
 
@@ -343,4 +340,3 @@ with the HSM.
     PT0=
 
 ```
-
