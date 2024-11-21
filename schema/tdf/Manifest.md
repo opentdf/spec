@@ -160,9 +160,9 @@ Object containing information applying to the scope of the assertion. May contai
 
 ```javascript
 {
+  "schema": "https://someschema.com/schema",
   "format": "json-structured",
   "value": {
-      "schema": "https://someschema.com/schema",
       "format": "json-structured",
       "value": {
         "Xmlns": "urn:nato:stanag:4774:confidentialitymetadatalabel:1:0",
