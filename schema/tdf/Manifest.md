@@ -14,6 +14,11 @@ From the top level, the TDF manifest contains only two properties: `payload` and
 
 If you'd like to see a real manifest created using the TDF client, check it out [here](#authentic-manifest).
 
+## TDF Spec Version
+
+|Parameter|Type|Description|Required?|
+|`tdf_spec_version`|String|Semver version number of the TDF spec.|Yes|
+
 ## Payload
 
 The payload contains metadata required to access the TDF's payload, including _how_ to process it (protocol), and a reference to the local payload file.
@@ -25,7 +30,6 @@ The payload contains metadata required to access the TDF's payload, including _h
     "protocol": "zip",
     "isEncrypted": true,
     "mimeType": "application/pdf",
-    "tdf_spec_version:": "x.y.z"
 }
 ```
 
@@ -36,7 +40,6 @@ The payload contains metadata required to access the TDF's payload, including _h
 |`protocol`|String|Designates which protocol was used during encryption. Currently, only `zip` and `zipstream` are supported and are specified at time of encryption depending on the use of non-streaming vs. streaming encryption.|Yes|
 |`isEncrypted`|Boolean|Designates whether or not the payload is encrypted. This set by default to `true` for the time being and is intended for later expansion.|Yes|
 |`mimeType`|String|Specifies the type of file that is encrypted. Default is `application/octet-stream`. |No|
-|`tdf_spec_version`|String|Semver version number of the TDF spec.|No|
 
 ## encryptionInformation
 
@@ -129,6 +132,7 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
 ```javascript
 {
+  "tdf_spec_version": "1.0"
   "payload": {
     "type": "reference",
     "url": "0.payload",
