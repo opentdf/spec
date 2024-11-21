@@ -228,5 +228,5 @@
         }
       }
     },
-    "required": ["payload", "encryptionInformation", "assertions"]
+    "required": ["payload", "encryptionInformation"]
   }
