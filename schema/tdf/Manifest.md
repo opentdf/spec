@@ -134,7 +134,6 @@ Assertions contain metadata required to decrypt the TDF's payload, including _ho
 "assertions": [
   {
     "id": "123qwerty456",
-    "schema": "https://someschema.com/schema",
     "type": "handling",
     "scope": "payload",
     "appliesToState": "encrypted",
@@ -164,6 +163,7 @@ Object containing information applying to the scope of the assertion. May contai
 {
   "format": "json-structured",
   "value": {
+      "schema": "https://someschema.com/schema",
       "format": "json-structured",
       "value": {
         "Xmlns": "urn:nato:stanag:4774:confidentialitymetadatalabel:1:0",
@@ -188,6 +188,7 @@ Object containing information applying to the scope of the assertion. May contai
 
 |Parameter|Type| Description                                                                                  |
 |---|---|----------------------------------------------------------------------------------------------|
+|`schema`|String| A reference to the schema used in the statement value |
 |`format`|String| Describes the payload content encoding format (`json-structured`, `base64binary`, `string`). |
 |`value`|String| Payload content encoded in the format specified.                                             |
 
