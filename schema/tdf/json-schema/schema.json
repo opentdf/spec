@@ -198,6 +198,10 @@
               "description": "Intended for access, rights, and/or handling instructions that apply to the scope of the assertion.",
               "type": "object",
               "properties": {
+                "schema": {
+                  "description": "A unique local identifier used for binding and signing purposes. Not guaranteed to be unique across multiple TDOs but must be unique within a single instance.",
+                  "type": "string"
+                },    
                 "format": {
                   "description": "Describes the payload content encoding format ('xml-structured', 'base64binary', 'string').",
                   "type": "string"
