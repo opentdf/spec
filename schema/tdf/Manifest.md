@@ -90,12 +90,12 @@ An object which allows an application to validate the integrity of the payload, 
 "integrityInformation": {
   "rootSignature": {
     "alg": "HS256",
-    "sig": "M2E2MTI5YmMxMWU0ODIzZDA4YTdkNTY2MzdlNDM4OGRlZDE2MTFhZjU1YTY1YzBhYWNlMWVjYjlmODUzNmNiZQ=="
+    "sig": "FNIyJeHWKLxs3JC+dnNYfq8KmjpHQ4O/RggfVxBLz2c="
   },
   "segmentHashAlg": "GMAC",
   "segments": [<Segment Object>],
-  "segmentSizeDefault": 1000000,
-  "encryptedSegmentSizeDefault": 1000028
+  "segmentSizeDefault": 2097152,
+  "encryptedSegmentSizeDefault": 2097180
 }
 ```
 
@@ -115,9 +115,9 @@ Object containing integrity information about a segment of the payload, includin
 
 ```json
 {
-  "hash": "NzhlZDg5OWMwZWVhZDBjMWEzZTQyYmFlODA0NjNlMDM=",
-  "segmentSize": 14056,
-  "encryptedSegmentSize": 14084
+  "hash": "JidL/uaZpVhCGrdDi0ygtA==",
+  "segmentSize": 5,
+  "encryptedSegmentSize": 33
 }
 ```
 
@@ -213,82 +213,68 @@ Here is the JSON from an actual `.tdf` file, created by the TDF client.
 
 ```json
 {
-  "tdf_spec_version": "1.0"
-  "payload": {
-    "type": "reference",
-    "url": "0.payload",
-    "protocol": "zip",
-    "isEncrypted": true
-  },
-  "encryptionInformation": {
-    "type": "split",
-    "keyAccess": [
-      {
-        "type": "wrapped",
-        "url": "http://kas.example.com:4000",
-        "protocol": "kas",
-        "wrappedKey": "YBkqvsiDnyDfw5JQzux2S2IaiClhsojZuLYY9WOc9N9l37A5/Zi7iloxcqgFvBFbzVjGW4QBwAHsytKQvE87bHTuQkZs4XyPACOZE/k9r+mK8KazcGTkOnqPKQNhf2XK4TBACJZ6eItO5Q1eHUQVLKjxUfgyx2TBDfhB/7XifNthu+6lFbKHmPl1q7q1Vaa/rpPRhSgqf89x5fQvcSWdkuOH9Y4wTa8tdKqSS3DUNMKTIUQq8Ti/WFrq26DRemybBgBcL/CyUZ98hFjDQgy4csBusEqwQ5zG+UAoRgkLkHiAw7hNAayAUCVRw6aUYRF4LWfcs2BM9k6d3bHqun0v5w==",
-        "policyBinding": {
-          "alg": "HS256",
-          "hash": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
-        },
-        "encryptedMetadata": "OEOqJCS6mZsmLWJ38lh6EN2lDUA8OagL/OxQRQ=="
-      }
-    ],
-    "method": {
-      "algorithm": "AES-256-GCM",
-      "isStreamable": true,
-      "iv": "OEOqJCS6mZsmLWJ3"
-    },
-    "integrityInformation": {
-      "rootSignature": {
-        "alg": "HS256",
-        "sig": "YjliMzAyNjg4NzA0NzUyYmUwNzY1YWE4MWNhNDRmMDZjZDU3OWMyYTMzNjNlNDYyNTM4MDA4YjQxYTdmZmFmOA=="
-      },
-      "segmentSizeDefault": 1000000,
-      "segmentHashAlg": "GMAC",
-      "segments": [
-        {
-          "hash": "ZmQyYjY2ZDgxY2IzNGNmZTI3ODFhYTk2ZjJhNWNjODA=",
-          "segmentSize": 14056,
-          "encryptedSegmentSize": 14084
-        }
-      ],
-      "encryptedSegmentSizeDefault": 1000028
-    },
-    "policy": "eyJ1dWlkIjoiNjEzMzM0NjYtNGYwYS00YTEyLTk1ZmItYjZkOGJkMGI4YjI2IiwiYm9keSI6eyJhdHRyaWJ1dGVzIjpbXSwiZGlzc2VtIjpbInVzZXJAdmlydHJ1LmNvbSJdfX0="
-  },
-  "assertions": [
-      {
-        "id": "123qwerty456",
-        "type": "handling",
-        "scope": "payload",
-        "appliesToState": "encrypted",
-        "statement": {
-            "format": "json-structured",
-            "value": {
-              "Xmlns": "urn:nato:stanag:4774:confidentialitymetadatalabel:1:0",
-              "CreationTime": "2015-08-29T16:15:00Z",
-              "ConfidentialityInformation": {
-                  "PolicyIdentifier": "NATO",
-                  "Classification": "SECRET",
-                  "Category": {
-                      "Type": "PERMISSIVE",
-                      "TagName": "Releasable to",
-                      "GenericValues": [
-                          "SWE",
-                          "FIN",
-                          "FRA"
-                      ]
-                  }
-              }
-          }
-        },
-        "binding": {
-          "method": "jws",
-          "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
-        }
-      }
-  ]
+	"encryptionInformation": {
+		"type": "split",
+		"policy": "eyJ1dWlkIjoiOWU5ZjE0YTItYzQ3OC0xMWVmLThkYjMtYjJjMDM2M2FlNjJhIiwiYm9keSI6eyJkYXRhQXR0cmlidXRlcyI6bnVsbCwiZGlzc2VtIjpudWxsfX0=",
+		"keyAccess": [
+			{
+				"type": "wrapped",
+				"url": "http://localhost:8080/kas",
+				"protocol": "kas",
+				"wrappedKey": "Y/BX6EtaK47dI1dHmwBFYzZD8x7+9dYtFVMxvgoWerJmSWvDDHtm6UD3MFdzxUcAPvgz1wQpkPTMq5m+pChZVbSF1cDlr/Nt++VbDVh7U5Cl+JFGnpXBh+r9QHBgrbxtMEUrhfEpwwnpgiNeuL9abs09RU9oztnjWjNKld5TQRcKinh9o6tPzZh0C7YetWgSYE5lWflywKdDgkBULDuRLH3DjNML0FTtVudELUl0lxOn60xoYX/IMui2cIYJ1I0a2t8vH1BD9niGEG+fUpheopg66a6BSTa8v7RAbXWB//fotZ16Iw4wPRKud6SSg2F/3aATMkejz6PSdkoeex7I3A==",
+				"policyBinding": {
+					"alg": "HS256",
+					"hash": "NmMwY2Q5OTk0MmZmMDNiYTlmNjA0MDU1NGI3ODUyOWU4MGExMTg2NGFkNTQ5ZTNmYjA5NWMyZDM4YzUyYmJjMA=="
+				},
+				"kid": "r1"
+			}
+		],
+		"method": {
+			"algorithm": "AES-256-GCM",
+			"iv": "",
+			"isStreamable": true
+		},
+		"integrityInformation": {
+			"rootSignature": {
+				"alg": "HS256",
+				"sig": "FNIyJeHWKLxs3JC+dnNYfq8KmjpHQ4O/RggfVxBLz2c="
+			},
+			"segmentHashAlg": "GMAC",
+			"segmentSizeDefault": 2097152,
+			"encryptedSegmentSizeDefault": 2097180,
+			"segments": [
+				{
+					"hash": "JidL/uaZpVhCGrdDi0ygtA==",
+					"segmentSize": 5,
+					"encryptedSegmentSize": 33
+				}
+			]
+		}
+	},
+	"payload": {
+		"type": "reference",
+		"url": "0.payload",
+		"protocol": "zip",
+		"mimeType": "text/plain",
+		"isEncrypted": true
+	},
+	"assertions": [
+		{
+			"id": "424ff3a3-50ca-4f01-a2ae-ef851cd3cac0",
+			"type": "handling",
+			"scope": "tdo",
+			"appliesToState": "encrypted",
+			"statement": {
+				"format": "json+stanag5636",
+				"schema": "urn:nato:stanag:5636:A:1:elements:json",
+				"value": "{\"ocl\":{\"pol\":\"62c76c68-d73d-4628-8ccc-4c1e18118c22\",\"cls\":\"SECRET\",\"catl\":[{\"type\":\"P\",\"name\":\"Releasable To\",\"vals\":[\"usa\"]}],\"dcr\":\"2024-10-21T20:47:36Z\"},\"context\":{\"@base\":\"urn:nato:stanag:5636:A:1:elements:json\"}}"
+			},
+			"binding": {
+				"method": "jws",
+				"signature": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhc3NlcnRpb25IYXNoIjoiNGE0NDdhMTNjNWEzMjczMGQyMGJkZjdmZWVjYjlmZmUxNjY0OWJjNzMxOTE0YjU3NGQ4MDAzNWEzOTI3Zjg2MCIsImFzc2VydGlvblNpZyI6IkppZEwvdWFacFZoQ0dyZERpMHlndEVwRWVoUEZveWN3MGd2ZmYrN0xuLzRXWkp2SE1aRkxWMDJBQTFvNUovaGcifQ.abliRSwOpnZY23I_nSZ7DXwEyKCTJ3JSQ7rs4ox6Q18"
+			}
+		}
+	],
+	"tdf_spec_version": "1.0.0"
 }
 ```
