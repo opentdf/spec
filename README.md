@@ -68,7 +68,7 @@ By default, a TDF object is packaged as a standard Zip archive file, typically u
 However, a TDF can be encoded in other ways. For example, as an HTML document:
 
 ![TDF Structure Illustration](https://files.readme.io/5af8aee-Zip_and_HTML.png "TDF composed as Zip and HTML file")
-_A TDF object can be packaged as a standard ZIP_
+_A TDF object can be packaged as a standard ZIP, or as an HTML document_
 
 ---
 ## NanoTDF: A Compact Binary Format 
