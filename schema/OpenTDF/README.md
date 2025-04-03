@@ -6,8 +6,8 @@ This section details the **OpenTDF** format, the primary specification for gener
 
 Before diving into specific object definitions, understand these core OpenTDF concepts:
 
-*   **Security:** Learn about what makes OpenTDF secure. See [Security Concepts](./concepts/security.md).
-*   **Key Access and Wrapping:** How access control is defined using ABAC. See [Access Control](./concepts/access_control.md).
+*   **Security:** Learn about what makes OpenTDF secure. See [Security Concepts](../../concepts/security.md).
+*   **Key Access and Wrapping:** How access control is defined using ABAC. See [Access Control](../../concepts/access_control.md).
 
 ## Format Structure
 
