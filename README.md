@@ -96,7 +96,7 @@ Developers can use this platform as a practical guide, a starting point for thei
 
 The detailed technical specification is organized into the following sections:
 
-*   **[Schema (`schema/`)](schema/OpenTDF):** Defines the JSON schemas for the `manifest.json` and its constituent objects (like `EncryptionInformation`, `KeyAccess`, `PolicyObject`, etc.). This is the reference for the data structure format.
+*   **[Schema (`schema/`)](schema/OpenTDF/README.md):** Defines the JSON schemas for the `manifest.json` and its constituent objects (like `EncryptionInformation`, `KeyAccess`, `PolicyObject`, etc.). This is the reference for the data structure format.
 *   **[Protocol (`protocol/`)](protocol/):** Describes the high-level architecture, process workflows (e.g., key requests, unwrapping), and interactions between clients, Key Access Servers (KAS), and Identity Providers.
 
 Developers should consult these sections for implementation details regarding data formats, cryptographic operations, and protocol interactions.
