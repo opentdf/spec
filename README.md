@@ -19,6 +19,17 @@ OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specif
 **Versioning:** This specification adheres to the [Semantic Versioning 2.0.0](https://semver.org/) standard.
 
 ---
+
+## Specification Details
+
+The detailed technical specification is organized into the following sections:
+
+*   **[Schema (`schema/`)](schema/):** Defines the JSON schemas for the `manifest.json` and its constituent objects (like `EncryptionInformation`, `KeyAccess`, `PolicyObject`, etc.). This is the reference for the data structure format.
+*   **[Protocol (`protocol/`)](protocol/):** Describes the high-level architecture, process workflows (e.g., key requests, unwrapping), and interactions between clients, Key Access Servers (KAS), and Identity Providers.
+
+Developers should consult these sections for implementation details regarding data formats, cryptographic operations, and protocol interactions.
+
+---
 ## Lineage and Usage
 
 OpenTDF represents a modernization of data-centric security concepts originally established in the **IC-TDF** (Intelligence Community Trusted Data Format) specification. While IC-TDF utilized an XML-based structure, OpenTDF adopts a more contemporary approach using JSON for its manifest, enhancing flexibility and ease of integration with modern web technologies.
@@ -94,16 +105,6 @@ This platform provides:
 *   **Server Components:** Example implementations of backend services like the Key Access Server (KAS).
 
 Developers can use this platform as a practical guide, a starting point for their own implementations, or directly leverage the provided SDKs.
-
----
-## Specification Details
-
-The detailed technical specification is organized into the following sections:
-
-*   **[Schema (`schema/`)](schema/):** Defines the JSON schemas for the `manifest.json` and its constituent objects (like `EncryptionInformation`, `KeyAccess`, `PolicyObject`, etc.). This is the reference for the data structure format.
-*   **[Protocol (`protocol/`)](protocol/):** Describes the high-level architecture, process workflows (e.g., key requests, unwrapping), and interactions between clients, Key Access Servers (KAS), and Identity Providers.
-
-Developers should consult these sections for implementation details regarding data formats, cryptographic operations, and protocol interactions.
 
 ---
 
