@@ -31,7 +31,6 @@ OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specif
 - [TDF Structure](#tdf-structure)
 - [NanoTDF](#nanotdf-a-compact-binary-format)
 - [Reference Implementation & SDKs](#reference-implementation--sdks)
-- [Contributing](#contributing)
 - [Contact](#contact)
 
 ## Specification Details
