@@ -3,6 +3,21 @@
 **The Open, Interoperable Standard for Data-Centric Security**
 
 [![SemVer](https://img.shields.io/badge/SemVer-2.0.1-brightgreen.svg)](https://semver.org/spec/v2.0.1.html)
+## Introduction
+
+OpenTDF (Trusted Data Format) defines an open and interoperable format for embedding data protection directly into data objects themselves (like files or emails). This enables robust **data-centric security**, ensuring data remains protected wherever it travels.
+
+This repository contains the official specification for OpenTDF, including the data format, cryptography, and protocols. It serves as the definitive reference for:
+
+*   **Developers** building applications or SDKs that create, consume, or manage TDF objects.
+*   **Organizations** implementing data protection solutions needing a standard for interoperability and integration.
+*   **Partners** participating in federated ecosystems where consistent data protection across organizational boundaries is crucial.
+
+[Client SDKs and server-side services](https://github.com/opentdf/platform) can be built upon this OpenTDF specification, ensuring standards-based security and enabling seamless interaction between different systems and organizations in a federated environment.
+
+OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specification](https://www.dni.gov/index.php/who-we-are/organizations/ic-cio/ic-cio-related-menus/ic-cio-related-links/ic-technical-specifications/trusted-data-format). For details on interoperability with legacy TDF XML formats, please [contact us](mailto:support@opentdf.io).
+
+**Versioning:** This specification adheres to the [Semantic Versioning 2.0.0](https://semver.org/) standard.
 
 ## Navigation
 
@@ -18,20 +33,6 @@
 - [Reference Implementation & SDKs](#reference-implementation--sdks)
 - [Contributing](#contributing)
 - [Contact](#contact)
-
-OpenTDF (Trusted Data Format) defines an open and interoperable format for embedding data protection directly into data objects themselves (like files or emails). This enables robust **data-centric security**, ensuring data remains protected wherever it travels.
-
-This repository contains the official specification for OpenTDF, including the data format, cryptography, and protocols. It serves as the definitive reference for:
-
-*   **Developers** building applications or SDKs that create, consume, or manage TDF objects.
-*   **Organizations** implementing data protection solutions needing a standard for interoperability and integration.
-*   **Partners** participating in federated ecosystems where consistent data protection across organizational boundaries is crucial.
-
-[Client SDKs and server-side services](https://github.com/opentdf/platform) can be built upon this OpenTDF specification, ensuring standards-based security and enabling seamless interaction between different systems and organizations in a federated environment.
-
-OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specification](https://www.dni.gov/index.php/who-we-are/organizations/ic-cio/ic-cio-related-menus/ic-cio-related-links/ic-technical-specifications/trusted-data-format). For details on interoperability with legacy TDF XML formats, please [contact us](mailto:support@opentdf.io).
-
-**Versioning:** This specification adheres to the [Semantic Versioning 2.0.0](https://semver.org/) standard.
 
 ## Specification Details
 
