@@ -1,7 +1,6 @@
 # OpenTDF Specification Overview
 
 This section details the **OpenTDF** format, the primary specification for general-purpose Trusted Data Format (TDF) implementations. It utilizes a JSON-based manifest packaged with the encrypted payload within a standard Zip archive.
-## Navigation
 
 ## Core Concepts
 
@@ -10,6 +9,7 @@ Before diving into specific object definitions, understand these core OpenTDF co
 *   **Security:** Learn about what makes OpenTDF secure. See [Security Concepts](./security.md).
 *   **Key Access and Wrapping:** How access control is defined using ABAC. See [Access Control](./concepts/access_control.md).
 
+## Navigation
 
 Use the links below to explore the detailed structure of each component:
 
