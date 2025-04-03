@@ -3,6 +3,14 @@
 This section details the **OpenTDF** format, the primary specification for general-purpose Trusted Data Format (TDF) implementations. It utilizes a JSON-based manifest packaged with the encrypted payload within a standard Zip archive.
 ## Navigation
 
+## Core Concepts
+
+Before diving into specific object definitions, understand these core OpenTDF concepts:
+
+*   **Security:** Learn about what makes OpenTDF secure. See [Security Concepts](./security.md).
+*   **Key Access and Wrapping:** How access control is defined using ABAC. See [Access Control](./concepts/access_control.md).
+
+
 Use the links below to explore the detailed structure of each component:
 
 *   [**Manifest Structure (`manifest.json`)**](./manifest.md)
@@ -39,10 +47,3 @@ The `manifest.json` file orchestrates the TDF. Its main sections are:
     *   [Integrity Information](./integrity_information.md): Hashes/signatures for payload integrity.
     *   [Policy](./policy_concepts.md): The access control policy (embedded as a Base64 string).
 *   **Assertions:** Optional, verifiable statements about the TDF or payload. See [Assertions](./assertions.md).
-
-## Core Concepts
-
-Before diving into specific object definitions, understand these core OpenTDF concepts:
-
-*   **Attributes and Policy:** How access control is defined using ABAC. See [Attribute Concepts](./attribute_concepts.md) and [Policy Concepts](./policy_concepts.md).
-*   **Key Access and Wrapping:** How the payload key is protected and retrieved via a Key Access Server (KAS). See [Key Access Object](./key_access.md).
