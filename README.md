@@ -1,83 +1,113 @@
-# Trusted Data Format Specification
+# OpenTDF Specification
 
-Trusted Data Format (TDF) is an Open, Interoperable data format for implementing Data Centric Security for objects (such as files or emails). This repository specifies the protocols and schemas required for TDF operation. Versioning of this spec follows the [Semver standard](https://semver.org/).
+**The Open, Interoperable Standard for Data-Centric Security**
 
-OpenTDF derives its modern JSON-encoded format from the [TDF XML Specification](https://www.dni.gov/index.php/who-we-are/organizations/ic-cio/ic-cio-related-menus/ic-cio-related-links/ic-technical-specifications/trusted-data-format). If you are interested in interoperability between OpenTDF and Base TDF XML or community-specific implementations, please [contact us](mailto:support@opentdf.io). 
+[![SemVer](https://img.shields.io/badge/SemVer-2.0.1-brightgreen.svg)](https://semver.org/spec/v2.0.1.html)
 
-## Documentation
-* [Schema](schema/) - Schema definitions for common TDF data objects.
-* [Protocol](protocol/) - High-level design of the TDF architecture and process workflows.
+OpenTDF (Trusted Data Format) defines an open and interoperable format for embedding data protection directly into data objects themselves (like files or emails). This enables robust **data-centric security**, ensuring data remains protected wherever it travels.
 
-## Contributions
-Please see the [contribution guidelines](CONTRIBUTING.md) for proposing changes and submitting feedback.
+This repository contains the official specification for OpenTDF, including the data format, cryptography, and protocols. It serves as the definitive reference for:
 
-## Features and Capabilities
+*   **Developers** building applications or SDKs that create, consume, or manage TDF objects.
+*   **Organizations** implementing data protection solutions needing a standard for interoperability and integration.
+*   **Partners** participating in federated ecosystems where consistent data protection across organizational boundaries is crucial.
 
-### 1. Strong Encryption
-TDF supports strong encryption of the data as well as strong protections for the encryption keys.
+[Client SDKs and server-side services](https://github.com/opentdf/platform) can be built upon this OpenTDF specification, ensuring standards-based security and enabling seamless interaction between different systems and organizations in a federated environment.
 
-### 2. Attribute Based Access Control (ABAC)
-TDF protocol supports ABAC. This allows TDF protocol to implement policy driven and highly scalable access control mechanism.
+OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specification](https://www.dni.gov/index.php/who-we-are/organizations/ic-cio/ic-cio-related-menus/ic-cio-related-links/ic-technical-specifications/trusted-data-format). For details on interoperability with legacy TDF XML formats, please [contact us](mailto:support@opentdf.io).
 
-### 3. Control
-TDF allows the data owner (or org's administrator) to revoke or expire access to data, even after it has left your org's boundaries.
+**Versioning:** This specification adheres to the [Semantic Versioning 2.0.0](https://semver.org/) standard.
 
-### 4. End to end auditability
-TDF protocol and infrastructure enables logging every key request - effectively adding the most reliable auditing and tracking of access requests.
+---
+## Lineage and Usage
 
-### 5. Streaming and Support for Large Files
-TDF supports protection (encryption and decryption) of very large files. This is done by supporting streaming. 
+OpenTDF represents a modernization of data-centric security concepts originally established in the **IC-TDF** (Intelligence Community Trusted Data Format) specification. While IC-TDF utilized an XML-based structure, OpenTDF adopts a more contemporary approach using JSON for its manifest, enhancing flexibility and ease of integration with modern web technologies.
 
-### 6. Policy Binding
-TDF format provides support for cryptographic binding between payload and metadata via public key-based signatures. This guarantees that the Policy Object has not been tampered with.
+Furthermore, OpenTDF serves as the foundational layer for other specialized data formats. Notably, **ZTDF** (Zero Trust Data Format), developed within NATO contexts, builds directly upon the OpenTDF specification. ZTDF extends OpenTDF by mandating the inclusion of specific cryptographic assertions required for NATO use cases, ensuring compliance with their operational requirements.
 
-### 7. Offline Create
-Thanks to the assurances provided by `Policy Binding` described above, TDF-enabled clients can create TDFs without actively connecting to the key server (in other words, no access to the internet). The offline created TDF can be sent to anyone via offline methods or when the device has access to internet again. 
+The detailed specifications for IC-TDF and ZTDF are maintained separately and are not covered within this document.
 
-### 8. Key Server Federation
-Multiple KAS servers, each hosted by a different organization, can jointly control access to a TDF file. This enables organizations to jointly own, control, audit files in a zero trust manner. 
+---
+## Key Concepts
 
+At its core, OpenTDF wraps sensitive data within a protective layer. This layer includes:
 
-## Meet TDF
-A TDF file at rest can be in one of the two forms: 
+1.  **Encrypted Payload:** The original data, strongly encrypted.
+2.  **Metadata Manifest:** A `manifest.json` file containing crucial information, such as:
+    *   How the payload was encrypted.
+    *   Where to retrieve the decryption key (Key Access information).
+    *   The access control policy governing the data.
+    *   Optionally, cryptographic assertions about the data or policy.
 
-* As a Zip file with extension of `.tdf`. For example, if you are trying to protect a file named `demo.jpeg`, the file will be stored as `demo.jpeg.tdf` after encryption.
-* As a HTML file with extension of `.html`. For example, if you are trying to protect a file named `demo.jpeg`, the file will be stored as `demo.jpeg.html` after encryption. An example HTML file is (here)[https://github.com/opentdf/spec/blob/master/schema/HtmlProtocolExample.html]. 
+This structure allows fine-grained control and auditing, independent of underlying storage or transport systems.
 
-### Components of a TDF file
-Irrespective of whether the TDF file is composed as a Zip or HTML, there are always two components in a TDF file:
-* A `manifest.json` component. The `manifest.json` data structure has all the information anyone would need to request access to decryption key. Be sure to check out the [TDF3 Schemas](schema/) for a detailed reference on `manifest.json` 
-* Encrypted Payload component. This is simply the encrypted version of the object (say a file or email) being protected. 
- 
-![zip](https://files.readme.io/5af8aee-Zip_and_HTML.png "Zip and HTML")
+---
 
-_TDF composed as Zip and HTML file._
+## Core Features & Capabilities
 
-### Principle Elements in manifest.json file
+OpenTDF is designed to provide comprehensive data security through the following features:
 
-There are three principle element types within a TDF's `manifest.json` component:
-* Encryption Information: for encrypting, signing, or integrity binding of Payloads and Assertions
-* Payload Reference(s): reference(s) to the encrypted payload
-* Assertion(s): statement(s) about payload(s); this is optional and not shown below.
+*   **Strong Encryption:** Utilizes robust, modern cryptographic algorithms to protect both the data payload and the encryption keys themselves.
+*   **Attribute-Based Access Control (ABAC):** Enables highly scalable and flexible access control based on attributes of users, data, and the environment, defined within the TDF's policy.
+*   **Persistent Policy Enforcement:** Access policies are bound to the data, allowing data owners or administrators to manage access even after the data has been shared outside organizational boundaries.
+*   **End-to-End Auditability:** The protocol facilitates comprehensive logging of key requests, providing a reliable audit trail of data access attempts.
+*   **Large File & Streaming Support:** Efficiently handles large data objects through secure streaming mechanisms, maintaining integrity throughout the process.
+*   **Policy Integrity:** Cryptographically binds the access policy to the data payload using digital signatures, ensuring the policy hasn't been tampered with.
+*   **Offline Creation:** Allows TDF objects to be created securely by clients even without immediate network connectivity to a key server, thanks to policy binding assurances.
+*   **Federated Key Management:** Supports scenarios where multiple Key Access Servers (KAS), potentially hosted by different organizations, can collaboratively manage access to a single TDF object, enabling secure cross-domain collaboration in a zero-trust manner.
 
-![comps](https://files.readme.io/05edbb5-Screen_Shot_2018-12-10_at_9.08.21_AM.png "Components")
+---
 
-_A TDF file with manifest.json component and encrypted payload component._
+## TDF Structure
 
+By default, a TDF object is packaged as a standard Zip archive file, typically using the `.tdf` extension appended to the original filename. This archive contains two primary components: 
+1. **`manifest.json`:** The metadata manifest described in the Key Concepts section. It holds instructions for decryption and access control. 
+2. **`payload`:** The encrypted data payload itself. 
+![TDF Structure Illustration](https://files.readme.io/5af8aee-Zip_and_HTML.png "TDF composed as Zip and HTML file")
+_A TDF object can be packaged as a standard ZIP_
 
+---
+## NanoTDF: A Compact Binary Format 
 
-## What's new in TDF3? A deeper look.
-TDF's newest version, TDF3 adds powerful new features on top of existing capabilities. Below is a summary of what capabilities are unlocked by each new top level element within encryption information.
+Alongside the primary OpenTDF specification based on JSON manifests, this project also defines **NanoTDF**. NanoTDF is a **compact binary format** designed specifically for resource-constrained environments (e.g., IoT devices, scenarios with limited bandwidth, storage, or processing power) where the overhead of the standard Zip/JSON format might be prohibitive.
 
-### 1. Streaming and Support for Large Files"
-In order to support large file use cases, including streamability with high integrity, we added integrityInformation as an element to Encryption Information.  Below is a look at what it looks like in TDF3 `manifest.json` file.
+It achieves minimal size by using a highly optimized binary structure and relying exclusively on Elliptic Curve Cryptography (ECC). 
 
-![streaming](https://files.readme.io/d84d456-Screen_Shot_2018-12-10_at_9.12.05_AM.png "Streaming")
+While OpenTDF offers flexibility and rich metadata, NanoTDF prioritizes size efficiency for specific use cases. 
 
-### 2. Policy Binding and Offline Create
-With embedding cryptographically bound policy and wrapped keys, we enable a high assurance key server. 
+**➡️ For details, please refer to the [NanoTDF Specification](./nanotdf/README.md).** 
 
-![offline](https://files.readme.io/f5fb283-Screen_Shot_2018-12-10_at_9.15.27_AM.png "Offline create")
+## Reference Implementation & SDKs
 
-### 3. Key Server Federation
-Want to protect files such that two (or more) organizations control the keys? It is now possible with TDF3. [keyAccess](schema/tdf/KeyAccessObject.md) object in particular allows for array of objects, which can allow for multiple KAS servers to participate in an object key grant.
+A robust, open-source reference implementation of the OpenTDF specification is actively developed and maintained at **[opentdf/platform](https://github.com/opentdf/platform)**.
+
+This platform provides:
+
+*   **Client SDKs:** Ready-to-use libraries for integrating TDF capabilities into applications:
+    *   **Java**
+    *   **JavaScript**
+    *   **Go**
+*   **Server Components:** Example implementations of backend services like the Key Access Server (KAS).
+
+Developers can use this platform as a practical guide, a starting point for their own implementations, or directly leverage the provided SDKs.
+
+---
+## Specification Details
+
+The detailed technical specification is organized into the following sections:
+
+*   **[Schema (`schema/`)](schema/):** Defines the JSON schemas for the `manifest.json` and its constituent objects (like `EncryptionInformation`, `KeyAccess`, `PolicyObject`, etc.). This is the reference for the data structure format.
+*   **[Protocol (`protocol/`)](protocol/):** Describes the high-level architecture, process workflows (e.g., key requests, unwrapping), and interactions between clients, Key Access Servers (KAS), and Identity Providers.
+
+Developers should consult these sections for implementation details regarding data formats, cryptographic operations, and protocol interactions.
+
+---
+
+## Contributing
+
+We welcome contributions and feedback! Please see the [Contribution Guidelines](CONTRIBUTING.md) for details on how to propose changes, report issues, or submit pull requests.
+
+---
+## Contact
+
+For questions regarding OpenTDF, interoperability, or the specification, please reach out to [support@opentdf.io](mailto:support@opentdf.io).
