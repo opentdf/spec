@@ -52,7 +52,7 @@ OpenTDF is designed to provide comprehensive data security through the following
 *   **Persistent Policy Enforcement:** Access policies are bound to the data, allowing data owners or administrators to manage access even after the data has been shared outside organizational boundaries.
 *   **End-to-End Auditability:** The protocol facilitates comprehensive logging of key requests, providing a reliable audit trail of data access attempts.
 *   **Large File & Streaming Support:** Efficiently handles large data objects through secure streaming mechanisms, maintaining integrity throughout the process.
-*   **Policy Integrity:** Cryptographically binds the access policy to the data payload using digital signatures, ensuring the policy hasn't been tampered with.
+*   **Policy Integrity:** Cryptographically binds the access policy defined in the manifest to the key access information, preventing policy tampering after creation.
 *   **Offline Creation:** Allows TDF objects to be created securely by clients even without immediate network connectivity to a key server, thanks to policy binding assurances.
 *   **Federated Key Management:** Supports scenarios where multiple Key Access Servers (KAS), potentially hosted by different organizations, can collaboratively manage access to a single TDF object, enabling secure cross-domain collaboration in a zero-trust manner.
 
@@ -96,7 +96,7 @@ Developers can use this platform as a practical guide, a starting point for thei
 
 The detailed technical specification is organized into the following sections:
 
-*   **[Schema (`schema/`)](schema/OpenTDF/README.md):** Defines the JSON schemas for the `manifest.json` and its constituent objects (like `EncryptionInformation`, `KeyAccess`, `PolicyObject`, etc.). This is the reference for the data structure format.
+*   **[Schema (`schema/`)](schema/):** Defines the JSON schemas for the `manifest.json` and its constituent objects (like `EncryptionInformation`, `KeyAccess`, `PolicyObject`, etc.). This is the reference for the data structure format.
 *   **[Protocol (`protocol/`)](protocol/):** Describes the high-level architecture, process workflows (e.g., key requests, unwrapping), and interactions between clients, Key Access Servers (KAS), and Identity Providers.
 
 Developers should consult these sections for implementation details regarding data formats, cryptographic operations, and protocol interactions.
