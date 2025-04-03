@@ -52,6 +52,11 @@ At its core, OpenTDF wraps sensitive data within a protective layer. This layer 
 
 This structure allows fine-grained control and auditing, independent of underlying storage or transport systems.
 
+To learn more about access control, and what makes OpenTDF secure, reference the following sections:
+
+* [Access Control](./schema/OpenTDF/concepts/access_control.md)
+* [Security](./schema/OpenTDF/concepts/security.md)
+
 ---
 
 ## Core Features & Capabilities
