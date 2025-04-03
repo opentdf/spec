@@ -28,6 +28,7 @@ OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specif
 - [Lineage and Usage](#lineage-and-usage)
 - [Key Concepts](#key-concepts)
 - [Core Features & Capabilities](#core-features--capabilities)
+- [Security Principles: The C.I.A. Triad](#security-principles-the-c-i-a-triad)
 - [TDF Structure](#tdf-structure)
 - [NanoTDF](#nanotdf-a-compact-binary-format)
 - [Reference Implementation & SDKs](#reference-implementation--sdks)
@@ -81,6 +82,16 @@ OpenTDF is designed to provide comprehensive data security through the following
 *   **Policy Integrity:** Cryptographically binds the access policy defined in the manifest to the key access information, preventing policy tampering after creation.
 *   **Offline Creation:** Allows TDF objects to be created securely by clients even without immediate network connectivity to a key server, thanks to policy binding assurances.
 *   **Federated Key Management:** Supports scenarios where multiple Key Access Servers (KAS), potentially hosted by different organizations, can collaboratively manage access to a single TDF object, enabling secure cross-domain collaboration in a zero-trust manner.
+
+## Security Principles: The C.I.A. Triad
+
+OpenTDF is designed with the fundamental security principles of Confidentiality, Integrity, and Availability (C.I.A.) at its core:
+
+*   **Confidentiality:** Ensures that sensitive data is only accessible to authorized users through strong encryption and attribute-based access control.
+*   **Integrity:** Maintains data authenticity and prevents unauthorized modifications through cryptographic binding of policies and payloads.
+*   **Availability:** Enables secure access to protected data through distributed key management and offline creation capabilities.
+
+These principles work together to provide comprehensive data protection while maintaining usability and accessibility for authorized users.
 
 ## TDF Structure
 
