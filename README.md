@@ -2,7 +2,7 @@
 
 **The Open, Interoperable Standard for Data-Centric Security**
 
-[![SemVer](https://img.shields.io/badge/SemVer-2.0.1-brightgreen.svg)](https://semver.org/spec/v2.0.1.html)
+[![SemVer](https://img.shields.io/badge/SemVer-4.3.0-brightgreen.svg)](https://semver.org/spec/v2.0.1.html)
 ## Introduction
 
 OpenTDF (Trusted Data Format) defines an open and interoperable format for embedding data protection directly into data objects themselves (like files or emails). This enables robust **data-centric security**, ensuring data remains protected wherever it travels.
