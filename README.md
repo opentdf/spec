@@ -119,10 +119,6 @@ This platform provides:
 
 Developers can use this platform as a practical guide, a starting point for their own implementations, or directly leverage the provided SDKs.
 
-## Contributing
-
-We welcome contributions and feedback! Please see the [Contribution Guidelines](CONTRIBUTING.md) for details on how to propose changes, report issues, or submit pull requests.
-
 ## Contact
 
 For questions regarding OpenTDF, interoperability, or the specification, please reach out to [support@opentdf.io](mailto:support@opentdf.io).
