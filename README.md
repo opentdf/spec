@@ -28,7 +28,7 @@ OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specif
 - [Lineage and Usage](#lineage-and-usage)
 - [Key Concepts](#key-concepts)
 - [Core Features & Capabilities](#core-features--capabilities)
-- [Security Principles: The C.I.A. Triad](#security-principles-the-c-i-a-triad)
+- [Security Principles: The C.I.A. Triad](#security-principles-the-cia-triad)
 - [TDF Structure](#tdf-structure)
 - [NanoTDF](#nanotdf-a-compact-binary-format)
 - [Reference Implementation & SDKs](#reference-implementation--sdks)
