@@ -61,8 +61,12 @@ OpenTDF is designed to provide comprehensive data security through the following
 ## TDF Structure
 
 By default, a TDF object is packaged as a standard Zip archive file, typically using the `.tdf` extension appended to the original filename. This archive contains two primary components: 
+
 1. **`manifest.json`:** The metadata manifest described in the Key Concepts section. It holds instructions for decryption and access control. 
 2. **`payload`:** The encrypted data payload itself. 
+
+However, a TDF can be encoded in other ways. For example, as an HTML document:
+
 ![TDF Structure Illustration](https://files.readme.io/5af8aee-Zip_and_HTML.png "TDF composed as Zip and HTML file")
 _A TDF object can be packaged as a standard ZIP_
 
