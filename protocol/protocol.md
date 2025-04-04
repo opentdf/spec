@@ -24,33 +24,7 @@ While specific protocols vary, the high-level interaction generally follows thes
 3.  **KAS Verification:** The KAS authenticates the client, decrypts the wrapped DEK share(s) using its private key, validates the policy binding against the provided policy and the decrypted DEK share, and performs the authorization check (evaluating the policy against the client's authenticated attributes).
 4.  **Key Rewrap & Response:** If all checks pass, the KAS re-encrypts ("rewraps") the DEK share using the client's public key provided in the request and returns it. If any check fails, the KAS returns an error.
 5.  **Payload Decryption:** The client SDK decrypts the rewrapped DEK share(s) using its private key, reconstructs the full DEK (if key splitting was used), and uses the DEK to decrypt the TDF payload, verifying payload integrity simultaneously.
-```mermaid
-sequenceDiagram
-    participant ClientSDK as Client SDK
-    participant KAS
 
-    ClientSDK->>KAS: Access Request (Wrapped Key, Policy, Binding, Authn, Client PubKey)
-    activate KAS
-    KAS-->>KAS: Authenticate Client
-    KAS-->>KAS: Decrypt DEK Share
-    KAS-->>KAS: Validate Policy Binding
-    KAS-->>KAS: Authorize Request (Check Policy/Attributes)
-    alt Access Granted
-        KAS-->>KAS: Rewrap DEK Share (using Client PubKey)
-        KAS->>ClientSDK: Success Response (Rewrapped DEK Share)
-    else Access Denied
-        KAS->>ClientSDK: Error Response (Authn/Binding/Authz Failure)
-    end
-    deactivate KAS
-    activate ClientSDK
-    ClientSDK-->>ClientSDK: Process Response
-    opt Success Response Received
-        ClientSDK-->>ClientSDK: Decrypt DEK Share (using Client PrivKey)
-        ClientSDK-->>ClientSDK: Reconstruct Full DEK (if split)
-        ClientSDK-->>ClientSDK: Decrypt Payload & Verify Integrity
-    end
-    deactivate ClientSDK
-```
 ## Example Protocol: RSA Key Wrapping
 
 The [OpenTDF reference implementation (opentdf/platform)](https://github.com/opentdf/platform) demonstrates specific protocols. Below is a detailed example flow using **RSA** for wrapping the DEK. This assumes a scenario with a single KAS for simplicity.
