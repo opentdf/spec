@@ -9,7 +9,7 @@ A core design principle of OpenTDF is **crypto-agility**. The specific cryptogra
 1.  The **URL** of the responsible KAS.
 2.  The **protocol** identifier (e.g., `wrapped`) indicating how to interact with that KAS.
 3.  A **Key Identifier (`kid`)** referencing a specific KAS public key.
-4.  A **Split identifier** referencing identifying a specific key
+4.  A **Split Identifier (`sid`)** uniquely identifying a key share when the DEK is split across multiple KAS instances for multi-party access control
 
 This allows different `keyAccess` objects within the *same* TDF to potentially use different key wrapping mechanisms (e.g., one KAS using RSA, another using ECIES based on Elliptic Curve Cryptography) or evolve independently to adopt new algorithms, such as post-quantum cryptography, without breaking the overall TDF format.
 
