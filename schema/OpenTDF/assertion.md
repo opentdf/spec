@@ -27,5 +27,5 @@ Each object within the assertions array represents a single assertion and has 
 | type           | String | Categorizes the assertion's purpose. Common values include handling (e.g., caveats, dissemination controls) or metadata (general information).                                          | Yes       |
 | scope          | String | Specifies whether the assertion applies to the entire TDF object (tdo) or just the payload.                                                                                             | Yes       |
 | appliesToState | String | Indicates if the assertion's statement applies to the data in its encrypted state or its unencrypted state (after decryption). Default is encrypted.                                    | No        |
-| statement      | Object | The actual content of the assertion. See [Statement Object](https://www.google.com/url?sa=E&q=.%2Fstatement.md).                                                                        | Yes       |
-| binding        | Object | A cryptographic signature ensuring the assertion's integrity and preventing it from being moved to another TDF. See [Binding Object](https://www.google.com/url?sa=E&q=.%2Fbinding.md). |           |
+| statement      | Object | The actual content of the assertion. See [Statement Object](./statement.md).                                                                        | Yes       |
+| binding        | Object | A cryptographic signature ensuring the assertion's integrity and preventing it from being moved to another TDF. |           |

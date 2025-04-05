@@ -24,7 +24,7 @@ The `manifest.json` file orchestrates the TDF. Its main sections are:
 
 *   **Payload Description:** Information about the encrypted payload (type, reference, protocol, encryption status). See [Payload Object](./payload.md).
 *   **Encryption Information:** Details on how the payload was encrypted, how to access the key, integrity checks, and the access policy. See [Encryption Information](./encryption_information.md). This includes:
-    *   [Key Access Objects](./key_access.md): How and where to get the decryption key.
+    *   [Key Access Objects](./key_access_object.md): How and where to get the decryption key.
     *   [Method](./method.md): Symmetric encryption algorithm details.
     *   [Integrity Information](./integrity_information.md): Hashes/signatures for payload integrity.
     *   [Policy](./policy_concepts.md): The access control policy (embedded as a Base64 string).
