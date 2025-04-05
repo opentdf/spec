@@ -13,13 +13,13 @@ While encryption protects confidentiality, it doesn't inherently prevent undetec
 *   **Purpose:** To allow recipients to verify that the encrypted payload has not been altered since its creation. This is especially critical for streamed data.
 *   **Mechanism:**
     1.  **Segmentation:** The plaintext payload is processed in chunks (segments).
-    2.  **Segment Hashing/Tagging:** As each segment is encrypted (using AES-GCM, for example), a cryptographic integrity tag (like a GMAC) is generated for that encrypted segment using the *payload encryption key*. This tag is stored (as `hash`) in the corresponding [Segment Object](./segment.md).
+    2.  **Segment Hashing/Tagging:** As each segment is encrypted (using AES-GCM, for example), a cryptographic integrity tag (like a GMAC) is generated for that encrypted segment using the *payload encryption key*. This tag is stored (as `hash`) in the corresponding [Segment Object](../schema/OpenTDF/integrity_information.md#encryptioninformationintegrityinformationsegment).
     3.  **Root Signature:** All the individual segment tags/hashes are concatenated in order. A final HMAC (e.g., HMAC-SHA256) is calculated over this concatenated string of hashes, again using the *payload encryption key*. This result is stored as the `rootSignature.sig`.
 *   **Result:** Any modification to even a single bit of the encrypted payload will invalidate the integrity tag of the affected segment *and* consequently invalidate the final `rootSignature`. During decryption, the receiving client MUST verify the integrity tag of each segment and the overall `rootSignature`. Failure indicates tampering.
 
 ## 3. Policy Binding
 
-It's crucial that the access policy defined for a TDF cannot be detached from the key required to decrypt it. An attacker shouldn't be able to take a wrapped key associated with a strict policy and attach it to a TDF manifest that specifies a weaker policy. The **`policyBinding`** object within *each* [Key Access Object](./key_access.md) prevents this.
+It's crucial that the access policy defined for a TDF cannot be detached from the key required to decrypt it. An attacker shouldn't be able to take a wrapped key associated with a strict policy and attach it to a TDF manifest that specifies a weaker policy. The **`policyBinding`** object within *each* [Key Access Object](../schema/OpenTDF/key_access_object.md) prevents this.
 
 *   **Purpose:** To cryptographically link the specific access policy (defined in `encryptionInformation.policy`) to a particular wrapped key share held by a specific Key Access Server (KAS).
 *   **Mechanism:**
@@ -38,7 +38,7 @@ To enhance security and enable multi-party control, OpenTDF supports **key split
     1.  The client generates the payload encryption key.
     2.  It splits the key into multiple cryptographic shares (e.g., using XOR with random nonces such that `Share1 ⊕ Share2 ⊕ ... ⊕ ShareN = FullKey`).
     3.  Each share is treated as an independent key: it's wrapped using the public key of its designated KAS and associated with its own [Policy Binding](#policy-binding).
-    4.  Each wrapped share is stored in a separate [Key Access Object](./key_access.md) within the `encryptionInformation.keyAccess` array. Crucially, each of these objects is assigned a unique **Split ID** (`sid`).
+    4.  Each wrapped share is stored in a separate [Key Access Object](../schema/OpenTDF/key_access_object.md) within the `encryptionInformation.keyAccess` array. Crucially, each of these objects is assigned a unique **Split ID** (`sid`).
     5.  To decrypt, a client must contact *each* KAS responsible for a required share (identified via the `sid` and `url`).
     6.  Each KAS independently verifies the request against its bound policy (using the [Policy Binding](#policy-binding)).
     7.  If all necessary KASes grant access, the client receives the unwrapped *shares*.

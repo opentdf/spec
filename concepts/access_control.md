@@ -18,10 +18,10 @@ ABAC offers significant advantages over traditional models, enabling dynamic acc
 OpenTDF embeds ABAC directly into the data's protection layer. Here's how its components map to ABAC concepts:
 
 *   **Subject Attributes:** Represented by **Entity Entitlements**. These are the attribute instances asserted by the identity system or client about the user/entity requesting access. They are provided *to* the PEP during an access request.
-*   **Resource Attributes:** Defined within the TDF's [Policy Object](./policy.md) in the `dataAttributes` array. These specify the attribute instances *required* to access this specific piece of data.
+*   **Resource Attributes:** Defined within the TDF's [Policy Object](../schema/OpenTDF/policy.md) in the `dataAttributes` array. These specify the attribute instances *required* to access this specific piece of data.
 *   **Policies:** Defined by the combination of:
     *   The `dataAttributes` required by the specific TDF.
-    *   The optional `dissem` list in the TDF's [Policy Object](./policy.md) acting as an initial filter.
+    *   The optional `dissem` list in the TDF's [Policy Object](../schema/OpenTDF/policy.md) acting as an initial filter.
     *   **Attribute Definitions** managed externally by Attribute Authorities, which specify the *rules* (e.g., AllOf, AnyOf, Hierarchy) for comparing subject and resource attributes.
 *   **Policy Enforcement Point (PEP):** Typically resides within the Key Access Server (KAS) or associated logic. It receives the TDF's policy requirements, the subject's entitlements, retrieves the relevant Attribute Definitions, and makes the authorization decision before releasing a key.
 
@@ -56,8 +56,8 @@ The PEP retrieves these definitions at access decision time based on the Canonic
 
 When an entity requests access to an OpenTDF object:
 
-1.  **Request Initiation:** The client presents the relevant [Key Access Object(s)](./key_access.md) from the TDF manifest to the appropriate KAS, along with the client's credentials and asserted **Entity Entitlements** (Subject Attributes).
-2.  **PEP Evaluation:** The KAS performs the following checks based on the TDF's embedded [Policy Object](./policy.md) (extracted from the `policy` field):
+1.  **Request Initiation:** The client presents the relevant [Key Access Object(s)](../schema/OpenTDF/key_access_object.md) from the TDF manifest to the appropriate KAS, along with the client's credentials and asserted **Entity Entitlements** (Subject Attributes).
+2.  **PEP Evaluation:** The KAS performs the following checks based on the TDF's embedded [Policy Object](../schema/OpenTDF/policy.md) (extracted from the `policy` field):
     *   **Dissemination Check (if applicable):** If the policy's `dissem` list is present and non-empty, the PEP verifies if the requesting entity's identifier is in the list. If not, access is **denied**.
     *   **Attribute Check:**
         *   The PEP examines the required `dataAttributes` (Resource Attributes) listed in the policy.
