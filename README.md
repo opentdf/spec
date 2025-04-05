@@ -113,7 +113,7 @@ It achieves minimal size by using a highly optimized binary structure and relyin
 
 While OpenTDF offers flexibility and rich metadata, NanoTDF prioritizes size efficiency for specific use cases. 
 
-**➡️ For details, please refer to the [NanoTDF Specification](./nanotdf/README.md).** 
+**➡️ For details, please refer to the [NanoTDF Specification](../schema/nanotdf/README.md).** 
 
 ## Reference Implementation & SDKs
 
