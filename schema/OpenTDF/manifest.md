@@ -13,7 +13,7 @@ The manifest object contains the following top-level properties:
 | `tdf_spec_version`      | String | Semver version number of the OpenTDF specification this manifest conforms to.                               | Yes       |
 | `payload`               | Object | Describes the location and characteristics of the encrypted payload. See [Payload Object](./payload.md).        | Yes       |
 | `encryptionInformation` | Object | Contains details about encryption, key access, integrity, and policy. See [Encryption Information Object](./encryption_information.md). | Yes       |
-| `assertions`            | Array  | Optional array of verifiable statements about the TDF or payload. See [Assertions Array](./assertions.md).      | No        |
+| `assertions`            | Array  | Optional array of verifiable statements about the TDF or payload. See [Assertions Array](./assertion.md).      | No        |
 
 ## Full Manifest Example
 
