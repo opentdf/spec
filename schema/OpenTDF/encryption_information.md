@@ -11,7 +11,8 @@ The `encryptionInformation` object, part of the [manifest](./manifest.md), aggre
     "method": { /* See Method Object */ },
     "integrityInformation": { /* See Integrity Information Object */ },
     "policy": "eyJ1dWlkIjoiNGYw...vbSJdfX0=" // Base64 encoded Policy Object JSON
-}```
+}
+```
 
 ## Fields
 
