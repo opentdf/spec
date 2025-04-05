@@ -1,6 +1,6 @@
 # Policy Object (Structure)
 
-This document describes the JSON structure of the Policy Object. The entire object is JSON stringified and then Base64 encoded when stored in the `encryptionInformation.policy` field of the [manifest](./manifest.md). For a conceptual overview, see [Access Control Concepts](../../concepts/access_control.md.md).
+This document describes the JSON structure of the Policy Object. The entire object is JSON stringified and then Base64 encoded when stored in the `encryptionInformation.policy` field of the [manifest](./manifest.md). For a conceptual overview, see [Access Control Concepts](../../concepts/access_control.md).
 
 The Policy Object contains the access control rules for the TDF.
 
