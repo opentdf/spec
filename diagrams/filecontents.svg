@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280">
+  <!-- Main container -->
+  <rect x="50" y="30" width="300" height="220" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="200" y="55" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#333">my_document.ext.tdf (Zip)</text>
+  
+  <!-- manifest.json -->
+  <rect x="70" y="80" width="260" height="50" rx="3" ry="3" fill="#ffffff" stroke="#666" stroke-width="1.5"/>
+  <text x="200" y="110" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">manifest.json</text>
+  
+  <!-- 0.payload -->
+  <rect x="70" y="150" width="260" height="50" rx="3" ry="3" fill="#ffffff" stroke="#666" stroke-width="1.5"/>
+  <text x="200" y="180" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#333">0.payload (Encrypted)</text>
+</svg>
