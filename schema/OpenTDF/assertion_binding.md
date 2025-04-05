@@ -1,6 +1,6 @@
 # Binding Object (Assertion)
 
-The `binding` object, nested within an [Assertion Object](./assertions.md), contains a cryptographic signature binding the assertion to the TDF context, ensuring its integrity and preventing replay on other TDFs.
+The `binding` object, nested within an [Assertion Object](./assertion.md), contains a cryptographic signature binding the assertion to the TDF context, ensuring its integrity and preventing replay on other TDFs.
 
 ## Example
 

@@ -1,6 +1,6 @@
 # Statement Object
 
-The `statement` object, nested within an [Assertion Object](./assertions.md), contains the core information or claim of the assertion.
+The `statement` object, nested within an [Assertion Object](./assertion.md), contains the core information or claim of the assertion.
 
 ## Example
 
