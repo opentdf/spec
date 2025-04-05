@@ -46,22 +46,3 @@ Object containing integrity information about a segment of the payload, includin
 |`hash`|String|A hash generated using the specified `segmentHashAlg`.<br/><br/> `Base64.encode(HMAC(segment, payloadKey))`|
 |`segmentSize`|Number|The size of the segment. This field is optional. The size of the segment is inferred from 'segmentSizeDefault' defined above, but in the event that a segment were modified and re-encrypted, the segment size would change.|
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|
-
-## assertions
-Assertions contain metadata required to decrypt the TDF's payload, including _how_ to decrypt (protocol), and a reference to the local payload file.
-
-```javascript
-"assertions": [
-  {
-    "id": "123qwerty456",
-    "type": "handling",
-    "scope": "payload",
-    "appliesToState": "encrypted",
-    "statement": {/* Statement Object */},
-    "binding": {
-      "method": "jws",
-      "signature": "ZGMwNGExZjg0ODFjNDEzZTk5NjdkZmI5MWFjN2Y1MzI0MTliNjM5MmRlMTlhYWM0NjNjN2VjYTVkOTJlODcwNA=="
-    }
-  }
-]
-```
