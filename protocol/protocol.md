@@ -35,10 +35,10 @@ The [OpenTDF reference implementation (opentdf/platform)](https://github.com/ope
 
 1.  **Generate DEK:** Generate a cryptographically strong symmetric Data Encryption Key (DEK) (e.g., AES-256).
 2.  **Encrypt Payload:** Encrypt the original payload data using the DEK and an authenticated encryption mode (e.g., AES-256-GCM), generating an Initialization Vector (IV) and integrity tags per segment. Store the IV and segment information.
-3.  **Define Policy:** Construct the [Policy Object](../schema/OpenTDF/policy.md) JSON defining the required attributes (`dataAttributes`) and optional dissemination list (`dissem`). Base64 encode this JSON string.
+3.  **Define Policy:** Construct the [Policy Object](../schema/OpenTDF/policy.md) JSON defining the required attributes (`dataAttributes`) and dissemination list (`dissem`). Base64 encode this JSON string.
 4.  **Generate Policy Binding:** Calculate the policy binding hash: `HMAC(DEK, Base64(policyJSON))` using a standard algorithm like HMAC-SHA256. Base64 encode the resulting hash.
 5.  **Prepare Optional Metadata:** If client-specific metadata needs to be passed securely to the KAS during decryption, prepare this data.
-6.  **Encrypt Optional Metadata:** Encrypt the prepared metadata using the DEK (e.g., AES-GCM). Base64 encode the ciphertext.
+6.  **Encrypt Optional Metadata:** Encrypt the prepared metadata using the DEK (e.g., AES-GCM). Base64 encode the ciphertext. The encypted metadata is always passed to the KAS for processing, but from the perspective of a developer using the SDK, it is optional.
 7.  **Fetch KAS Public Key:** Obtain the target KAS's RSA public key (identified by the KAS URL and potentially a `kid`). This might involve a separate discovery step or be pre-configured.
 8.  **Wrap DEK:** Encrypt the plaintext DEK using the KAS's RSA public key (e.g., using RSAES-OAEP). Base64 encode the resulting ciphertext.
 9.  **Construct Key Access Object:** Create the [Key Access Object](../schema/OpenTDF/key_access_object.md) including:
