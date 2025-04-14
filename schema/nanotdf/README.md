@@ -279,7 +279,7 @@ private key and the resulting signature. The structure of this section:
 | Section       | Minimum Length (B)  | Maximum Length (B)  |
 |---------------|---------------------|---------------------|
 | Public Key    | 33                  | 67                  |
-| Signature     | 64                  | 132                 |
+| Signature     | 66                  | 134                 |
 
 ##### 3.3.3.1 Public Key
 
@@ -288,7 +288,7 @@ the message.
 
 ##### 3.3.3.2 Signature
 
-This section contains the encoded `r` and `s` values of the ECDSA signature.
+This section contains the size of `r` and `s` and encoded `r` and `s` values of the ECDSA signature.
 They are encoded as described in [Section 5.2].
 
 ### 3.4 Types
@@ -495,18 +495,33 @@ the X9.62 ECC Public Key Compressed Encoding format.
 
 [Section 5.2]: #52-ecdsa-signature-encoding
 
-ECDSA signatures are big endian encodings of the `r` and `s` values of an ECDSA
-signature. The length of `r` and `s` values is determined by the ECC Mode used
-for the signature. The encoding for the signature is the big endian encodings of
-R and S concatenated to each other. For example, `r = 1` and `s = 2` for an
+The structure of this section is as follows:
+
+| Section                | Minimum Length (B) | Maximum Length (B)  |
+|------------------------|--------------------|---------------------|
+| Size of 'r' value      | 1                  | 1                   |
+| ECDSA 'r' value        | 33                 | 67                  |
+| Size of 's' value      | 1                  | 1                   |
+| ECDSA 's' value        | 33                 | 67                  |
+
+
+ECDSA signature 'r' and 's' values are big endian encoding.
+The length of `r` and `s` values is determined by the ECC Mode used for the signature.
+
+NOTE: 'r' and 's' value need not be of same length for example for curve secp256k1,
+the size of 'r' value can be 31 bytes and 's' value can be of 32 bytes. In this 
+case the 'r' value is padded with '0x0'
+
+For example, `r = 1` and `s = 2` for an
 ECDSA signature of a secp256k1 key would be (line breaks and spaces are added
 for easier visualization):
 
 ```
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02
+01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 02
 ```
 
 ## 6. Examples
