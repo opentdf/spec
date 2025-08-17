@@ -15,7 +15,7 @@ This repository contains the official specification for OpenTDF, including the d
 
 [Client SDKs and server-side services](https://github.com/opentdf/platform) can be built upon this OpenTDF specification, ensuring standards-based security and enabling seamless interaction between different systems and organizations in a federated environment.
 
-OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specification](https://www.dni.gov/index.php/who-we-are/organizations/ic-cio/ic-cio-related-menus/ic-cio-related-links/ic-technical-specifications/trusted-data-format). For details on interoperability with legacy TDF XML formats, please [contact us](mailto:support@opentdf.io).
+OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specification](https://www.dni.gov/index.php/who-we-are/organizations/ic-cio/ic-technical-specifications/trusted-data-format-base). For details on interoperability with legacy TDF XML formats, please [contact us](mailto:support@opentdf.io).
 
 **Versioning:** This specification adheres to the [Semantic Versioning 2.0.0](https://semver.org/) standard.
 
@@ -113,7 +113,7 @@ It achieves minimal size by using a highly optimized binary structure and relyin
 
 While OpenTDF offers flexibility and rich metadata, NanoTDF prioritizes size efficiency for specific use cases. 
 
-**➡️ For details, please refer to the [NanoTDF Specification](../schema/nanotdf/README.md).** 
+**➡️ For details, please refer to the [NanoTDF Specification](../main/schema/nanotdf/README.md).** 
 
 ## Reference Implementation & SDKs
 
