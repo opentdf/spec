@@ -28,4 +28,4 @@ Each object within the assertions array represents a single assertion and has 
 | scope          | String | Specifies whether the assertion applies to the entire TDF object (tdo) or just the payload.                                                                                             | Yes       |
 | appliesToState | String | Indicates if the assertion's statement applies to the data in its encrypted state or its unencrypted state (after decryption). Default is encrypted.                                    | No        |
 | statement      | Object | The actual content of the assertion. See [Statement Object](./assertion_statement.md).                                                                        | Yes       |
-| binding        | Object | A cryptographic signature ensuring the assertion's integrity and preventing it from being moved to another TDF.  See [Assertion Binding](./assertion_binding.md) |           |
+| binding        | Object | A cryptographic signature ensuring the assertion's integrity and preventing it from being moved to another TDF.  See [Assertion Binding](./assertion_binding.md) | Yes       |
