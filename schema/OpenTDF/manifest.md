@@ -15,6 +15,10 @@ The manifest object contains the following top-level properties:
 | `encryptionInformation` | Object | Contains details about encryption, key access, integrity, and policy. See [Encryption Information Object](./encryption_information.md). | Yes       |
 | `assertions`            | Array  | Optional array of verifiable statements about the TDF or payload. See [Assertions Array](./assertion.md).      | No        |
 
+### Manifest Size Considerations
+
+The number of entries in the `integrityInformation.segments` array directly determines the manifest size. As segment count increases, manifest size grows proportionally. For example, a 1 TB TDF file with 1 MB segments will result in approximately one million segment entries in the manifest, which can make the manifest extremely large. To manage manifest size, you can either increase the segment size to reduce the number of segments, or adjust the maximum allowed manifest size in your implementation or SDK configuration.
+
 ## Full Manifest Example
 
 This example illustrates a complete `manifest.json` structure. Links point to detailed descriptions of each major section.
