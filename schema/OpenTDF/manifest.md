@@ -17,7 +17,7 @@ The manifest object contains the following top-level properties:
 
 ### Manifest Size Considerations
 
-The number of entries in the `integrityInformation.segments` array directly determines the manifest size. As segment count increases, manifest size grows proportionally. For example, a 1 TB TDF file with 1 MB segments will result in approximately one million segment entries in the manifest, which can make the manifest extremely large. To manage manifest size, you can either increase the segment size to reduce the number of segments, or adjust the maximum allowed manifest size in your implementation or SDK configuration.
+For larger payloads, the number of entries in the `integrityInformation.segments` array directly determines the manifest size. As segment count increases, the `integrityInformation` length grows proportionally. With the default settings, a 1 TB TDF file with 1 MB segments will result in approximately one million segment entries in the manifest. Some SDKs impose maximum length limits on the manifest. To avoid problems with very large payloads, either configure your client to allow larger manifest sizes or to encrypt with larger segment lengths.
 
 ## Full Manifest Example
 
