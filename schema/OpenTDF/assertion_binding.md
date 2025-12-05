@@ -15,5 +15,5 @@ The `binding` object, nested within an [Assertion Object](./assertion.md), conta
 
 | Parameter | Type   | Description                                                                                                                                                                                                                 | Required? |
 | --------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| method    | String | Binding format. This version defines only `"jws"` (JSON Web Signature, compact serialization).                                                                                   | Yes       |
+| method    | String | Binding format. This version defines only `"jws"` (JWS Compact Serialization string format defined by the JWS (RFC 7515) specification).                                                                                   | Yes       |
 | signature | String | JWS compact serialization string binding the assertion to the `scope` target (`tdo` or `payload`), providing integrity and replay protection. | Yes       |
