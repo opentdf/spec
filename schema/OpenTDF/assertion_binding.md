@@ -7,7 +7,7 @@ The `binding` object, nested within an [Assertion Object](./assertion.md), conta
 ```json
 "binding": {
   "method": "jws",
-  "signature": "eyJhbGciOiJSUzI1NiJ9..." // Base64URL encoded JWS string
+  "signature": "eyJhbGciOiJSUzI1NiJ9..." // JWS string
 }
 ```
 
@@ -15,5 +15,5 @@ The `binding` object, nested within an [Assertion Object](./assertion.md), conta
 
 | Parameter | Type   | Description                                                                                                                                                                                                                 | Required? |
 | --------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| method    | String | The cryptographic method used for the signature. jws (JSON Web Signature) is commonly used, implying standard JWS processing rules apply.                                                                                   | Yes       |
-| signature | String | The Base64URL encoded signature value (e.g., a JWS Compact Serialization string). The signature calculation MUST include the assertion content and sufficient TDF context (like policy or key info hash) to prevent replay. | Yes       |
+| method    | String | Binding format. This version defines only `"jws"` (JSON Web Signature, compact serialization).                                                                                   | Yes       |
+| signature | String | JWS compact serialization string binding the assertion to the `scope` target (`tdo` or `payload`), providing integrity and replay protection. | Yes       |
