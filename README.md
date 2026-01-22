@@ -21,18 +21,17 @@ OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specif
 
 ## Navigation
 
-- [Specification Details](#specification-details)
-  - [Schema (`schema/`)](schema/)
-  - [Protocol (`protocol/`)](protocol/protocol.md)
-  - [Concepts (`concepts/`)](concepts/)
-- [Lineage and Usage](#lineage-and-usage)
-- [Key Concepts](#key-concepts)
-- [Core Features & Capabilities](#core-features--capabilities)
-- [Security Principles: The C.I.A. Triad](#security-principles-the-cia-triad)
-- [TDF Structure](#tdf-structure)
-- [NanoTDF](#nanotdf-a-compact-binary-format)
-- [Reference Implementation & SDKs](#reference-implementation--sdks)
-- [Contact](#contact)
+- [OpenTDF Specification](#opentdf-specification)
+  - [Introduction](#introduction)
+  - [Navigation](#navigation)
+  - [Specification Details](#specification-details)
+  - [Lineage and Usage](#lineage-and-usage)
+  - [Key Concepts](#key-concepts)
+  - [Core Features \& Capabilities](#core-features--capabilities)
+  - [Security Principles: The C.I.A. Triad](#security-principles-the-cia-triad)
+  - [TDF Structure](#tdf-structure)
+  - [Reference Implementation \& SDKs](#reference-implementation--sdks)
+  - [Contact](#contact)
 
 ## Specification Details
 
@@ -104,16 +103,6 @@ However, a TDF can be encoded in other ways. For example, as an HTML document:
 
 ![TDF Structure Illustration](https://files.readme.io/5af8aee-Zip_and_HTML.png "TDF composed as Zip and HTML file")
 _A TDF object can be packaged as a standard ZIP, or as an HTML document_
-
-## NanoTDF: A Compact Binary Format 
-
-Alongside the primary OpenTDF specification based on JSON manifests, this project also defines **NanoTDF**. NanoTDF is a **compact binary format** designed specifically for resource-constrained environments (e.g., IoT devices, scenarios with limited bandwidth, storage, or processing power) where the overhead of the standard Zip/JSON format might be prohibitive.
-
-It achieves minimal size by using a highly optimized binary structure and relying exclusively on Elliptic Curve Cryptography (ECC). 
-
-While OpenTDF offers flexibility and rich metadata, NanoTDF prioritizes size efficiency for specific use cases. 
-
-**➡️ For details, please refer to the [NanoTDF Specification](./schema/nanotdf/README.md).** 
 
 ## Reference Implementation & SDKs
 
