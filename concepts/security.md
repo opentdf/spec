@@ -37,10 +37,10 @@ To enhance security and enable multi-party control, OpenTDF supports **key split
 *   **Mechanism:**
     1.  The client generates the payload encryption key.
     2.  It splits the key into multiple cryptographic shares (e.g., using XOR with random nonces such that `Share1 ⊕ Share2 ⊕ ... ⊕ ShareN = FullKey`).
-    3.  Each share is treated as an independent key: it's wrapped using the public key of its designated KAS and associated with its own [Policy Binding](#policy-binding).
+    3.  Each share is treated as an independent key: it's wrapped using the public key of its designated KAS and associated with its own [Policy Binding](#3-policy-binding).
     4.  Each wrapped share is stored in a separate [Key Access Object](../schema/OpenTDF/key_access_object.md) within the `encryptionInformation.keyAccess` array. Crucially, each of these objects is assigned a unique **Split ID** (`sid`).
     5.  To decrypt, a client must contact *each* KAS responsible for a required share (identified via the `sid` and `url`).
-    6.  Each KAS independently verifies the request against its bound policy (using the [Policy Binding](#policy-binding)).
+    6.  Each KAS independently verifies the request against its bound policy (using the [Policy Binding](#3-policy-binding)).
     7.  If all necessary KASes grant access, the client receives the unwrapped *shares*.
     8.  The client reconstructs the full payload key by combining the shares (e.g., XORing them together).
 *   **Result:** Access requires successfully authenticating and satisfying the policy constraints at *multiple* independent KAS instances. No single KAS holds enough information to decrypt the data alone.
