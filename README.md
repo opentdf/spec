@@ -21,9 +21,8 @@ OpenTDF derives its modern JSON-encoded format from the original [TDF XML Specif
 
 ## Navigation
 
-- [OpenTDF Specification](#opentdf-specification)
-  - [Introduction](#introduction)
-  - [Navigation](#navigation)
+- [Introduction](#introduction)
+- [Navigation](#navigation)
   - [Specification Details](#specification-details)
   - [Lineage and Usage](#lineage-and-usage)
   - [Key Concepts](#key-concepts)
