@@ -21,9 +21,9 @@ The `integrityInformation` object, nested within [`encryptionInformation`](./enc
 
 | Parameter                   | Type   | Description                                                                                                                                                                                        | Required? |
 | --------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| rootSignature               | Object | Contains a cryptographic signature or HMAC over the combined integrity hashes of all segments, providing overall payload integrity.                                                                | Yes       |
+| rootSignature               | Object | Contains a cryptographic integrity value over the combined segment hashes/tags, providing overall payload integrity. For `alg=HS256`, this is an HMAC.                                            | Yes       |
 | rootSignature.alg           | String | Algorithm used for the rootSignature.sig. HS256 (HMAC-SHA256 using the payload key) is commonly used.                                                                                              | Yes       |
-| rootSignature.sig           | String | The Base64 encoded signature or HMAC value. Calculated over the concatenation of all segment hash **bytes** in order (Base64-decode each `segments[i].hash`, concatenate, then HMAC). E.g., `Base64(HMAC-SHA256(PayloadKey, Concat(bytes(Hash1), bytes(Hash2), ...)))`. | Yes |
+| rootSignature.sig           | String | The Base64-encoded integrity value. For `alg=HS256`, this is `Base64(HMAC-SHA256(PayloadKey, Concat(bytes(Hash1), bytes(Hash2), ...)))`, where `bytes(HashN)` are the Base64-decoded segment hashes in order. | Yes |
 | segmentHashAlg              | String | The algorithm used to generate the hash for each segment in the segments array. For `AES-256-GCM`, `GMAC` (the AEAD tag) is used. | Yes       |
 | segments                    | Array  | An array of [Segment Objects](#encryptionInformation.integrityInformation.segment), one for each chunk of the payload if method.isStreamable is true. Order MUST match payload order.                 | Yes       |
 | segmentSizeDefault          | Number | The default size (in bytes) of the plaintext payload segments. Allows omitting segmentSize in individual segment objects if they match this default.                                               | Yes       |
@@ -45,6 +45,6 @@ Object containing integrity information about a segment of the payload, includin
 |---|---|---|
 |`hash`|String|A Base64-encoded authentication tag generated using the specified `segmentHashAlg`. For `GMAC`, this is the AES-GCM tag produced during encryption of the segment with the payload key, the per-segment nonce, and any AAD.|
 
-**Nonce derivation (AES-GCM, streamable):** Each segment must use a unique nonce derived from `method.iv` as specified in the Method Object.
+**Nonce derivation (AES-GCM, streamable):** Each segment must use a unique nonce; the derivation and encoding MUST be specified by the encryption method. Without a defined nonce scheme, GMAC verification is undefined.
 |`segmentSize`|Number|The size of the segment. This field is optional. The size of the segment is inferred from 'segmentSizeDefault' defined above, but in the event that a segment were modified and re-encrypted, the segment size would change.|
 |`encryptedSegmentSize`|Number|The size of the segment (in bytes) after the payload segment has been encrypted.|

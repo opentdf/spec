@@ -108,13 +108,9 @@
               "isStreamable": {
                 "description": "Designates whether or not the payload is streamable.",
                 "type": "boolean"
-              },
-              "iv": {
-                "description": "Base64-encoded IV/nonce for the payload encryption algorithm. For AES-GCM, 12 bytes. Used as the base nonce for streamable encryption.",
-                "type": "string"
               }
             },
-            "required": ["algorithm", "isStreamable", "iv"]
+            "required": ["algorithm", "isStreamable"]
           },
           "integrityInformation": {
             "type": "object",

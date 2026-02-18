@@ -15,7 +15,7 @@ While encryption protects confidentiality, it doesn't inherently prevent undetec
     1.  **Segmentation:** The plaintext payload is processed in chunks (segments).
     2.  **Segment Tagging (GMAC for AES-GCM):** For `method.algorithm = AES-256-GCM`, the segment `hash` is the AEAD authentication tag (GMAC) produced during encryption of that segment. It is computed with the payload key, the per-segment nonce, and any AAD, and stored as Base64 in the Segment Object.
     3.  **Root Signature (HS256):** Concatenate the raw bytes of each segment tag in order (Base64-decode each `segments[i].hash` and concatenate). Compute `HMAC-SHA256` over that byte stream using the payload key, then Base64-encode the result as `rootSignature.sig`.
-    4.  **Nonce Requirement:** For streamable AES-GCM, each segment MUST use a unique nonce derived from `method.iv` as described in the Method Object. Reuse is catastrophic.
+    4.  **Nonce Requirement:** For streamable AES-GCM, each segment MUST use a unique nonce. The derivation and encoding MUST be specified by the encryption method. Reuse is catastrophic.
 *   **Result:** Any modification to even a single bit of the encrypted payload will invalidate the integrity tag of the affected segment *and* consequently invalidate the final `rootSignature`. During decryption, the receiving client MUST verify each segment's AEAD tag and the overall `rootSignature`. Failure indicates tampering.
 
 **Note on plaintext payloads:** `payload.isEncrypted=false` is reserved for future use; integrity rules for plaintext payloads are out of scope.
