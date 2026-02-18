@@ -108,9 +108,13 @@
               "isStreamable": {
                 "description": "Designates whether or not the payload is streamable.",
                 "type": "boolean"
+              },
+              "iv": {
+                "description": "Base64-encoded IV/nonce for the payload encryption algorithm. For AES-GCM, 12 bytes. Used as the base nonce for streamable encryption.",
+                "type": "string"
               }
             },
-            "required": ["algorithm", "isStreamable"]
+            "required": ["algorithm", "isStreamable", "iv"]
           },
           "integrityInformation": {
             "type": "object",
@@ -133,7 +137,7 @@
                 "type": "number"
               },
               "segmentHashAlg": {
-                "description": "Algorithm used to generate segment hashes",
+                "description": "Algorithm used to generate segment hashes (e.g., GMAC for AES-GCM AEAD tags)",
                 "type": "string"
               },
               "segments": {
