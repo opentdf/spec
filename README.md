@@ -47,7 +47,7 @@ Developers should consult these sections for implementation details regarding da
 
 OpenTDF represents a modernization of data-centric security concepts originally established in the **IC-TDF** (Intelligence Community Trusted Data Format) specification. While IC-TDF utilized an XML-based structure, OpenTDF adopts a more contemporary approach using JSON for its manifest, enhancing flexibility and ease of integration with modern web technologies.
 
-Furthermore, OpenTDF serves as the foundational layer for other specialized data formats. Notably, **ZTDF** (Zero Trust Data Format), developed within NATO contexts, builds directly upon the OpenTDF specification. ZTDF extends OpenTDF by mandating the inclusion of specific cryptographic assertions required for NATO use cases, ensuring compliance with their operational requirements.
+Furthermore, OpenTDF serves as the foundational layer for other specialized data formats. Notably, **ZTDF** (Zero Trust Data Format), developed within Five Eyes contexts, builds directly upon the OpenTDF specification. ZTDF extends OpenTDF by mandating the inclusion of specific cryptographic assertions required for Five Eyes contexts, ensuring compliance with their operational requirements.
 
 The detailed specifications for IC-TDF and ZTDF are maintained separately and are not covered within this document.
 
