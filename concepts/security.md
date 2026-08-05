@@ -13,9 +13,12 @@ While encryption protects confidentiality, it doesn't inherently prevent undetec
 *   **Purpose:** To allow recipients to verify that the encrypted payload has not been altered since its creation. This is especially critical for streamed data.
 *   **Mechanism:**
     1.  **Segmentation:** The plaintext payload is processed in chunks (segments).
-    2.  **Segment Hashing/Tagging:** As each segment is encrypted (using AES-GCM, for example), a cryptographic integrity tag (like a GMAC) is generated for that encrypted segment using the *payload encryption key*. This tag is stored (as `hash`) in the corresponding [Segment Object](../schema/OpenTDF/integrity_information.md#encryptioninformationintegrityinformationsegment).
-    3.  **Root Signature:** All the individual segment tags/hashes are concatenated in order. A final HMAC (e.g., HMAC-SHA256) is calculated over this concatenated string of hashes, again using the *payload encryption key*. This result is stored as the `rootSignature.sig`.
-*   **Result:** Any modification to even a single bit of the encrypted payload will invalidate the integrity tag of the affected segment *and* consequently invalidate the final `rootSignature`. During decryption, the receiving client MUST verify the integrity tag of each segment and the overall `rootSignature`. Failure indicates tampering.
+    2.  **Segment Tagging (GMAC for AES-GCM):** For `method.algorithm = AES-256-GCM`, the segment `hash` is the AEAD authentication tag (GMAC) produced during encryption of that segment. It is computed with the payload key, the per-segment nonce, and any AAD, and stored as Base64 in the Segment Object.
+    3.  **Root Signature (HS256):** Concatenate the raw bytes of each segment tag in order (Base64-decode each `segments[i].hash` and concatenate). Compute `HMAC-SHA256` over that byte stream using the payload key, then Base64-encode the result as `rootSignature.sig`.
+    4.  **Nonce Requirement:** For streamable AES-GCM, each segment MUST use a unique nonce. The derivation and encoding MUST be specified by the encryption method. Reuse is catastrophic.
+*   **Result:** Any modification to even a single bit of the encrypted payload will invalidate the integrity tag of the affected segment *and* consequently invalidate the final `rootSignature`. During decryption, the receiving client MUST verify each segment's AEAD tag and the overall `rootSignature`. Failure indicates tampering.
+
+**Note on plaintext payloads:** `payload.isEncrypted=false` is reserved for future use; integrity rules for plaintext payloads are out of scope.
 
 ## 3. Policy Binding
 

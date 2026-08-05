@@ -133,7 +133,7 @@
                 "type": "number"
               },
               "segmentHashAlg": {
-                "description": "Algorithm used to generate segment hashes",
+                "description": "Algorithm used to generate segment hashes (e.g., GMAC for AES-GCM AEAD tags)",
                 "type": "string"
               },
               "segments": {
