@@ -5,6 +5,14 @@
     "description": "TDF manifest in JSON",
     "type": "object",
     "properties": {
+      "schemaVersion": {
+        "description": "Semver version number of the OpenTDF specification this manifest conforms to. This is the canonical name for the field and the only name a writer may emit.",
+        "type": "string"
+      },
+      "tdf_spec_version": {
+        "description": "Deprecated name for `schemaVersion`. Readers MUST accept it; writers MUST NOT emit it. Retained because archival TDFs carry it.",
+        "type": "string"
+      },
       "payload": {
         "type": "object",
         "description": "An object which contains information describing the payload.",
@@ -29,11 +37,11 @@
             "type": "string"
           },
           "tdf_spec_version": {
-            "description": "Semver version number of the TDF spec.",
-            "type": "string"
+            "description": "Deprecated. This field belongs at the manifest root, not here; earlier revisions of this schema declared it under `payload` in error. Readers MUST accept it in either position; writers MUST NOT emit it in either. Some archival TDFs carry it here with a null value.",
+            "type": ["string", "null"]
           }
         },
-        "required": ["type", "url", "protocol", "isEncrypted","mimeType", "tdf_spec_version"]
+        "required": ["type", "url", "protocol", "isEncrypted"]
       },
       "encryptionInformation": {
         "type": "object",
@@ -52,7 +60,7 @@
                 "type": {
                   "description": "The type of key access object.",
                   "type": "string",
-                  "enum": ["wrapped", "remote"]
+                  "enum": ["wrapped", "ec-wrapped", "hybrid-wrapped", "remote"]
                 },
                 "url": {
                   "description": "A fully qualified URL pointing to a key access service responsible for managing access to the encryption keys.",
@@ -76,22 +84,33 @@
                   "type": "string"
                 },
                 "policyBinding": {
-                  "description": "Object describing the policyBinding. Contains a hash, and an algorithm used.",
-                  "type": "object",
-                  "properties": {
-                    "alg": {
-                      "description": "The policy binding algorithm used to generate the hash.",
+                  "description": "Object describing the policyBinding. Contains a hash, and an algorithm used. May also be a string, with just the hash. In that case default to HS256.",
+                  "oneOf": [
+                    {
                       "type": "string"
                     },
-                    "hash": {
-                      "description": "This contains a keyed hash that will provide cryptographic integrity on the policy object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy.",
-                      "type": "string"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "alg": {
+                          "description": "The policy binding algorithm used to generate the hash.",
+                          "type": "string"
+                        },
+                        "hash": {
+                          "description": "This contains a keyed hash that will provide cryptographic integrity on the policy object, such that it cannot be modified or copied to another TDF, without invalidating the binding. Specifically, you would have to have access to the key in order to overwrite the policy. Base64 over the raw HMAC from spec 4.3.0 onward; pre-4.3.0 writers emit Base64 over its hex. Readers MUST accept both, indefinitely.",
+                          "type": "string"
+                        }
+                      },
+                      "required": ["alg", "hash"]
                     }
-                  }
-                  ,"required": ["alg", "hash"]
+                  ]
                 },
                 "encryptedMetadata": {
                   "description": "Metadata associated with the TDF, and the request. The contents of the metadata are freeform, and are used to pass information from the client, and any plugins that may be in use by the KAS. The metadata stored here should not be used for primary access decisions. Base64.",
+                  "type": "string"
+                },
+                "ephemeralPublicKey": {
+                  "description": "For ECC wrapped keys, the client public key portion used, with the KAS public key identified with the key id, to derive a shared key that encrypts the wrapped key.",
                   "type": "string"
                 }
               }
@@ -119,11 +138,12 @@
                 "type": "object",
                 "properties": {
                   "alg": {
-                    "description": "Algorithm used to generate the root signature of the payload",
-                    "type": "string"
+                    "description": "Algorithm used to generate the root signature of the payload. HS256 only: the root signature covers the aggregate hash, which AES-GCM never processes, so a GMAC root has no authentication tag to read back out. An absent alg means HS256.",
+                    "type": "string",
+                    "enum": ["HS256"]
                   },
                   "sig": {
-                    "description": "The payload signature",
+                    "description": "The payload signature. Base64 over the raw keyed digest from spec 4.3.0 onward; pre-4.3.0 writers emit Base64 over its hex. Readers MUST accept both, indefinitely, and SHOULD determine which is present from the decoded length rather than from the manifest's spec version, which is unauthenticated.",
                     "type": "string"
                   }
                 }
@@ -144,7 +164,7 @@
                   "type": "object",
                   "properties": {
                     "hash": {
-                      "description": "Generated hash using the segment hashing algorithm specified in the parent object.",
+                      "description": "Generated hash using the segment hashing algorithm specified in the parent object. Encoded the same way as `rootSignature.sig`, and subject to the same dual-accept rule.",
                       "type": "string"
                     },
                     "segmentSize": {

@@ -10,10 +10,32 @@ The manifest object contains the following top-level properties:
 
 | Parameter               | Type   | Description                                                                                                 | Required? |
 | :---------------------- | :----- | :---------------------------------------------------------------------------------------------------------- | :-------- |
-| `tdf_spec_version`      | String | Semver version number of the OpenTDF specification this manifest conforms to.                               | Yes       |
+| `schemaVersion`         | String | Semver version number of the OpenTDF specification this manifest conforms to. Absent on pre-4.3.0 containers. | No        |
+| `tdf_spec_version`      | String | Deprecated name for `schemaVersion`. See [Spec Version Naming](#spec-version-naming).                       | No        |
 | `payload`               | Object | Describes the location and characteristics of the encrypted payload. See [Payload Object](./payload.md).        | Yes       |
 | `encryptionInformation` | Object | Contains details about encryption, key access, integrity, and policy. See [Encryption Information Object](./encryption_information.md). | Yes       |
 | `assertions`            | Array  | Optional array of verifiable statements about the TDF or payload. See [Assertions Array](./assertion.md).      | No        |
+
+## Spec Version Naming
+
+`schemaVersion` is the canonical name, and the only name a writer may emit.
+
+`tdf_spec_version` is a deprecated spelling of the same field. It is not a former
+name that was renamed on a schedule — it entered some specification drafts and
+some older OpenTDF documentation in error, and writers built from those drafts
+emitted it. Archival TDFs carry it, so:
+
+- Readers **MUST** accept `tdf_spec_version`, at the manifest root and under
+  `payload`, and **MUST** prefer `schemaVersion` when more than one is present.
+  Revisions of `json-schema/schema.json` before this one declared the field
+  under `payload` in error, which is why both positions occur in the wild.
+- Writers **MUST NOT** emit `tdf_spec_version` in either position. Re-emitting a
+  manifest normalizes the name rather than propagating it.
+
+Neither name is authenticated. Readers **MUST NOT** use the spec version to
+decide whether a container verifies — see the dual-accept rules on
+[`rootSignature.sig`](./integrity_information.md) and
+[`policyBinding.hash`](./key_access_object.md).
 
 ## Full Manifest Example
 
@@ -21,7 +43,7 @@ This example illustrates a complete `manifest.json` structure. Links point to de
 
 ```json
 {
-  "tdf_spec_version": "1.0.0",
+  "schemaVersion": "4.3.0",
   // --- Payload Object ---
   "payload": {
     "type": "reference",
